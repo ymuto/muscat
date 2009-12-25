@@ -82,14 +82,18 @@ public class StaticCheckVisualizer {
 	 * 静的チェックを実行する。
 	 */
 	public void execute() {
-		//現在のプロジェクト取得
-		String srcdir = WorkspaceManager.getActiveProjectSrcDirPath();
-		if (srcdir == null) {
-			System.out.println("ソースディレクトリが見つかりません");
-			return;
-		}
-		String targetDirectory = srcdir;
-		String classpath = srcdir;
+//		//現在のプロジェクト取得
+//		String srcdir = WorkspaceManager.getActiveProjectSrcDirPath();
+//		if (srcdir == null) {
+//			System.out.println("ソースディレクトリが見つかりません");
+//			return;
+//		}
+//		String targetDirectory = srcdir;
+//		String classpath = srcdir;
+		
+		String targetDirectory = "C:\\Users\\y-mutoh\\workspace\\StockManagement\\src";
+		//String targetDirectory = "C:\\Users\\y-mutoh\\workspace\\SCVTestData\\src";
+		String classpath = targetDirectory;
 		
 		//チェック開始
 		//String targetDirectory = "C:\\Users\\y-mutoh\\workspace\\SCVTestData\\src";
@@ -112,6 +116,8 @@ public class StaticCheckVisualizer {
 		//MASUでクラス情報を解析
 		masuManager = new MasuManager(targetDirectory);
 		masuManager.createTargetClasses();
+		
+		System.out.println("masu ok");
 				
 		ArrayList<File> javaFiles;
 		javaFiles = masuManager.getJavaSourceFiles();
@@ -131,9 +137,9 @@ public class StaticCheckVisualizer {
 		for (File javafile : javaFiles) {
 			System.out.println(javafile.getName());
 			//XML生成
-			String xml_out = "C:\\Users\\y-mutoh\\workspace\\SCVTestData\\xml";
+			//String xml_out = "C:\\Users\\y-mutoh\\workspace\\SCVTestData\\xml";
 			//String xml_out = "C:\\Users\\y-mutoh\\workspace\\StockManagement\\xml";
-			//String xml_out = "xml\\";
+			String xml_out = "xml\\";
 			System.out.println("XML生成開始...");
 			GenerateXml generator = new GenerateXml(new File(javafile.getPath()), xml_out, classpath, true);
 			System.out.println("XML生成完了!");

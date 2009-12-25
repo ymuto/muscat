@@ -20,6 +20,11 @@ public final class Config {
      * ノードの高さ。
      */
     public static final int NODE_HEIGHT = 80;
+    
+    /**
+     * 対象となる言語。java14はJava1.4。
+     */
+    public static final String TARGET_LANGUAGE = "java14";
 
     /**
      * 属性値の配色。
@@ -52,6 +57,8 @@ public final class Config {
 	public HashMap<String, Color> getAttributeColors() {
 		return attributeColors;
 	}
+	
+	
 	
     
 }

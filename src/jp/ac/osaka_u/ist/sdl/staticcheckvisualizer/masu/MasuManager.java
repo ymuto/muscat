@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.config.Config;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model.TargetClass;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model.TargetClassList;
+import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.utility.Utility;
 import jp.ac.osaka_u.ist.sel.metricstool.main.MetricsTool;
 import jp.ac.osaka_u.ist.sel.metricstool.main.Settings;
 import jp.ac.osaka_u.ist.sel.metricstool.main.data.DataManager;
@@ -18,6 +20,7 @@ import jp.ac.osaka_u.ist.sel.metricstool.main.data.target.FileInfo;
 import jp.ac.osaka_u.ist.sel.metricstool.main.data.target.TargetClassInfo;
 import jp.ac.osaka_u.ist.sel.metricstool.main.data.target.TargetConstructorInfo;
 import jp.ac.osaka_u.ist.sel.metricstool.main.data.target.TargetMethodInfo;
+import jp.ac.osaka_u.ist.sel.metricstool.main.util.LANGUAGE;
 
 public class MasuManager extends MetricsTool {
 	/**
@@ -49,25 +52,36 @@ public class MasuManager extends MetricsTool {
 	 */
 	public  void createTargetClasses(){		
 		// 解析用設定
-		Settings.getInstance().setLanguage("java");
+		Settings.getInstance().setLanguage(Config.TARGET_LANGUAGE);
 		Settings.getInstance().setVerbose(true);
 		Settings.getInstance().setTargetDirectory(targetDirectory);
 
 		// 対象ファイルの解析
+		System.out.println("masu 対象ファイルの解析 begin");
+
 		this.readTargetFiles();
 		this.analyzeTargetFiles();
+		System.out.println("masu 対象ファイルの解析end");
 
 		// 対象クラス一覧を取得
 		final Set<TargetClassInfo> classes = DataManager.getInstance().getClassInfoManager().getTargetClassInfos();
+		System.out.println("classes size=" + classes.size());
 		for (final TargetClassInfo classInfo : classes) {
+			System.out.println(classInfo.getClassName() +" begin");
 			targetClasses.add(targetClassInfoToTargetClass(classInfo));
+			System.out.println(classInfo.getClassName() + " end");
 		}
+		
+		System.out.println("masu 対象クラス一覧取得完了");
 		
 		//対象Javaソースファイルをセット
 		final Set<FileInfo> fileInfos = DataManager.getInstance().getFileInfoManager().getFileInfos();
 		for (FileInfo fileinfo : fileInfos) {
 			javaSourceFiles.add(new File(fileinfo.getName()));
 		}
+		
+		System.out.println("masu createTargetClasses完了");
+
 	}
 
 	/**
@@ -97,11 +111,15 @@ public class MasuManager extends MetricsTool {
 		}
 		//クラス名
 		targetClass.setSimpleName(classInfo.getClassName());
+		System.out.println("name=" + targetClass.getSimpleName());
 		//呼び出し
 		Set<CallInfo<? extends CallableUnitInfo>> calls = classInfo.getCalls();
 		for (CallInfo<? extends CallableUnitInfo> callinfo : calls) {
+			System.out.println("callee begin");
 			targetClass.getCalleeClasses().addAll(getCalleeClassNames(callinfo, false));
+			System.out.println("callee end");
 		}
+		
 		return targetClass;
 	}
 	
@@ -113,18 +131,27 @@ public class MasuManager extends MetricsTool {
 	 * @return このクラスが呼び出しているクラスの完全限定名のリスト。
 	 */
 	public static ArrayList<String> getCalleeClassNames(CallInfo<? extends CallableUnitInfo> callinfo, boolean isContainExternal) {
+		if (callinfo == null) return null;
+		System.out.println("line " + callinfo.getFromLine());
 		ArrayList<String> targetList = new ArrayList<String>(); 
 		List<ExpressionInfo> arguments = callinfo.getArguments(); //同じ引数が複数回出現したら、別物とカウント
-		//引数に対して再帰
+		//メソッド呼び出しの引数に対して再帰
 		for (ExpressionInfo argument: arguments) {
 			Set<CallInfo<?>> argumentCalls = argument.getCalls(); //同じ呼び出しが複数回出現しても、1つにカウント
 			for (CallInfo argumentCallInfo: argumentCalls) {
-				targetList.addAll(getCalleeClassNames(argumentCallInfo, isContainExternal));
+				targetList.addAll(getCalleeClassNames(argumentCallInfo, isContainExternal)); //再帰
 			}
 		}
 		CallableUnitInfo callee = callinfo.getCallee();
+
 		if (isTargetInfo(callee) || isContainExternal){
-			ClassInfo callerClass = callinfo.getOwnerSpace().getOwnerClass(); //呼び出し元クラス
+			ClassInfo callerClass;
+			try {				
+				callerClass = callinfo.getOwnerSpace().getOwnerClass(); //呼び出し元クラス
+			} catch (Exception e) {
+				System.out.println(e);
+				return null;
+			}	
 			ClassInfo calleeClass = callee.getOwnerClass(); //呼び出されるクラス
 			//System.out.println(" " + callerClass.getClassName() + " -> " + calleeClass.getClassName());
 			targetList.add(calleeClass.getFullQualifiedName("."));
