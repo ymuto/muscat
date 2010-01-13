@@ -57,19 +57,13 @@ public class MasuManager extends MetricsTool {
 		Settings.getInstance().setTargetDirectory(targetDirectory);
 
 		// 対象ファイルの解析
-		System.out.println("masu 対象ファイルの解析 begin");
-
 		this.readTargetFiles();
 		this.analyzeTargetFiles();
-		System.out.println("masu 対象ファイルの解析end");
 
 		// 対象クラス一覧を取得
 		final Set<TargetClassInfo> classes = DataManager.getInstance().getClassInfoManager().getTargetClassInfos();
-		System.out.println("classes size=" + classes.size());
 		for (final TargetClassInfo classInfo : classes) {
-			System.out.println(classInfo.getClassName() +" begin");
 			targetClasses.add(targetClassInfoToTargetClass(classInfo));
-			System.out.println(classInfo.getClassName() + " end");
 		}
 		
 		System.out.println("masu 対象クラス一覧取得完了");

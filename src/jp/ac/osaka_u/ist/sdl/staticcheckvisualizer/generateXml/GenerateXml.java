@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.io.*;
 
+import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.Activator;
+
 /**
  * JavaソースファイルからXMLファイルを生成するクラス。
  * 内部クラスは独立したファイルになるため、1つのJavaソースファイルに対して複数のXMLファイルが生成される。
@@ -32,8 +34,8 @@ public class GenerateXml {
 	public boolean isMakeXML=true;
 	
 	/* コンストラクタ */ 
-	public GenerateXml(File javafile, String outputdir, String classpath) {
-
+	public GenerateXml(File javafile, String outputdir, String classpath) 
+	{
 		this.classPath = classpath;
 		generateXml(javafile, outputdir);
 	}
@@ -63,13 +65,12 @@ public class GenerateXml {
 	{	
 		this.javaFile = javafile;
 		//XML生成
-		String generatorCommand = "perl C:\\Users\\y-mutoh\\research\\perl\\escj2xml.pl " +javaFile.getPath() + " " + outputdir;
+		String generatorCommand = Activator.getConfig().getGenerateCommand() + " " + javaFile.getPath() + " " + outputdir;
+		System.out.println("command=" +generatorCommand);
 		if (this.classPath != null) {
 			generatorCommand  += " -classpath " + this.classPath;
 		}
 		if (isMakeXML) {
-			cleanXmlFiles(new File(outputdir));
-			System.out.println("削除完了");
 			exec(generatorCommand);
 		}
 		//出力XMLファイルをセット
@@ -136,25 +137,6 @@ public class GenerateXml {
 		return xmlFiles;
 	}
 	
-	/**
-	 * ディレクトリ内のXMLファイルを削除する。
-	 * @param dir 対象ディレクトリ
-	 */
-	private void cleanXmlFiles(File file) {
-		//ファイルの場合
-		if (file.isFile()) {
-			if (file.getPath().endsWith(".xml")) {
-				file.delete();
-			}
-			return;
-		}
-		//ディレクトリの場合は再帰
-		if (file.isDirectory()) {
-			for (File f :file.listFiles()) {
-				cleanXmlFiles(f);
-			}
-			return;
-		}
-	}
+
 
 }

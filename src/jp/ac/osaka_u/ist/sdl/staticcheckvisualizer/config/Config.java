@@ -15,11 +15,11 @@ public final class Config {
 	/**
 	 * ノードの横幅。
 	 */
-    public static final int NODE_WIDTH = 80;
+    public static final int NODE_WIDTH = 70;
     /**
      * ノードの高さ。
      */
-    public static final int NODE_HEIGHT = 80;
+    public static final int NODE_HEIGHT = 70;
     
     /**
      * 対象となる言語。java14はJava1.4。
@@ -32,12 +32,24 @@ public final class Config {
      */
     private HashMap<String, Color> attributeColors;
     
+    //チェックに用いる値
+    /**
+     * XMLを出力するディレクトリ。
+     */
+    private String outputDir;
+    
+    /**
+     * 実行するスクリプト。
+     */
+    private String generateCommand;
+    
     /**
      * コンストラクタ
      */
     public Config() {
     	attributeColors = new HashMap<String, Color>();
     	setDefaultAttributeColors();
+    	setCheckArgs();
     }
     
 
@@ -52,10 +64,31 @@ public final class Config {
     	attributeColors.put("OK", new Color(null,0,127,0));
     	attributeColors.put("NG", new Color(null,255,0,0));
 	}
+	
+	/**
+	 * チェックに用いる値をセット。
+	 */
+	private void setCheckArgs(){
+		this.generateCommand = "perl C:\\Users\\y-mutoh\\research\\perl\\escj2xml.pl";
+		//String xml_out = "C:\\Users\\y-mutoh\\workspace\\SCVTestData\\xml";
+		//String xml_out = "C:\\Users\\y-mutoh\\workspace\\StockManagement\\xml";
+		//String xml_out = "C:\\Users\\y-mutoh\\runtime-Eclipseアプリケーション\\StockManagement\\xml\\";
+		this.outputDir = "C:\\Users\\y-mutoh\\runtime-Eclipseアプリケーション\\StockManagement\\xml\\";
+	}
 
 
 	public HashMap<String, Color> getAttributeColors() {
 		return attributeColors;
+	}
+
+
+	public String getOutputDir() {
+		return outputDir;
+	}
+
+
+	public String getGenerateCommand() {
+		return generateCommand;
 	}
 	
 	

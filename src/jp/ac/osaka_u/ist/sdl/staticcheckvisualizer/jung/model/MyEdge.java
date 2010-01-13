@@ -3,9 +3,14 @@ package jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.jung.model;
 
 public class MyEdge {
 	/**
-	 * エッジの重み。表示用。
+	 * エッジの重み。内部用。呼び出し回数に相当する。
 	 */
 	private int weight;
+	
+	/**
+	 * エッジの太さ。表示用。
+	 */
+	private int width;
 	
 	/**
 	 * 呼び出し元クラス。開始ノード。
@@ -33,9 +38,10 @@ public class MyEdge {
 	 * @return
 	 */
 	@Override
-	public boolean equals(Object o) {
-		if (o == null) return false;
-		MyEdge edge = (MyEdge)o;
+	public boolean equals(Object obj) {
+		if (obj == null) return false;
+		if (!(obj instanceof MyEdge)) return false;
+		MyEdge edge = (MyEdge)obj;
 		if (!edge.getCallerNode().equals(this.callerNode)) return false;
 		if (!edge.getCalleeNode().equals(this.calleeNode)) return false;
 		return true;
@@ -59,6 +65,14 @@ public class MyEdge {
 
 	public void setWeight(int weight) {
 		this.weight = weight;
+	}	
+
+	public int getWidth() {
+		return width;
+	}
+	
+	public void setWidth(int width) {
+		this.width = width;
 	}
 
 	public MyNode getCallerNode() {

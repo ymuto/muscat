@@ -7,14 +7,20 @@ import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.jung.model.MyEdge;
 
 import org.apache.commons.collections15.Transformer;
 
-
+/**
+ * エッジの形状を求めるクラス。
+ * @author y-mutoh
+ *
+ * @param <E>
+ */
 public class MyEdgeStrokeTransformer<E> implements Transformer<E, Stroke> {
 	Stroke edgeStroke;
 
 	@Override
 	public Stroke transform(E e) {
 		MyEdge edge = (MyEdge)e;
-		edgeStroke = new BasicStroke(edge.getWeight());
+		//ストロークを生成
+		edgeStroke = new BasicStroke(edge.getWidth());
 		return edgeStroke;
 	}
 

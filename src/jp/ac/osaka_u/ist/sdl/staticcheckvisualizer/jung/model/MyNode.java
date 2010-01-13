@@ -45,6 +45,7 @@ public class MyNode
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == null) return false;
+		if (!(obj instanceof MyNode)) return false;
 		MyNode node = (MyNode)obj;
 		return node.getFullQualifiedName().equals(this.fullQualifiedName);
 	}

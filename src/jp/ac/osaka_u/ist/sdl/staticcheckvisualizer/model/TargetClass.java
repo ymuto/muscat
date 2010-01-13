@@ -140,6 +140,8 @@ public class TargetClass {
 	 */
 	@Override
 	public boolean equals(Object obj) {
+		if (obj == null) return false;
+		if (!(obj instanceof TargetClass)) return false;
 		//System.out.println("obj=" + obj.toString());	
 		TargetClass targetClass = (TargetClass)obj;
 		return this.getFullQualifiedName().equals(targetClass.getFullQualifiedName());
@@ -222,13 +224,15 @@ public class TargetClass {
 	 * @param methodCount 合計メソッド数。
 	 */
 	public void setCoverage(Integer passedCount, Integer methodCount) {
-		if (passedCount == null || methodCount == null) this.coverage = null;
+		if (passedCount == null || methodCount == null) {
+			this.coverage = null;
+			return;
+		}
 		if (passedCount <= 0) {
 			this.coverage = 0;
+			return;
 		} 
-		else {
-			this.coverage = Math.round( passedCount * 100 / methodCount);
-		}
+		this.coverage = Math.round( passedCount * 100 / methodCount);
 	}
 
 	public Integer getMethodCount() {

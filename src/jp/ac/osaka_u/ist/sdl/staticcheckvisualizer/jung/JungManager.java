@@ -25,6 +25,7 @@ import edu.uci.ics.jung.visualization.control.ScalingGraphMousePlugin;
 import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
 import edu.uci.ics.jung.visualization.picking.PickedState;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.jung.model.MyEdge;
+import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.jung.model.MyEdgeList;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.jung.model.MyNode;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.jung.model.MyNodeList;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model.TargetClass;
@@ -49,7 +50,7 @@ public class JungManager implements ItemSelectable {
 	/**
 	 * エッジ。
 	 */
-	private ArrayList<MyEdge> edges;
+	private MyEdgeList edges;
 	
 	/**
 	 * レイアウト。(円環レイアウトアルゴリズムなど)
@@ -119,7 +120,7 @@ public class JungManager implements ItemSelectable {
 		System.out.println("ノード追加完了");
 		
 	   	//エッジ追加
-		edges = new ArrayList<MyEdge>();
+		edges = new MyEdgeList();
 		for (TargetClass caller: targetClasses) {
 			for (String calleeClassName: caller.getCalleeClasses()) {
 				TargetClass callee = targetClasses.searchClass(calleeClassName);
@@ -131,6 +132,7 @@ public class JungManager implements ItemSelectable {
 				}
 			}
 		}
+		edges.update();
 		
 		System.out.println("エッジ追加完了");
 		

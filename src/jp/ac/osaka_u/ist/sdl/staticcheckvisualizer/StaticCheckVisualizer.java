@@ -111,37 +111,21 @@ public class StaticCheckVisualizer {
 	
 		System.out.println("target Dir=" + this.targetDirectory);
 		System.out.println("classpath=" + this.classpath);
-
-		
+	
 		//MASUでクラス情報を解析
 		masuManager = new MasuManager(targetDirectory);
 		masuManager.createTargetClasses();
 		
 		System.out.println("masu ok");
-				
-		ArrayList<File> javaFiles;
-		javaFiles = masuManager.getJavaSourceFiles();
-//		javaFiles = new ArrayList<File>();
-//		javaFiles.add(new File("C:\\Users\\y-mutoh\\workspace\\StockManagement\\src\\AppMain.java"));
-//		javaFiles.add(new File("C:\\Users\\y-mutoh\\workspace\\StockManagement\\src\\StockManagement\\ContainerItem.java"));
-//		javaFiles.add(new File("C:\\Users\\y-mutoh\\workspace\\StockManagement\\src\\StockManagement\\Customer.java"));
-//		javaFiles.add(new File("C:\\Users\\y-mutoh\\workspace\\StockManagement\\src\\StockManagement\\Item.java"));
-//		javaFiles.add(new File("C:\\Users\\y-mutoh\\workspace\\StockManagement\\src\\StockManagement\\ReceiptionDesk.java"));
-//		javaFiles.add(new File("C:\\Users\\y-mutoh\\workspace\\StockManagement\\src\\StockManagement\\Request.java"));
-//		javaFiles.add(new File("C:\\Users\\y-mutoh\\workspace\\StockManagement\\src\\StockManagement\\StockState.java"));
-//		javaFiles.add(new File("C:\\Users\\y-mutoh\\workspace\\StockManagement\\src\\StockManagement\\Storage.java"));
-
 
 		// 対象javaソースファイルからXMLを生成してクラス情報読み込み
 		Date before = new Date(); //開始時刻
-		for (File javafile : javaFiles) {
+		//cleanXmlFiles(new File( Activator.getConfig().getOutputDir())); 
+		for (File javafile : masuManager.getJavaSourceFiles()) {
 			System.out.println(javafile.getName());
 			//XML生成
-			//String xml_out = "C:\\Users\\y-mutoh\\workspace\\SCVTestData\\xml";
-			//String xml_out = "C:\\Users\\y-mutoh\\workspace\\StockManagement\\xml";
-			String xml_out = "xml\\";
 			System.out.println("XML生成開始...");
-			GenerateXml generator = new GenerateXml(new File(javafile.getPath()), xml_out, classpath, true);
+			GenerateXml generator = new GenerateXml(new File(javafile.getPath()), Activator.getConfig().getOutputDir(), classpath, false);
 			System.out.println("XML生成完了!");
 
 			//XML読み込み
@@ -209,6 +193,27 @@ public class StaticCheckVisualizer {
 
 	public void setClasspath(String classpath) {
 		this.classpath = classpath;
+	}
+	
+	/**
+	 * ディレクトリ内のXMLファイルを削除する。
+	 * @param dir 対象ディレクトリ
+	 */
+	private void cleanXmlFiles(File file) {
+		//ファイルの場合
+		if (file.isFile()) {
+			if (file.getPath().endsWith(".xml")) {
+				file.delete();
+			}
+			return;
+		}
+		//ディレクトリの場合は再帰
+		if (file.isDirectory()) {
+			for (File f :file.listFiles()) {
+				cleanXmlFiles(f);
+			}
+			return;
+		}
 	}
 	
 }
