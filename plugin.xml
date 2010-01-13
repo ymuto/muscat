@@ -59,6 +59,25 @@
                		mnemonic="S">
                </command>
          </menuContribution>
+         <menuContribution
+           locationURI="popup:org.eclipse.ui.popup.any?after=additions">
+           <command
+           		commandId="jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.command.begincheck"
+           		id="jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.popup.begincheck"
+           		label="[SCV]静的チェックの開始"
+           		mnemonic="S">
+           		<visibleWhen>
+           			<with
+           				variable="selection">
+           				<iterate>
+           					<adapt
+           						type="org.eclipse.core.resources.IProject">
+           					</adapt>
+           				</iterate>
+           			</with>
+           		</visibleWhen>
+           </command>
+         </menuContribution>
    </extension>
    <extension
          point="org.eclipse.ui.commands">

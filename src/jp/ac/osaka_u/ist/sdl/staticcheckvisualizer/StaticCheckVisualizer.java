@@ -111,18 +111,21 @@ public class StaticCheckVisualizer {
 	
 		System.out.println("target Dir=" + this.targetDirectory);
 		System.out.println("classpath=" + this.classpath);
+		
+		//クラス情報初期化
+		targetClasses.clear();
 	
 		//MASUでクラス情報を解析
 		masuManager = new MasuManager(targetDirectory);
 		masuManager.createTargetClasses();
 		
-		System.out.println("masu ok");
+		System.out.println("masu OK");
 
 		// 対象javaソースファイルからXMLを生成してクラス情報読み込み
 		Date before = new Date(); //開始時刻
 		//cleanXmlFiles(new File( Activator.getConfig().getOutputDir())); 
 		for (File javafile : masuManager.getJavaSourceFiles()) {
-			System.out.println(javafile.getName());
+			System.out.println("javafile=" + javafile.getName());
 			//XML生成
 			System.out.println("XML生成開始...");
 			GenerateXml generator = new GenerateXml(new File(javafile.getPath()), Activator.getConfig().getOutputDir(), classpath, false);

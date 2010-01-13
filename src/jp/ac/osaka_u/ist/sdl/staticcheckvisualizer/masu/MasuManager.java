@@ -109,9 +109,9 @@ public class MasuManager extends MetricsTool {
 		//呼び出し
 		Set<CallInfo<? extends CallableUnitInfo>> calls = classInfo.getCalls();
 		for (CallInfo<? extends CallableUnitInfo> callinfo : calls) {
-			System.out.println("callee begin");
+			//System.out.println("callee begin");
 			targetClass.getCalleeClasses().addAll(getCalleeClassNames(callinfo, false));
-			System.out.println("callee end");
+			//System.out.println("callee end");
 		}
 		
 		return targetClass;
@@ -126,7 +126,7 @@ public class MasuManager extends MetricsTool {
 	 */
 	public static ArrayList<String> getCalleeClassNames(CallInfo<? extends CallableUnitInfo> callinfo, boolean isContainExternal) {
 		if (callinfo == null) return null;
-		System.out.println("line " + callinfo.getFromLine());
+		//System.out.println("line " + callinfo.getFromLine());
 		ArrayList<String> targetList = new ArrayList<String>(); 
 		List<ExpressionInfo> arguments = callinfo.getArguments(); //同じ引数が複数回出現したら、別物とカウント
 		//メソッド呼び出しの引数に対して再帰

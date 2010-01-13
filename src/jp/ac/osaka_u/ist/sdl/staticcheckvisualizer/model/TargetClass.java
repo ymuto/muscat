@@ -68,10 +68,10 @@ public class TargetClass {
 	 * @param xmlfile XMLファイルパス
 	 */
 	public TargetClass(String javafilepath, String xmlfilepath) {
-		methods = new MethodList();
-		calleeClasses = new ArrayList<String>();
 		this.xmlFileName = xmlfilepath;
 		this.javaFileName = javafilepath;
+		methods = new MethodList();
+		calleeClasses = new ArrayList<String>();
 		importXml(xmlfilepath);
 	}
 
