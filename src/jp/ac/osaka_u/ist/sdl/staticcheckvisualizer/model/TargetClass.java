@@ -59,7 +59,7 @@ public class TargetClass {
 	/**
 	 *  このクラスが呼び出しているクラス。
 	 */
-	private List<String> calleeClasses;
+	private CalleeList callees;
 	
 	
 	/**
@@ -71,7 +71,7 @@ public class TargetClass {
 		this.xmlFileName = xmlfilepath;
 		this.javaFileName = javafilepath;
 		methods = new MethodList();
-		calleeClasses = new ArrayList<String>();
+		callees = new CalleeList();
 		importXml(xmlfilepath);
 	}
 
@@ -81,14 +81,14 @@ public class TargetClass {
 		this.fullQualifiedName = null;
 		this.coverage = null;
 		methods = new MethodList();
-		calleeClasses = new ArrayList<String>();
+		callees = new CalleeList();
 	}
 	
 	public TargetClass(String simpleName, Integer coverage) {
 		this.simpleName = simpleName;
 		this.coverage = coverage;
 		methods = new MethodList();
-		calleeClasses = new ArrayList<String>();
+		callees = new CalleeList();
 	}
 	
 	public TargetClass(String simpleName, String fullQualifiedName, Integer coverage) {
@@ -96,7 +96,7 @@ public class TargetClass {
 		this.fullQualifiedName = fullQualifiedName;
 		this.coverage = coverage;
 		methods = new MethodList();
-		calleeClasses = new ArrayList<String>();
+		callees = new CalleeList();
 	}
 
 	/**
@@ -150,10 +150,10 @@ public class TargetClass {
 	
 	@Override
 	public String toString() {
-		return simpleName + "(" + this.getFullQualifiedName() +  ") ["
+		return simpleName + "(fulname=" + this.getFullQualifiedName() +  ") ["
 					+ "\n, coverage=" + coverage 
-					+ "\n, methods=" + methods.toString() 
-					+ "\n, calleeClasses=" + calleeClasses.toString()
+					+ "\n, methods=" + methods.toString()
+					+ "\n, calleeClasses=" + callees.toString()
 					+ "\n, attributeTitles=" + this.methods.getAttributeTitles()
 					+ "]";
 	}
@@ -271,12 +271,16 @@ public class TargetClass {
 		this.methods = methods;
 	}
 
-	public List<String> getCalleeClasses() {
-		return calleeClasses;
+	public CalleeList getCallees() {
+		return callees;
 	}
 
-	public void setCalleeClasses(List<String> calleeClasses) {
-		this.calleeClasses = calleeClasses;
+	public void setCallees(CalleeList callees) {
+		this.callees = callees;
 	}
+
+
+
+
 
 }

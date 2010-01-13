@@ -2,6 +2,7 @@ package jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.masu;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -60,11 +61,16 @@ public class MasuManager extends MetricsTool {
 		this.readTargetFiles();
 		this.analyzeTargetFiles();
 
-		// 対象クラス一覧を取得
+		// 対象クラス一覧を生成
 		final Set<TargetClassInfo> classes = DataManager.getInstance().getClassInfoManager().getTargetClassInfos();
 		for (final TargetClassInfo classInfo : classes) {
 			targetClasses.add(targetClassInfoToTargetClass(classInfo));
-		}
+		}	
+		//全対象クラスにクラス呼び出し情報をセット
+		for (final TargetClassInfo classInfo : classes) {
+			TargetClass targetClass = targetClasses.searchClass(classInfo.getFullQualifiedName("."));
+			setTargetClassCall(targetClass, classInfo);
+		}	
 		
 		System.out.println("masu 対象クラス一覧取得完了");
 		
@@ -84,7 +90,7 @@ public class MasuManager extends MetricsTool {
 	 * @param info 判定対象
 	 * @return 対象となるかどうか。
 	 */
-	private static boolean isTargetInfo(CallableUnitInfo info) {
+	private boolean isTargetInfo(CallableUnitInfo info) {
 		if (info instanceof TargetMethodInfo) return true;
 		if (info instanceof TargetConstructorInfo) return true;
 		return false;
@@ -96,7 +102,7 @@ public class MasuManager extends MetricsTool {
 	 * @param classInfo　MASUのクラス情報
 	 * @return TargetClass
 	 */
-	public static TargetClass targetClassInfoToTargetClass(TargetClassInfo classInfo) {
+	public TargetClass targetClassInfoToTargetClass(TargetClassInfo classInfo) {
 		TargetClass targetClass = new TargetClass();
 		//パッケージ名
 		String packageNameWithDot = classInfo.getNamespace().getName("."); //末尾がドット(.)なので削除する必要あり
@@ -106,16 +112,32 @@ public class MasuManager extends MetricsTool {
 		//クラス名
 		targetClass.setSimpleName(classInfo.getClassName());
 		System.out.println("name=" + targetClass.getSimpleName());
+		
+		return targetClass;
+	}
+	
+	/**
+	 * MASUのクラス情報から呼び出し情報をセットする
+	 * 
+	 * @param classInfo　MASUのクラス情報。呼び出し情報を含む。
+	 * @param targetClass 呼び出し情報を追加したい対象クラス
+	 * @return TargetClass
+	 */
+	public void setTargetClassCall(TargetClass targetClass, TargetClassInfo classInfo) {
 		//呼び出し
 		Set<CallInfo<? extends CallableUnitInfo>> calls = classInfo.getCalls();
 		for (CallInfo<? extends CallableUnitInfo> callinfo : calls) {
 			//System.out.println("callee begin");
-			targetClass.getCalleeClasses().addAll(getCalleeClassNames(callinfo, false));
+			for (String calleeClassName : getCalleeClassNames(callinfo, false)) {
+				TargetClass calleeClass = this.targetClasses.searchClass(calleeClassName);
+				if (calleeClass != null) {
+					targetClass.getCalleeClasses().add(calleeClass);
+				}
+			}
 			//System.out.println("callee end");
 		}
-		
-		return targetClass;
 	}
+	
 	
 	/**
 	 * このクラスが呼び出しているクラス名を取得する。
@@ -124,7 +146,7 @@ public class MasuManager extends MetricsTool {
 	 * @param isContainExternal 対象外クラスを結果に含めるかどうか。
 	 * @return このクラスが呼び出しているクラスの完全限定名のリスト。
 	 */
-	public static ArrayList<String> getCalleeClassNames(CallInfo<? extends CallableUnitInfo> callinfo, boolean isContainExternal) {
+	public ArrayList<String> getCalleeClassNames(CallInfo<? extends CallableUnitInfo> callinfo, boolean isContainExternal) {
 		if (callinfo == null) return null;
 		//System.out.println("line " + callinfo.getFromLine());
 		ArrayList<String> targetList = new ArrayList<String>(); 
@@ -153,9 +175,25 @@ public class MasuManager extends MetricsTool {
 		return targetList;
 	}
 	
-	public static ArrayList<String> getCalleeClassNames(CallInfo<? extends CallableUnitInfo> callinfo) {
+	/**
+	 * このクラスが呼び出しているクラス名と呼び出し回数を取得する。
+	 * 
+	 * @param calleeClassNames 呼び出されるクラス名のリスト。
+	 * @return このクラスが呼び出しているクラスの、完全限定名をキー、呼び出し回数を値とするハッシュマップ。
+	 */
+	public HashMap<Integer,String> getCalleeNamesAndCounts(ArrayList<String> calleeClassNames) {
+		HashMap<Integer, String> callees = new HashMap<Integer, String>();
+		//TODO
+		return callees;
+	}
+	
+	public ArrayList<String> getCalleeClassNames(CallInfo<? extends CallableUnitInfo> callinfo) {
 		return getCalleeClassNames(callinfo, false);
 	}
+	
+
+	
+	
 	
 	/**
 	 * MASUのクラス情報からクラスを検索する
@@ -163,7 +201,7 @@ public class MasuManager extends MetricsTool {
 	 * @param fullQualifiedName 検索したいクラスの完全限定名
 	 * @return 見つかったクラス情報
 	 */
-	public static TargetClassInfo searchTargetClassInfo(String fullQualifiedName) {
+	public TargetClassInfo searchTargetClassInfo(String fullQualifiedName) {
 		final Set<TargetClassInfo> classes = DataManager.getInstance().getClassInfoManager().getTargetClassInfos();
 		for (final TargetClassInfo classInfo : classes) {
 			if (classInfo.getFullQualifiedName(".").equals(fullQualifiedName)) {
