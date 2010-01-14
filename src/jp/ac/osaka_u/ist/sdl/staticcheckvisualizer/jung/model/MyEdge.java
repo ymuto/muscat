@@ -28,6 +28,12 @@ public class MyEdge {
 		this.weight = 1;
 	}
 	
+	public MyEdge(MyNode callerNode, MyNode calleeNode, int weight) {
+		this.callerNode = callerNode;
+		this.calleeNode = calleeNode;
+		this.weight = weight;
+	}
+	
 	public MyEdge() {
 		this.weight = 0;
 	}
@@ -90,7 +96,5 @@ public class MyEdge {
 	public void setCalleeNode(MyNode calleeNode) {
 		this.calleeNode = calleeNode;
 	}
-	
-	
-	
+		
 }

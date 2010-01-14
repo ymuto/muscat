@@ -150,12 +150,14 @@ public class TargetClass {
 	
 	@Override
 	public String toString() {
-		return simpleName + "(fulname=" + this.getFullQualifiedName() +  ") ["
+		String str = simpleName + "(fulname=" + this.getFullQualifiedName() +  ") ["
 					+ "\n, coverage=" + coverage 
-					+ "\n, methods=" + methods.toString()
-					+ "\n, calleeClasses=" + callees.toString()
-					+ "\n, attributeTitles=" + this.methods.getAttributeTitles()
-					+ "]";
+					+ "\n, methods=" + methods.toString();
+		if (this.callees != null)
+			str += "\n, calleeClasses=" + callees.toString();
+		str += "\n, attributeTitles=" + this.methods.getAttributeTitles()
+					+ "\n]";
+		return str;
 	}
 	
 	

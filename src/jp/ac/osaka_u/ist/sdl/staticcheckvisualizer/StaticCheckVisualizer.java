@@ -123,12 +123,12 @@ public class StaticCheckVisualizer {
 
 		// 対象javaソースファイルからXMLを生成してクラス情報読み込み
 		Date before = new Date(); //開始時刻
-		//cleanXmlFiles(new File( Activator.getConfig().getOutputDir())); 
+		cleanXmlFiles(new File( Activator.getConfig().getOutputDir())); 
 		for (File javafile : masuManager.getJavaSourceFiles()) {
 			System.out.println("javafile=" + javafile.getName());
 			//XML生成
 			System.out.println("XML生成開始...");
-			GenerateXml generator = new GenerateXml(new File(javafile.getPath()), Activator.getConfig().getOutputDir(), classpath, false);
+			GenerateXml generator = new GenerateXml(new File(javafile.getPath()), Activator.getConfig().getOutputDir(), classpath, true);
 			System.out.println("XML生成完了!");
 
 			//XML読み込み
@@ -138,7 +138,7 @@ public class StaticCheckVisualizer {
 				//MASUのクラス情報から一致するクラスの呼び出し情報を取ってきて代入
 				TargetClass masuSameTargetClass = masuManager.getTargetClasses().searchClass(c.getFullQualifiedName());
 				if (masuSameTargetClass != null) {
-					c.setCalleeClasses(masuSameTargetClass.getCalleeClasses());
+					c.setCallees(masuSameTargetClass.getCallees());
 				}
 			}
 		}

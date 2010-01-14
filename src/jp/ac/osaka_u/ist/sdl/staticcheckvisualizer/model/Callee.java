@@ -18,7 +18,7 @@ public class Callee {
 	
 	@Override
 	public String toString() {
-		return "[" + callCount + "]" + calleeClass.getFullQualifiedName();
+		return "(" + callCount + ")" + calleeClass.getFullQualifiedName();
 	}
 	
 	//アクセサ

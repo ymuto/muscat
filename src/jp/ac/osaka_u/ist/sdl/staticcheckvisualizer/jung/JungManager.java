@@ -28,6 +28,7 @@ import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.jung.model.MyEdge;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.jung.model.MyEdgeList;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.jung.model.MyNode;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.jung.model.MyNodeList;
+import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model.Callee;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model.TargetClass;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model.TargetClassList;
 
@@ -122,13 +123,13 @@ public class JungManager implements ItemSelectable {
 	   	//エッジ追加
 		edges = new MyEdgeList();
 		for (TargetClass caller: targetClasses) {
-			for (TargetClass callee: caller.getCalleeClasses()) {
-				if (callee != null) {
-					MyNode callerNode = nodes.searchMyNode(caller.getFullQualifiedName());
-					MyNode calleeNode = nodes.searchMyNode(callee.getFullQualifiedName());
-					MyEdge edge = new MyEdge(callerNode, calleeNode);
-					addEdge(edge);
-				}
+			if (caller.getCallees() == null) continue;
+			for (Callee callee: caller.getCallees()) {
+				MyNode callerNode = nodes.searchMyNode(caller.getFullQualifiedName());
+				MyNode calleeNode = nodes.searchMyNode(callee.getCalleeClass().getFullQualifiedName());
+				MyEdge edge = new MyEdge(callerNode, calleeNode, callee.getCallCount());
+				edges.add(edge);
+				g.addEdge(edge, edge.getCallerNode(), edge.getCalleeNode());
 			}
 		}
 		edges.update();
@@ -170,6 +171,7 @@ public class JungManager implements ItemSelectable {
 		return vv;
 	}
 	
+	//TODO 現在未使用。
 	/**
 	 * グラフにエッジを追加する。
 	 * @param 追加したいエッジ。

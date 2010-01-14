@@ -2,11 +2,14 @@ package jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.masu;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.config.Config;
+import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model.Callee;
+import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model.CalleeList;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model.TargetClass;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model.TargetClassList;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.utility.Utility;
@@ -123,19 +126,19 @@ public class MasuManager extends MetricsTool {
 	 * @param targetClass 呼び出し情報を追加したい対象クラス
 	 * @return TargetClass
 	 */
-	public void setTargetClassCall(TargetClass targetClass, TargetClassInfo classInfo) {
-		//呼び出し
+	public void setTargetClassCall(TargetClass targetClass, TargetClassInfo classInfo) {		
+		//呼び出し情報をすべて取得して文字列リストにする
+		ArrayList<String> calleeClassNames = new ArrayList<String>();
 		Set<CallInfo<? extends CallableUnitInfo>> calls = classInfo.getCalls();
 		for (CallInfo<? extends CallableUnitInfo> callinfo : calls) {
 			//System.out.println("callee begin");
-			for (String calleeClassName : getCalleeClassNames(callinfo, false)) {
-				TargetClass calleeClass = this.targetClasses.searchClass(calleeClassName);
-				if (calleeClass != null) {
-					targetClass.getCalleeClasses().add(calleeClass);
-				}
-			}
+			calleeClassNames.addAll(getCalleeClassNames(callinfo, false));
+			//targetClass.getCalleeClasses().addAll(getCalleeClassNames(callinfo, false));
 			//System.out.println("callee end");
 		}
+		//呼び出し情報を格納
+		targetClass.setCallees(calleeClassNamesToCalleeList(calleeClassNames));
+		
 	}
 	
 	
@@ -179,20 +182,38 @@ public class MasuManager extends MetricsTool {
 	 * このクラスが呼び出しているクラス名と呼び出し回数を取得する。
 	 * 
 	 * @param calleeClassNames 呼び出されるクラス名のリスト。
-	 * @return このクラスが呼び出しているクラスの、完全限定名をキー、呼び出し回数を値とするハッシュマップ。
+	 * @return このクラスが呼び出しているクラスの呼び出し情報。
 	 */
-	public HashMap<Integer,String> getCalleeNamesAndCounts(ArrayList<String> calleeClassNames) {
-		HashMap<Integer, String> callees = new HashMap<Integer, String>();
+	public CalleeList calleeClassNamesToCalleeList(ArrayList<String> calleeClassNames) {
+		if (calleeClassNames.size() <= 0) return null;
+		CalleeList callees = new CalleeList();
 		//TODO
+		//クラス名でソート
+		Collections.sort(calleeClassNames);
+		System.out.println("ソート結果=\n" + calleeClassNames.toString());
+		while (calleeClassNames.size() > 0) {
+			//末尾の要素を取得
+			String calleeClassName = calleeClassNames.get(calleeClassNames.size()-1);
+			System.out.println("呼び出されたクラス=" + calleeClassName);
+			calleeClassNames.remove(calleeClassNames.size()-1);
+			//クラス名が一致する要素数をカウントし、削除していく。末尾から。
+			int count = 1;
+			for (int i=calleeClassNames.size()-1; i>=0; i--) {
+				if (!calleeClassName.equals(calleeClassNames.get(i))) continue;
+				calleeClassNames.remove(i);
+				count++;
+			}
+			//結果に追加
+			TargetClass calleeClass = this.targetClasses.searchClass(calleeClassName);
+			callees.add(new Callee(calleeClass, count));	
+		}
+		
 		return callees;
 	}
 	
 	public ArrayList<String> getCalleeClassNames(CallInfo<? extends CallableUnitInfo> callinfo) {
 		return getCalleeClassNames(callinfo, false);
 	}
-	
-
-	
 	
 	
 	/**
