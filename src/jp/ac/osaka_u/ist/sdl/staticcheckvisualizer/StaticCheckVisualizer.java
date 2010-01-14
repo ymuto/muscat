@@ -123,16 +123,17 @@ public class StaticCheckVisualizer {
 
 		// 対象javaソースファイルからXMLを生成してクラス情報読み込み
 		Date before = new Date(); //開始時刻
-		cleanXmlFiles(new File( Activator.getConfig().getOutputDir())); 
+		//cleanXmlFiles(new File( Activator.getConfig().getOutputDir())); 
 		for (File javafile : masuManager.getJavaSourceFiles()) {
 			System.out.println("javafile=" + javafile.getName());
 			//XML生成
 			System.out.println("XML生成開始...");
-			GenerateXml generator = new GenerateXml(new File(javafile.getPath()), Activator.getConfig().getOutputDir(), classpath, true);
+			GenerateXml generator = new GenerateXml(new File(javafile.getPath()), Activator.getConfig().getOutputDir(), classpath, false);
 			System.out.println("XML生成完了!");
 
 			//XML読み込み
 			for (File xmlfile: generator.getXmlFiles()) {
+				System.out.println("java=" + javafile.getName() + " xml="+xmlfile.getName());
 				TargetClass c = new TargetClass(javafile.getAbsolutePath(), xmlfile.getAbsolutePath());				
 				targetClasses.add(c);
 				//MASUのクラス情報から一致するクラスの呼び出し情報を取ってきて代入
@@ -141,6 +142,8 @@ public class StaticCheckVisualizer {
 					c.setCallees(masuSameTargetClass.getCallees());
 				}
 			}
+			System.out.println("現在のTargetClasses");
+			targetClasses.printClassNames();
 		}
 		//経過時間
 		long diffTime = new Date().getTime() - before.getTime();
@@ -148,6 +151,10 @@ public class StaticCheckVisualizer {
 		timeFormatter.setTimeZone(TimeZone.getTimeZone("GMT"));
 		String diffTimeStr = timeFormatter.format(diffTime); 
 		System.out.println("XML生成にかかった時間=" + diffTimeStr);
+		
+		
+		//
+		targetClasses.printClassNames();
 		
 		//クラス情報出力
 		for (TargetClass tc : targetClasses) {

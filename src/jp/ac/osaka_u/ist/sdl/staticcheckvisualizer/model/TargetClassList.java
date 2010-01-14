@@ -17,7 +17,13 @@ public class TargetClassList extends ArrayList<TargetClass> {
 		return this.get(index);
 	}
 
-
+	//TODO デバッグ用。
+	//クラス名一覧を表示する。
+	public void printClassNames() {
+		for (TargetClass targetClass : this) {
+			System.out.println(targetClass.getFullQualifiedName());
+		}
+	}
 	
 	
 }
