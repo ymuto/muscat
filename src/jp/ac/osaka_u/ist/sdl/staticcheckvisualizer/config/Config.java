@@ -57,19 +57,22 @@ public final class Config {
 	 * 属性の色分けの初期値を設定。
 	 */
 	private void setDefaultAttributeColors() {
-    	attributeColors.put("passed", new Color(null,0,127,0));
-    	attributeColors.put("failed", new Color(null,255,0,0));
-    	attributeColors.put("true", new Color(null,0,127,0));
-    	attributeColors.put("false", new Color(null,255,0,0));
-    	attributeColors.put("OK", new Color(null,0,127,0));
-    	attributeColors.put("NG", new Color(null,255,0,0));
+    	attributeColors.put("passed", new Color(null,0,127,0)); //緑
+    	attributeColors.put("failed", new Color(null,255,0,0)); //赤
+    	attributeColors.put("true", new Color(null,0,127,0));	//緑
+    	attributeColors.put("false", new Color(null,255,0,0));	//赤
+    	attributeColors.put("OK", new Color(null,0,127,0));		//緑
+    	attributeColors.put("NG", new Color(null,255,0,0));		//赤
 	}
 	
 	/**
 	 * チェックに用いる値をセット。
 	 */
 	private void setCheckArgs(){
-		this.generateCommand = "perl C:\\Users\\y-mutoh\\research\\perl\\escj2xml.pl";
+		//this.generateCommand = "perl C:\\Users\\y-mutoh\\research\\perl\\escj2xml.pl";
+		//this.generateCommand = "perl C:\\Users\\y-mutoh\\workspace\\jp.ac.osaka_u.ist.sdl.staticcheckvisualizer\\perl\\escj2xml.pl";
+		this.generateCommand = "perl C:\\Users\\y-mutoh\\workspace\\jp.ac.osaka_u.ist.sdl.staticcheckvisualizer\\perl\\dummy.pl";
+
 		//String xml_out = "C:\\Users\\y-mutoh\\workspace\\SCVTestData\\xml";
 		//String xml_out = "C:\\Users\\y-mutoh\\workspace\\StockManagement\\xml";
 		//String xml_out = "C:\\Users\\y-mutoh\\runtime-Eclipseアプリケーション\\StockManagement\\xml\\";
@@ -77,21 +80,17 @@ public final class Config {
 	}
 
 
+	//アクセサ
 	public HashMap<String, Color> getAttributeColors() {
 		return attributeColors;
 	}
-
 
 	public String getOutputDir() {
 		return outputDir;
 	}
 
-
 	public String getGenerateCommand() {
 		return generateCommand;
 	}
-	
-	
-	
-    
+	   
 }

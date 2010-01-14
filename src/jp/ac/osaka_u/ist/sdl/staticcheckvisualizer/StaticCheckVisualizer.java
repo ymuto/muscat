@@ -128,7 +128,7 @@ public class StaticCheckVisualizer {
 			System.out.println("javafile=" + javafile.getName());
 			//XMLê∂ê¨
 			System.out.println("XMLê∂ê¨äJén...");
-			GenerateXml generator = new GenerateXml(new File(javafile.getPath()), Activator.getConfig().getOutputDir(), classpath, false);
+			GenerateXml generator = new GenerateXml(new File(javafile.getPath()), Activator.getConfig().getOutputDir(), classpath, true);
 			System.out.println("XMLê∂ê¨äÆóπ!");
 
 			//XMLì«Ç›çûÇ›

@@ -15,6 +15,9 @@ import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.Activator;
  *
  */
 public class GenerateXml {
+	private final int EXIT_SUCCESS = 0;
+	private final int EXIT_FAILURE = 1;
+	
 	/**
 	 * 入力Javaソースファイル。
 	 */
@@ -64,29 +67,33 @@ public class GenerateXml {
 	public void generateXml(File javafile, String outputdir)
 	{	
 		this.javaFile = javafile;
-		//XML生成
 		String generatorCommand = Activator.getConfig().getGenerateCommand() + " " + javaFile.getPath() + " " + outputdir;
 		System.out.println("command=" +generatorCommand);
 		if (this.classPath != null) {
 			generatorCommand  += " -classpath " + this.classPath;
 		}
 		if (isMakeXML) {
-			exec(generatorCommand);
+			//スクリプトを実行
+			StringBuilder out = exec(generatorCommand);
+			//出力XMLファイルをセット
+			ArrayList<File> xmlFiles = new ArrayList<File>();
+			String[] outStrs = out.toString().split("\n");
+			System.out.println("out="+outStrs);
+			for (String filename:outStrs) {
+				xmlFiles.add(new File(filename));
+			}
+			this.xmlFiles = xmlFiles;
 		}
-		//出力XMLファイルをセット
-		File fOutPutDir = new File(outputdir); //出力先ディレクトリ
-		String javaFileName = javaFile.getName();
-		String className = javaFileName.substring(0, javaFileName.indexOf(".java"));
-		File[] outputs = fOutPutDir.listFiles(getFileRegexFilter(".*" + className +  ".*.xml")); //出力先ディレクトリに存在する拡張子xmlのファイルを出力ファイルとみなす
-		this.xmlFiles = new ArrayList<File>(Arrays.asList(outputs));
 	}
 	
 	/**
 	 * コマンドを実行する。	
 	 * @param command 実行するコマンド。
+	 * @return 標準出力に出力された文字列。
 	 */
-	private void exec(String command)
+	private StringBuilder exec(String command)
 	{
+		StringBuilder out = new StringBuilder();
 		Runtime rt = Runtime.getRuntime();
 		Process pr;
 		try {
@@ -99,13 +106,19 @@ public class GenerateXml {
 			String line;
 			while ((line = br.readLine()) != null)
 			{
+				out.append(line);
 				System.out.println(line);
 			}
 			//終了するまで待つ
 			pr.waitFor();
+			//ステータスチェック
+			if (pr.exitValue() != EXIT_SUCCESS)
+				throw new Exception("execute command error. code:" + pr.exitValue());
+			return out;
 			
 		} catch (Exception e) {
 			System.err.println(e);
+			return null;
 		}
 	}
 	
