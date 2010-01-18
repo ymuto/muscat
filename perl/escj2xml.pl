@@ -3,7 +3,7 @@ use File::Spec;
 use File::Path;
 
 #デバッグモード(ON=1)
-$DEBUG = 0;
+$DEBUG = 1;
 
 #出力ディレクトリをパッケージ構成と一致させるかどうか（ON=1）
 $SYNC_PACKAGE_DIRECTORY = 0;
@@ -43,7 +43,7 @@ my $escj_result = <IN>; #改行を含む文字列全体
 close(IN);
 
 #ESC/Java2の出力表示
-myprint($escj_result);
+printcomment($escj_result);
 
 #ESC/Java2の出力からパッケージ名、完全限定名を取得
 if (!($escj_result =~ m/(\S*)$class_simple_name \.\.\./)) { #「パッケージ名.単純名 ...」
@@ -65,9 +65,9 @@ else {
 	$class_full_qualified_name = $package_name . '.' . $class_simple_name;
 }
 
-myprint("パッケージ=$package_name\n");
-myprint("単純名=$class_simple_name\n");
-myprint("完全限定名=$class_full_qualified_name\n");
+debugprint("パッケージ=$package_name\n");
+debugprint("単純名=$class_simple_name\n");
+debugprint("完全限定名=$class_full_qualified_name\n");
 
 #インナークラス名一覧取得
 @inner_class_simple_names = $escj_result =~ /$class_full_qualified_name\$(\S+) \.\.\./g;
@@ -83,18 +83,17 @@ my %class_data =  &generateClassData($class_simple_name, $class_full_qualified_n
 if (@inner_class_simple_names > 0) {
 	my $i = 1;
 	foreach my $inner_class_simple_name (@inner_class_simple_names) {
-		myprint("@@@@@@@@@@@@\n");
-		myprint("\n[$i]inner_class_name=$inner_class_name\n");
-		myprint("$escj_results[$i]\n");
+		debugprint("@@@@@@@@@@@@\n");
+		debugprint("\n[$i]inner_class_name=$inner_class_name\n");
+		debugprint("$escj_results[$i]\n");
 		%class_data =  &generateClassData($class_simple_name.'$'.$inner_class_simple_name, $class_full_qualified_name.'$'.$inner_class_simple_name, $escj_results[$i]);
-		print "\n";
 		&OutputXml($xml_dir, \%class_data);
 		$i++;
 	}
 }
 
 #終了
-myprint("Complete.");
+debugprint("Complete.");
 exit(0); #正常終了
 
 #--------------------------------------------
@@ -169,9 +168,9 @@ sub OutputXml {
 	my ($class_full_qualified_name, $class_simple_name, $method_count, $passed_count, $methods_ref) 
 		= @$class_data{'full_qualified_name', 'simple_name', 'method_count', 'passed_count', 'methods'};
 	@methods = @$methods_ref;
-	myprint("class_full_qualified_name=$class_full_qualified_name\n");
-	myprint("class_simple_name=$class_simple_name\n");
-	#myprint "methods=@methods\n";
+	debugprint("class_full_qualified_name=$class_full_qualified_name\n");
+	debugprint("class_simple_name=$class_simple_name\n");
+	#debugprint "methods=@methods\n";
 	
 	# XMLデータを生成
 	my $xml_data =<<EndOfHeader;
@@ -224,7 +223,7 @@ EndOfFooter
 	print OUT $xml_data;
 	close(OUT);
 	#出力ファイル名を出力
-	print $xml_filepath;
+	print "$xml_filepath\n";
 }
 
 #--------------------------------------------
@@ -242,11 +241,23 @@ sub makeDirectory {
 }
 
 #--------------------------------------------
-# デバッグ時のみ画面に出力する
+# デバッグ時のみコメントを出力する
 #--------------------------------------------
-sub myprint {
+sub debugprint {
 	if ($DEBUG == 1) {
-		my ($arg) = @_;
-		print $arg;
+		printcomment(@_);
 	}
 }
+
+#--------------------------------------------
+# コメントを出力する
+#--------------------------------------------
+sub printcomment {
+	my ($arg) = @_;
+	@lines = split(/\n/, $arg);
+	foreach $line (@lines) {
+		print "#$line\n";
+	}
+}
+
+

@@ -3,6 +3,7 @@
 $java_filename = $ARGV[0];	#入力javaファイル名
 $xml_dir = $ARGV[1];		#出力ディレクトリ
 
+#StockManagement
 if ($java_filename =~ ".*AppMain.java") {
 	print "$xml_dir\main.AppMain.xml";
 }
@@ -27,8 +28,25 @@ elsif ($java_filename =~ ".*StockState.java") {
 elsif ($java_filename =~ ".*Storage.java") {
 	print "$xml_dir\StockManagement.Storage.xml";
 }
+#SCVTestData
+elsif ($java_filename =~ "scvtestdata.main.SCVTestData.java") {
+	print "$xml_dir\scvtestdata.main.SCVTestData.xml";
+}
+elsif ($java_filename =~ "scvtestdata.model.Group.java") {
+	print "$xml_dir\scvtestdata.model.Group.xml";
+}
+elsif ($java_filename =~ "scvtestdata.model.Laboratory.java") {
+	print "$xml_dir\scvtestdata.model.Laboratory.xml";
+}
+elsif ($java_filename =~ "scvtestdata.model.Staff.java") {
+	print "$xml_dir\scvtestdata.model.Staff.xml";
+}
+elsif ($java_filename =~ "scvtestdata.model.Student.java") {
+	print "$xml_dir\scvtestdata.model.Student.xml";
+}
+#それ以外
 else {
-	print "error";
+	print "no such input file";
 	exit(1);
 }
 
