@@ -3,11 +3,10 @@ package jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.views.methodview;
 import java.util.ArrayList;
 import java.util.List;
 
+import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model.Method;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model.MethodList;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model.TargetClass;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model.TargetClassList;
-import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.views.methodview.model.ViewMethod;
-import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.views.methodview.model.ViewMethodList;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.workspace.WorkspaceManager;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -54,16 +53,25 @@ public class MethodView extends ViewPart {
         	ArrayList<String> titles = new ArrayList<String>();
         	titles.add("passed/failed");
             methodLabelProvider.setAttributeTitles(titles);
-            //表示するデータをセット
-            ViewMethodList viewMethodList = new ViewMethodList();
+            //表示するデータをセット          
+//          ViewMethodList viewMethodList = new ViewMethodList();
+//          for (Object obj : list) {
+//          	System.out.println("obj="+obj.getClass());
+//            	if (obj instanceof TargetClass) {
+//            		TargetClass targetClass = (TargetClass)obj;
+//            		viewMethodList.addAll(targetClass.getSimpleName(), targetClass.getFullQualifiedName(), targetClass.getMethods());
+//            	}
+//          }
+//          viewer.setInput(viewMethodList);
+            MethodList methods = new MethodList();
             for (Object obj : list) {
             	System.out.println("obj="+obj.getClass());
             	if (obj instanceof TargetClass) {
             		TargetClass targetClass = (TargetClass)obj;
-            		viewMethodList.addAll(targetClass.getSimpleName(), targetClass.getFullQualifiedName(), targetClass.getMethods());
+            		methods.addAll(targetClass.getMethods());
             	}
-            }
-            viewer.setInput(viewMethodList);
+          	}
+            viewer.setInput(methods);
             System.out.println("selectionChaged完了");
             
         }
@@ -113,39 +121,29 @@ public class MethodView extends ViewPart {
 		TableColumn passedParameter = new TableColumn(table, SWT.NULL);
 		passedParameter.setText("passed/failed");
 		passedParameter.setWidth(100);
-			
-		//TODO セルダブルクリック時の動作(なぜか実行されない)
+	
+		//内容と表示の設定
+		viewer.setContentProvider(new ArrayContentProvider());
+		methodLabelProvider = new MethodLabelProvider();
+		viewer.setLabelProvider(methodLabelProvider);	
+
+		//リスナ登録
+		this.getSite().getPage().addSelectionListener(nodeListener);
+				
+		//TODO セルをダブルクリックで該当メソッドのソースへジャンプ
 		viewer.addDoubleClickListener(new IDoubleClickListener() {
 			@Override
 			public void doubleClick(DoubleClickEvent event) {
 				System.out.println("DoubleClick");
 				//対象メソッドを取得
-				//IStructuredSelection sel = (IStructuredSelection)event.getSelection();
-				//ViewMethod viewMethod = (ViewMethod) sel.getFirstElement();
-				//System.out.println(viewMethod.getClassFullQualifiedName() + "." + viewMethod.getName());
+				if (!(event.getSelection() instanceof IStructuredSelection)) return;
+				IStructuredSelection sel = (IStructuredSelection)event.getSelection();
+				if (!(sel.getFirstElement() instanceof Method)) return;
+				Method method = (Method)sel.getFirstElement();
 				//ソースコードへジャンプ
-				//WorkspaceManager.jumpSource(viewMethod.getMethodList().getTargetClass().getJavaFileName());
+				WorkspaceManager.jumpSource(method);
 			}
 		});	
-		viewer.addSelectionChangedListener(new ISelectionChangedListener() {
-
-			@Override
-			public void selectionChanged(SelectionChangedEvent event) {
-				// TODO 自動生成されたメソッド・スタブ
-				System.out.println("selectionChanged");
-			}
-			
-		});
-		
-		//内容と表示の設定
-		viewer.setContentProvider(new ArrayContentProvider());
-		methodLabelProvider = new MethodLabelProvider();
-		viewer.setLabelProvider(methodLabelProvider);
-		
-	
-
-		//リスナ登録
-		this.getSite().getPage().addSelectionListener(nodeListener);
 		
 	}
 	

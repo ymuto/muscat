@@ -54,12 +54,19 @@ public class MasuManager extends MetricsTool {
 	/**
 	 * MASUを利用してクラス一覧データを生成する。
 	 */
-	public  void createTargetClasses(){		
+	public  void createTargetClasses(){
+		// 初期化
+		this.targetClasses.clear();
+		DataManager.clear(); //masu内部のデータクリア?
+		
 		// 解析用設定
 		Settings.getInstance().setLanguage(Config.TARGET_LANGUAGE);
 		Settings.getInstance().setVerbose(true);
 		Settings.getInstance().setTargetDirectory(targetDirectory);
+		
+		
 
+		
 		// 対象ファイルの解析
 		this.readTargetFiles();
 		this.analyzeTargetFiles();
@@ -73,8 +80,8 @@ public class MasuManager extends MetricsTool {
 		for (final TargetClassInfo classInfo : classes) {
 			TargetClass targetClass = targetClasses.searchClass(classInfo.getFullQualifiedName("."));
 			setTargetClassCall(targetClass, classInfo);
-		}	
-		
+		}
+		this.targetClasses.printClassNames();
 		System.out.println("masu 対象クラス一覧取得完了");
 		
 		//対象Javaソースファイルをセット
@@ -131,10 +138,10 @@ public class MasuManager extends MetricsTool {
 		ArrayList<String> calleeClassNames = new ArrayList<String>();
 		Set<CallInfo<? extends CallableUnitInfo>> calls = classInfo.getCalls();
 		for (CallInfo<? extends CallableUnitInfo> callinfo : calls) {
-			//System.out.println("callee begin");
+			System.out.println("callee begin");
 			calleeClassNames.addAll(getCalleeClassNames(callinfo, false));
 			//targetClass.getCalleeClasses().addAll(getCalleeClassNames(callinfo, false));
-			//System.out.println("callee end");
+			System.out.println("callee end");
 		}
 		//呼び出し情報を格納
 		targetClass.setCallees(calleeClassNamesToCalleeList(calleeClassNames));
@@ -151,7 +158,7 @@ public class MasuManager extends MetricsTool {
 	 */
 	public ArrayList<String> getCalleeClassNames(CallInfo<? extends CallableUnitInfo> callinfo, boolean isContainExternal) {
 		if (callinfo == null) return null;
-		//System.out.println("line " + callinfo.getFromLine());
+		System.out.println("line " + callinfo.getFromLine());
 		ArrayList<String> targetList = new ArrayList<String>(); 
 		List<ExpressionInfo> arguments = callinfo.getArguments(); //同じ引数が複数回出現したら、別物とカウント
 		//メソッド呼び出しの引数に対して再帰
@@ -168,11 +175,11 @@ public class MasuManager extends MetricsTool {
 			try {				
 				callerClass = callinfo.getOwnerSpace().getOwnerClass(); //呼び出し元クラス
 			} catch (Exception e) {
-				System.out.println(e);
+				System.out.println("getCalleeClassNames " + e);
 				return null;
 			}	
 			ClassInfo calleeClass = callee.getOwnerClass(); //呼び出されるクラス
-			//System.out.println(" " + callerClass.getClassName() + " -> " + calleeClass.getClassName());
+			System.out.println(" " + callerClass.getClassName() + " -> " + calleeClass.getClassName());
 			targetList.add(calleeClass.getFullQualifiedName("."));
 		}
 		return targetList;

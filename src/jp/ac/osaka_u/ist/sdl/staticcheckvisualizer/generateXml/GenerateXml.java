@@ -68,19 +68,22 @@ public class GenerateXml {
 	{	
 		this.javaFile = javafile;
 		String generatorCommand = Activator.getConfig().getGenerateCommand() + " " + javaFile.getPath() + " " + outputdir;
-		System.out.println("command=" +generatorCommand);
 		if (this.classPath != null) {
 			generatorCommand  += " -classpath " + this.classPath;
 		}
+		System.out.println("command=" +generatorCommand);
 		if (isMakeXML) {
 			//スクリプトを実行
 			StringBuilder out = exec(generatorCommand);
 			//出力XMLファイルをセット
 			ArrayList<File> xmlFiles = new ArrayList<File>();
 			String[] outStrs = out.toString().split("\n");
-			System.out.println("out="+outStrs);
-			for (String filename:outStrs) {
-				xmlFiles.add(new File(filename));
+			for (String line : outStrs) {
+				//#で始まる行はコメントとみなす
+				if (line.startsWith("#")) continue;
+				//出力XMLファイルとして追加
+				System.out.println("outfile=" + line);
+				xmlFiles.add(new File(line));
 			}
 			this.xmlFiles = xmlFiles;
 		}
@@ -106,8 +109,15 @@ public class GenerateXml {
 			String line;
 			while ((line = br.readLine()) != null)
 			{
-				out.append(line);
+				out.append(line + "\n");
 				System.out.println(line);
+//				try {
+//					//終了するまで待つ
+//					pr.waitFor();
+//				}
+//				catch (IllegalThreadStateException e) { //プロセスが終了していないとき例外発生
+//					continue; //whileを続ける
+//				}
 			}
 			//終了するまで待つ
 			pr.waitFor();

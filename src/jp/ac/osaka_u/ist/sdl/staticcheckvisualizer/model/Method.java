@@ -21,7 +21,7 @@ public class Method {
 	/**
 	 * このメソッドの引数。
 	 */
-	private String parameter;
+	private String[] parameters;
 	
 	/**
 	 * ID。（未使用）
@@ -33,16 +33,16 @@ public class Method {
 	 */
 	private AttributeList attributes;
 	
-	public Method(String name, String parameter) {
+	public Method(String name, String[] parameter) {
 		this.name = name;
-		this.parameter = parameter;
+		this.parameters = parameter;
 		this.id = 0;
 		this.attributes = new AttributeList();
 	}
 	
 	public Method() {
 		this.name = "";
-		this.parameter = "";
+		this.parameters = null;
 		this.id = 0;
 		this.attributes = new AttributeList();
 	}
@@ -65,7 +65,7 @@ public class Method {
 		if (parameterNodeList != null) {
 			Element eParameter = (Element)parameterNodeList.item(0);
 			if (eParameter != null) {
-				setParameter(eParameter.getTextContent());
+				setParameters(eParameter.getTextContent().split(","));
 			}
 		}
 		//attributes
@@ -77,7 +77,7 @@ public class Method {
 
 	@Override
 	public String toString() {
-		return name + "(" + parameter + ") id=" + id + ", attributes="
+		return name + "(" + parameters + ") id=" + id + ", attributes="
 				+ attributes.toString() + "]\n";
 	}
 	
@@ -89,12 +89,26 @@ public class Method {
 		this.name = name;
 	}
 
-	public String getParameter() {
-		return parameter;
+
+	public String getParameterWithComma() {
+		if (this.parameters == null) return null;
+		if (this.parameters.length <= 0) return "";
+		if (this.parameters.length <= 1) return this.parameters[0];
+		StringBuilder builder = new StringBuilder();
+		builder.append(parameters[0]);
+		for (int i=1; i<this.parameters.length; i++){
+			builder.append(",");
+			builder.append(this.parameters[i]);
+		}
+		return builder.toString();
 	}
 
-	public void setParameter(String parameter) {
-		this.parameter = parameter;
+	public String[] getParameters() {
+		return parameters;
+	}
+
+	public void setParameters(String[] parameters) {
+		this.parameters = parameters;
 	}
 
 	public int getId() {

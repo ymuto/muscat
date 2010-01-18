@@ -76,7 +76,6 @@ public class MainView extends ViewPart implements ISelectionProvider {
 				public void widgetSelected(SelectionEvent e) {
 					// TODO 自動生成されたメソッド・スタブ
 					System.out.println("更新ボタンが押された");
-					WorkspaceManager.jumpSource("C:\\Users\\y-mutoh\\runtime-Eclipseアプリケーション\\SCVTestData\\src\\scvtestdata\\main\\SCVTestData.java");
 				}
 			});
 			return;

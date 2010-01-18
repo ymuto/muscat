@@ -83,17 +83,20 @@ public class StaticCheckVisualizer {
 	 */
 	public void execute() {
 //		//現在のプロジェクト取得
-//		String srcdir = WorkspaceManager.getActiveProjectSrcDirPath();
-//		if (srcdir == null) {
-//			System.out.println("ソースディレクトリが見つかりません");
-//			return;
-//		}
-//		String targetDirectory = srcdir;
-//		String classpath = srcdir;
+		//String targetDirectory = WorkspaceManager.getActiveJavaProjectPath();
+
+		String srcdir = WorkspaceManager.getActiveProjectSrcDirPath();
+		if (srcdir == null) {
+			System.out.println("ソースディレクトリが見つかりません");
+			return;
+		}
+		String targetDirectory = srcdir;
+		String classpath = srcdir;
 		
-		String targetDirectory = "C:\\Users\\y-mutoh\\workspace\\StockManagement\\src";
+		
+		//String targetDirectory = "C:\\Users\\y-mutoh\\workspace\\StockManagement\\src";
 		//String targetDirectory = "C:\\Users\\y-mutoh\\workspace\\SCVTestData\\src";
-		String classpath = targetDirectory;
+		//String classpath = targetDirectory;
 		
 		//チェック開始
 		//String targetDirectory = "C:\\Users\\y-mutoh\\workspace\\SCVTestData\\src";
@@ -119,11 +122,12 @@ public class StaticCheckVisualizer {
 		masuManager = new MasuManager(targetDirectory);
 		masuManager.createTargetClasses();
 		
+		masuManager.getTargetClasses().printClassNames();
 		System.out.println("masu OK");
 
 		// 対象javaソースファイルからXMLを生成してクラス情報読み込み
 		Date before = new Date(); //開始時刻
-		//cleanXmlFiles(new File( Activator.getConfig().getOutputDir())); 
+		//cleanXmlFiles(new File(Activator.getConfig().getOutputDir())); 
 		for (File javafile : masuManager.getJavaSourceFiles()) {
 			System.out.println("javafile=" + javafile.getName());
 			//XML生成
@@ -134,7 +138,7 @@ public class StaticCheckVisualizer {
 			//XML読み込み
 			for (File xmlfile: generator.getXmlFiles()) {
 				System.out.println("java=" + javafile.getName() + " xml="+xmlfile.getName());
-				TargetClass c = new TargetClass(javafile.getAbsolutePath(), xmlfile.getAbsolutePath());				
+				TargetClass c = new TargetClass(javafile.getAbsolutePath(), xmlfile.getAbsolutePath());
 				targetClasses.add(c);
 				//MASUのクラス情報から一致するクラスの呼び出し情報を取ってきて代入
 				TargetClass masuSameTargetClass = masuManager.getTargetClasses().searchClass(c.getFullQualifiedName());
@@ -151,15 +155,14 @@ public class StaticCheckVisualizer {
 		timeFormatter.setTimeZone(TimeZone.getTimeZone("GMT"));
 		String diffTimeStr = timeFormatter.format(diffTime); 
 		System.out.println("XML生成にかかった時間=" + diffTimeStr);
-		
-		
+				
 		//
 		targetClasses.printClassNames();
 		
 		//クラス情報出力
 		for (TargetClass tc : targetClasses) {
 			System.out.println(tc.toString() + "\n");
-		}	
+		}
 		
 		System.out.println("Finish.");
 		

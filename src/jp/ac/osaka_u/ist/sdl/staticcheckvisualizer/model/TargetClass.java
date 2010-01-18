@@ -150,7 +150,7 @@ public class TargetClass {
 	
 	@Override
 	public String toString() {
-		String str = simpleName + "(fulname=" + this.getFullQualifiedName() +  ") ["
+		String str = simpleName + "(fullname=" + this.getFullQualifiedName() +  ") ["
 					+ "\n, coverage=" + coverage 
 					+ "\n, methods=" + methods.toString();
 		if (this.callees != null)
@@ -165,8 +165,13 @@ public class TargetClass {
 	 * 完全限定名をパッケージ名とクラス名から生成する。
 	 */
 	public void setFullQualifiedName(){
-		if (getPackageName() == null) this.fullQualifiedName = getSimpleName();
-		this.fullQualifiedName =  getPackageName() + "." + getSimpleName();
+		if (this.packageName == null)
+			this.fullQualifiedName = this.simpleName;
+		else if (this.packageName.equals(""))
+			this.fullQualifiedName = this.simpleName;
+		else
+			this.fullQualifiedName =  this.packageName + "." + this.simpleName;
+		System.out.println("full=" + this.fullQualifiedName);
 	}
 
 	/* 以下はアクセスメソッド */

@@ -45,7 +45,6 @@ public class MyEdgeList extends ArrayList<MyEdge> {
 		this.minWeight = min;
 		System.out.println("max=" + this.maxWeight);
 		System.out.println("min=" + this.minWeight);
-
 	}
 
 	//TODO 改良の余地あり。
@@ -62,6 +61,7 @@ public class MyEdgeList extends ArrayList<MyEdge> {
 		if (data <= 0) return 0;
 		//対象が1以上の場合はレベルも必ず1以上
 		int span = (max-min) / maxLevel;
+		if (span <= 0) return data-min + 1;
 		return (data-min) / span + 1;
 	}
 }

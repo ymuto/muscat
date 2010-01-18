@@ -73,30 +73,30 @@ public class ClassView extends ViewPart {
 	 */
 	public void setFocus() {
 	}
-	
-	/**
-	 * 表示するクラス情報を生成する。テストデータ。
-	 * @return
-	 */
+//	
+//	/**
+//	 * 表示するクラス情報を生成する。テストデータ。
+//	 * @return
+//	 */
 	private List<TargetClass> getItems() {
 		TargetClassList targetClasses = new TargetClassList();
 		//class1
 		TargetClass targetClass1 = new TargetClass("Class1","package1.Class1",10);
 		MethodList methodList1 = new MethodList();
-		methodList1.add(new Method("method4","int"));
-		methodList1.add(new Method("method5","int,int"));
-		methodList1.add(new Method("method6","int,boolean"));
-		targetClass1.setMethods(methodList1);
+//		methodList1.add(new Method("method4","int"));
+//		methodList1.add(new Method("method5","int,int"));
+//		methodList1.add(new Method("method6","int,boolean"));
+//		targetClass1.setMethods(methodList1);
 		targetClasses.add(targetClass1);
-		//class2
-		TargetClass targetClass2 = new TargetClass("Class2","package1.Class2",20);
-		MethodList methodList2 = new MethodList();
-		methodList2.add(new Method("method7","int"));
-		methodList2.add(new Method("method8","String"));
-		methodList2.add(new Method("method9",""));
-		targetClass2.setMethods(methodList2);
-		targetClasses.add(targetClass2);
-		
+//		//class2
+//		TargetClass targetClass2 = new TargetClass("Class2","package1.Class2",20);
+//		MethodList methodList2 = new MethodList();
+//		methodList2.add(new Method("method7","int"));
+//		methodList2.add(new Method("method8","String"));
+//		methodList2.add(new Method("method9",""));
+//		targetClass2.setMethods(methodList2);
+//		targetClasses.add(targetClass2);
+//		
 		return targetClasses;
 	}
 

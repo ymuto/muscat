@@ -6,7 +6,6 @@ import java.util.HashMap;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.Activator;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model.Attribute;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model.Method;
-import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.views.methodview.model.ViewMethod;
 
 import org.eclipse.jface.viewers.ITableColorProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
@@ -54,14 +53,14 @@ public class MethodLabelProvider extends LabelProvider implements ITableLabelPro
 	@Override
 	public String getColumnText(Object obj, int index) {
 		System.out.println("MethodLabelProvider index=" + index);
-		if (!(obj instanceof ViewMethod)) return "";
-		ViewMethod viewMethod = (ViewMethod)obj;
-		//0列目はクラス名、1列目はメソッド名、2列目は引数
+		if (!(obj instanceof Method)) return "";
+		Method method = (Method) obj;
 		switch (index) {
-			case 0: return viewMethod.getClassSimpleName();
-			case 1: return viewMethod.getName();
-			case 2: return viewMethod.getParameter();
+			case 0: return method.getMethodList().getTargetClass().getFullQualifiedName();
+			case 1: return method.getName();
+			case 2: return method.getParameterWithComma();
 		}
+		
 		//3列目以降は属性。列タイトルと属性タイトルが一致する属性の値を返す。
 		if (attributeTitles == null) return "";
 		if (attributeTitles.size() <= 0) return "";
@@ -69,7 +68,8 @@ public class MethodLabelProvider extends LabelProvider implements ITableLabelPro
 		System.out.println("MethodLabelProvider titles=" + attributeTitles.toString());
 		String title = attributeTitles.get(index - 3);
 		//タイトルが一致する属性を検索する
-		Attribute attribute = viewMethod.getAttributes().searchAttributeFromTitle(title);
+		Attribute attribute = method.getAttributes().searchAttributeFromTitle(title);
+
 		if (attribute == null) return "";
 		return attribute.getValue();
 	}
