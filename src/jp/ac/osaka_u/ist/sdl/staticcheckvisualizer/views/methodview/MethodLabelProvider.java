@@ -44,9 +44,6 @@ public class MethodLabelProvider extends LabelProvider implements ITableLabelPro
 
 	}
 	
-
-
-	
 	/**
 	 * Methodモデルからセルに表示する文字列を生成する．
 	 */
@@ -56,9 +53,10 @@ public class MethodLabelProvider extends LabelProvider implements ITableLabelPro
 		if (!(obj instanceof Method)) return "";
 		Method method = (Method) obj;
 		switch (index) {
-			case 0: return method.getMethodList().getTargetClass().getFullQualifiedName();
+			case 0: return method.getMethodList().getTargetClass().getSimpleName();
 			case 1: return method.getName();
-			case 2: return method.getParameterWithComma();
+			case 2: return method.getParameterSourceCodeWithComma();
+			//case 2: return method.getParameterWithComma();
 		}
 		
 		//3列目以降は属性．列タイトルと属性タイトルが一致する属性の値を返す．

@@ -2,25 +2,16 @@ package jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.workspace;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model.Method;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMethod;
-import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.ITypeParameter;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
@@ -28,11 +19,9 @@ import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
-import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.ide.IDE;
 
 /**
  * Eclipseのワークスペース情報を取得するクラス．
@@ -40,13 +29,55 @@ import org.eclipse.ui.ide.IDE;
  *
  */
 public class WorkspaceManager {
+	
+	/**
+	 * 解析対象プロジェクト．
+	 */
+	private IJavaProject javaProject;
+	
+	/**
+	 * 解析対象ディレクトリ．
+	 */
+	private File targetDirectory;
+	
 
 	/**
-	 * 現在開かれているプロジェクトのソースディレクトリを取得する．
+	 * コンストラクタ．
+	 */
+	public WorkspaceManager() {
+		//解析対象プロジェクトをセット
+		this.javaProject = getActiveJavaProject();
+		//解析対象ディレクトリをセット
+		String srcdir = getSrcDirPath(getProjectSrcDirs(this.javaProject));
+		this.targetDirectory = new File(srcdir);
+	}
+	
+	/**
+	 * ソース中の該当メソッド記述へジャンプする．
+	 * @param method ジャンプしたいメソッド
+	 */
+	public void jumpSource(Method method) {
+		jumpSourceWithJavaProject(this.javaProject, method);
+	}
+	
+	/**
+	 * メソッドの引数をソースコード上の形で返す．
+	 * @param method
+	 * @return メソッドの引数の型名．ソースコード上の表記と同じ形式．
+	 */
+	public String[] getParametersFromSource(Method method) {
+		IMethod imethod = getIMethodFromMethod(this.javaProject, method);
+		if (imethod != null) {
+			return getUnresolvedParameters(imethod);
+		}
+		return null;
+	}
+	
+	/**
+	 * プロジェクトのソースディレクトリを取得する．
 	 * @return ソースディレクトリの配列．
 	 */
-	public static IResource[] getActiveProjectSrcDirs() {
-		IJavaProject javaProject = getActiveJavaProject();		
+	private IResource[] getProjectSrcDirs(IJavaProject javaProject) {	
 		if (javaProject == null) return null;
 		//ソースディレクトリを検索する
 		ArrayList<IResource> resources = new ArrayList<IResource>();
@@ -64,34 +95,61 @@ public class WorkspaceManager {
 		}
 	}
 	
-	/**
-	 * 現在開かれているプロジェクトのソースディレクトリのパスを取得する．
-	 * @return
-	 */
-	public static String getActiveProjectSrcDirPath() {
-		IResource[] resources = getActiveProjectSrcDirs();
-		if (resources.length <= 0) return null;
-		return resources[0].getLocation().toOSString();
-	}
+
 	
 	/**
-	 * 現在開かれているプロジェクトのディレクトリパスを取得する．
+	 * プロジェクトのソースディレクトリのパスを取得する．
 	 * @return
 	 */
-	public static String getActiveJavaProjectPath() {
-		IProject project = getActiveProjectFromEditor();
-		return project.getLocation().toOSString();
+	private String getSrcDirPath(IResource[] resources) {
+		if (resources.length <= 0) return null;
+		return resources[0].getLocation().toOSString();
 	}
 	
 	/**
 	 * 現在開かれているJavaプロジェクトを取得する．
 	 * @return
 	 */
-	public static IJavaProject getActiveJavaProject() {
+	private IJavaProject getActiveJavaProject() {
 		//Javaプロジェクトを得る
 		IProject project = getActiveProjectFromEditor();
 		if (project == null) return null;
 		return JavaCore.create(project);
+	}
+	
+	/**
+	 * 該当JavaProjectのメソッドへジャンプする．
+	 * @param javaProject 対象プロジェクト
+	 * @param method ジャンプしたいメソッド
+	 * @return 成功時true，失敗時false
+	 */
+	private boolean jumpSourceWithJavaProject(IJavaProject javaProject, Method method) {
+		try {
+			//メソッドを検索
+			IMethod imethod = getIMethodFromMethod(javaProject, method);
+			if (imethod == null) return false;
+			//エディタを開く
+			if(JavaUI.openInEditor(imethod) == null) return false;
+				
+		} catch (Exception e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * メソッドの引数の型名を未解決で返す．
+	 * @param imethod
+	 * @return 引数の型名の配列．(Stringなどの形式)
+	 */
+	private String[] getUnresolvedParameters(IMethod imethod) {
+		String unresolvedParameters[] = new String[imethod.getParameterTypes().length];
+		for (int i=0; i<imethod.getParameterTypes().length; i++) {
+			unresolvedParameters[i] = Signature.toString(imethod.getParameterTypes()[i]);
+		}
+		return unresolvedParameters;
 	}
 	
 	/**
@@ -116,40 +174,24 @@ public class WorkspaceManager {
 		return file.getProject();
 	}
 	
-
 	/**
-	 * ソース中の該当メソッド記述へジャンプする．
-	 * @param method ジャンプしたいメソッド
-	 */
-	public static void jumpSource(Method method) {
-		//アクティブなプロジェクトから検索
-		if (jumpSourceWithJavaProject(getActiveJavaProject(), method)) return;
-		//見つからなかったら，全プロジェクトから探索
-		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-		for (IProject project : root.getProjects()) {
-			IJavaProject javaProject = JavaCore.create(project);
-			if (jumpSourceWithJavaProject(javaProject, method)) return;
-		}
-	}
-	
-	/**
-	 * 該当JavaProjectのメソッドへジャンプする．
+	 * メソッド情報からソースコード上のメソッドを得る．
 	 * @param javaProject 対象プロジェクト
-	 * @param method ジャンプしたいメソッド
-	 * @return 成功時true，失敗時false
+	 * @param method メソッド情報
+	 * @return ソースコード上のメソッド
 	 */
-	public static boolean jumpSourceWithJavaProject(IJavaProject javaProject, Method method) {
+	private IMethod getIMethodFromMethod(IJavaProject javaProject, Method method) {
+		IMethod imethod = null;	
 		try {
 			//該当クラスを検索
 			IType type = javaProject.findType(method.getMethodList().getTargetClass().getFullQualifiedName());
 			if (type == null) {
 				System.out.println("クラスが見つかりません:");
-				return false;
+				return null;
 			}
-			if (!type.isClass()) return false;
+			if (!type.isClass()) return null;
 
 			//該当メソッドを検索
-			IMethod imethod = null;
 			methodLoop:
 			for (IMethod im : type.getMethods()) {
 				//メソッド名を比較
@@ -176,18 +218,12 @@ public class WorkspaceManager {
 					}
 				}
 			}
-			
-			if (imethod == null) return false;
-			//エディタを開く
-			if(JavaUI.openInEditor(imethod) == null) return false;
-				
-		} catch (Exception e) {
+
+		} catch (JavaModelException e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
-			return false;
 		}
-		return true;
-		
+		return imethod;
 	}
 	
 	/**
@@ -196,7 +232,7 @@ public class WorkspaceManager {
 	 * @param method 引数が所属するメソッド
 	 * @return
 	 */
-	private static String getFullQualifiedTypeFromType(String parameterType, IMethod method) {
+	private String getFullQualifiedTypeFromType(String parameterType, IMethod method) {
 		String fullQualifiedType = parameterType; //プリミティブ形の場合に使用
 		String[][] parameterElements;
 		try {
@@ -215,6 +251,11 @@ public class WorkspaceManager {
 		}
 
 		return fullQualifiedType;
+	}
+	
+	//アクセサ
+	public File getTargetDirectory() {
+		return targetDirectory;
 	}
 	
 }

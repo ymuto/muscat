@@ -3,6 +3,7 @@ package jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.views.methodview;
 import java.util.ArrayList;
 import java.util.List;
 
+import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.Activator;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model.Method;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model.MethodList;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model.TargetClass;
@@ -141,7 +142,7 @@ public class MethodView extends ViewPart {
 				if (!(sel.getFirstElement() instanceof Method)) return;
 				Method method = (Method)sel.getFirstElement();
 				//ソースコードへジャンプ
-				WorkspaceManager.jumpSource(method);
+				Activator.getScv().getWorkspaceManager().jumpSource(method);
 			}
 		});	
 		

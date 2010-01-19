@@ -2,6 +2,10 @@ package jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model;
 
 import java.util.ArrayList;
 
+import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.Activator;
+import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.utility.Utility;
+import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.workspace.WorkspaceManager;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -19,9 +23,14 @@ public class Method {
 	private String name;
 	
 	/**
-	 * このメソッドの引数．
+	 * このメソッドの引数．（完全限定名）
 	 */
 	private String[] parameters;
+	
+	/**
+	 * このメソッドの引数．（ソースコード上での形）
+	 */
+	private String[] parametersSourceCode;
 	
 	/**
 	 * ID．（未使用）
@@ -92,20 +101,11 @@ public class Method {
 	}
 
 	/**
-	 * 引数を，で連結して文字列として返す
+	 * 完全限定名の引数を「, 」で連結して文字列として返す
 	 * @return
 	 */
 	public String getParameterWithComma() {
-		if (this.parameters == null) return null;
-		if (this.parameters.length <= 0) return "";
-		if (this.parameters.length <= 1) return this.parameters[0];
-		StringBuilder builder = new StringBuilder();
-		builder.append(parameters[0]);
-		for (int i=1; i<this.parameters.length; i++){
-			builder.append(", ");
-			builder.append(this.parameters[i]);
-		}
-		return builder.toString();
+		return  Utility.concatArray(this.parameters, ", ");
 	}
 
 	public String[] getParameters() {
@@ -122,6 +122,23 @@ public class Method {
 	
 	public void setParameters(String[] parameters) {
 		this.parameters = parameters;
+		this.setParametersSourceCode();
+	}
+
+	public void setParametersSourceCode() {
+		this.parametersSourceCode = Activator.getScv().getWorkspaceManager().getParametersFromSource(this);
+	}
+
+	public String[] getParametersSourceCode() {
+		return parametersSourceCode;
+	}
+	
+	/**
+	 * ソースコード上の引数を「, 」で連結して文字列として返す
+	 * @return
+	 */
+	public String getParameterSourceCodeWithComma() {
+		return  Utility.concatArray(this.parametersSourceCode, ", ");
 	}
 
 	public int getId() {

@@ -19,11 +19,23 @@ import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.workspace.WorkspaceManager;
 
 
 public class StaticCheckVisualizer {
-	private TargetClassList targetClasses;
 	private MasuManager masuManager;
 	private JungManager jungManager;
+	private WorkspaceManager workspaceManager;
 	
+	/**
+	 * 対象クラス情報．
+	 */
+	private TargetClassList targetClasses;
+	
+	/**
+	 * 対象ディレクトリ．（未使用）
+	 */
 	private String targetDirectory;
+	
+	/**
+	 * クラスパス．（未使用）
+	 */
 	private String classpath;
 	
 	/**
@@ -31,12 +43,6 @@ public class StaticCheckVisualizer {
 	 */
 	private boolean isFinishedCheck = false;
 	
-
-
-	public boolean isFinishedCheck() {
-		return isFinishedCheck;
-	}
-
 	/**
 	 * 選択されているTargetClassのリスト．
 	 */
@@ -45,7 +51,6 @@ public class StaticCheckVisualizer {
 	/**
 	 * TODO JungManagerのノード選択の変化を処理
 	 */
-	//
 	private ItemListener itemListener = new ItemListener() {
 		@Override
 		public void itemStateChanged(ItemEvent e) {
@@ -79,35 +84,24 @@ public class StaticCheckVisualizer {
 	}
 	
 	/**
-	 * 静的チェックを実行する．
+	 * 設定してから静的チェックを実行する．
 	 */
 	public void execute() {
-//		//現在のプロジェクト取得
-		//String targetDirectory = WorkspaceManager.getActiveJavaProjectPath();
-
-		String srcdir = WorkspaceManager.getActiveProjectSrcDirPath();
+		//現在のプロジェクト取得
+		workspaceManager = new WorkspaceManager();
+		String srcdir = workspaceManager.getTargetDirectory().getPath();
 		if (srcdir == null) {
 			System.out.println("ソースディレクトリが見つかりません");
 			return;
 		}
-		String targetDirectory = srcdir;
-		String classpath = srcdir;
-		
-		
-		//String targetDirectory = "C:\\Users\\y-mutoh\\workspace\\StockManagement\\src";
-		//String targetDirectory = "C:\\Users\\y-mutoh\\workspace\\SCVTestData\\src";
-		//String classpath = targetDirectory;
-		
 		//チェック開始
-		//String targetDirectory = "C:\\Users\\y-mutoh\\workspace\\SCVTestData\\src";
-		//String classpath = "C:\\Users\\y-mutoh\\workspace\\SCVTestData\\src";	
-		setClasspath(classpath);
-		setTargetDirectory(targetDirectory);
+		setClasspath(srcdir);
+		setTargetDirectory(srcdir);
 		check();
 	}
 	
 	/**
-	 * 静的チェックを行う．
+	 * 静的チェックを実行する．
 	 */
 	public void check() {
 		this.isFinishedCheck = false;
@@ -121,8 +115,6 @@ public class StaticCheckVisualizer {
 		//MASUでクラス情報を解析
 		masuManager = new MasuManager(targetDirectory);
 		masuManager.createTargetClasses();
-		
-		masuManager.getTargetClasses().printClassNames();
 		System.out.println("masu OK");
 
 		// 対象javaソースファイルからXMLを生成してクラス情報読み込み
@@ -146,8 +138,6 @@ public class StaticCheckVisualizer {
 					c.setCallees(masuSameTargetClass.getCallees());
 				}
 			}
-			System.out.println("現在のTargetClasses");
-			targetClasses.printClassNames();
 		}
 		//経過時間
 		long diffTime = new Date().getTime() - before.getTime();
@@ -155,9 +145,6 @@ public class StaticCheckVisualizer {
 		timeFormatter.setTimeZone(TimeZone.getTimeZone("GMT"));
 		String diffTimeStr = timeFormatter.format(diffTime); 
 		System.out.println("XML生成にかかった時間=" + diffTimeStr);
-				
-		//
-		targetClasses.printClassNames();
 		
 		//クラス情報出力
 		for (TargetClass tc : targetClasses) {
@@ -177,14 +164,11 @@ public class StaticCheckVisualizer {
 		
 	}
 
-	public JungManager getJungManager() {
-		return jungManager;
-	}
 
-	public TargetClassList getTargetClasses() {
-		return targetClasses;
-	}
-	
+	/**
+	 * 選択されているクラスリストを返す．
+	 * @return
+	 */
 	public TargetClassList getSelectedTargetClasses() {
 		//MyNodeの集合をTargetClassListに変換する
 		Set<MyNode> selectedNodes = jungManager.getSelectedNodes();
@@ -198,14 +182,6 @@ public class StaticCheckVisualizer {
 			selectedTargetClasses.add(targetClass);
 		}
 		return selectedTargetClasses;
-	}
-
-	public void setTargetDirectory(String targetDirectory) {
-		this.targetDirectory = targetDirectory;
-	}
-
-	public void setClasspath(String classpath) {
-		this.classpath = classpath;
 	}
 	
 	/**
@@ -228,5 +204,33 @@ public class StaticCheckVisualizer {
 			return;
 		}
 	}
+	
+	//アクセサ
+
+	public TargetClassList getTargetClasses() {
+		return targetClasses;
+	}
+
+	public void setTargetDirectory(String targetDirectory) {
+		this.targetDirectory = targetDirectory;
+	}
+
+	public void setClasspath(String classpath) {
+		this.classpath = classpath;
+	}
+	
+	public JungManager getJungManager() {
+		return jungManager;
+	}
+	
+	public WorkspaceManager getWorkspaceManager() {
+		return workspaceManager;
+	}
+	
+	public boolean isFinishedCheck() {
+		return isFinishedCheck;
+	}
+
+
 	
 }

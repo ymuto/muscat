@@ -18,5 +18,20 @@ public class Utility {
 		}
 	}
 	
+	/**
+	 * ”z—ñ‚ðglue‚Å˜AŒ‹‚µ‚Ä•¶Žš—ñ‚Æ‚µ‚Ä•Ô‚·
+	 * @return
+	 */
+	public static String concatArray(String[] array, String glue) {
+		if (array == null) return null;
+		if (array.length <= 0) return "";
+		StringBuilder builder = new StringBuilder();
+		builder.append(array[0]);
+		for (int i=1; i<array.length; i++){
+			builder.append(glue);
+			builder.append(array[i]);
+		}
+		return builder.toString();
+	}
 
 }
