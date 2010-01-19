@@ -13,51 +13,51 @@ import org.w3c.dom.Node;
 
 public class TargetClass {
 	/**
-	 * このクラスの単純名。
+	 * このクラスの単純名．
 	 */
 	private String simpleName;
 	
 	/**
-	 * このクラスの完全限定名。
+	 * このクラスの完全限定名．
 	 */
 	private String fullQualifiedName;
 	
 	/**
-	 * このクラスの属するパッケージ名。末尾にドットを含まない。
+	 * このクラスの属するパッケージ名．末尾にドットを含まない．
 	 */
 	private String packageName;
 
 	/**
-	 * このクラスのソースファイル。フルパス。
+	 * このクラスのソースファイル．フルパス．
 	 */
 	private String javaFileName;
 	
 	/**
-	 * このクラスのXMLファイル。フルパス。
+	 * このクラスのXMLファイル．フルパス．
 	 */
 	private String xmlFileName;
 	
 	/**
-	 * このクラスのカバレッジ。四捨五入した値。passedCount/methodCountと定義する。
+	 * このクラスのカバレッジ．四捨五入した値．passedCount/methodCountと定義する．
 	 */
 	private Integer coverage;
 	
 	/**
-	 * 全メソッド数。
+	 * 全メソッド数．
 	 */
 	private Integer methodCount;
 	
 	/**
-	 * 通過したメソッド数。
+	 * 通過したメソッド数．
 	 */
 	private Integer passedCount;
 	
 	/**
-	 * このクラスで定義されているメソッド。
+	 * このクラスで定義されているメソッド．
 	 */
 	private MethodList methods;
 	/**
-	 *  このクラスが呼び出しているクラス。
+	 *  このクラスが呼び出しているクラス．
 	 */
 	private CalleeList callees;
 	
@@ -134,8 +134,8 @@ public class TargetClass {
 	}
 	
 	/**
-	 * 完全限定名が一致すれば同一と見なす。
-	 * @param obj 比較対象オブジェクト。
+	 * 完全限定名が一致すれば同一と見なす．
+	 * @param obj 比較対象オブジェクト．
 	 * @return
 	 */
 	@Override
@@ -162,7 +162,7 @@ public class TargetClass {
 	
 	
 	/**
-	 * 完全限定名をパッケージ名とクラス名から生成する。
+	 * 完全限定名をパッケージ名とクラス名から生成する．
 	 */
 	public void setFullQualifiedName(){
 		if (this.packageName == null)
@@ -226,9 +226,9 @@ public class TargetClass {
 	}
 	
 	/**
-	 * カバレッジを百分率で求める。
-	 * @param passedCount passしたメソッド数。これが0であれば百分率を0と定義する。
-	 * @param methodCount 合計メソッド数。
+	 * カバレッジを百分率で求める．
+	 * @param passedCount passしたメソッド数．これが0であれば百分率を0と定義する．
+	 * @param methodCount 合計メソッド数．
 	 */
 	public void setCoverage(Integer passedCount, Integer methodCount) {
 		if (passedCount == null || methodCount == null) {
@@ -247,7 +247,7 @@ public class TargetClass {
 	}
 
 	/**
-	 * メソッド数のsetter。同時にカバレッジに値を代入する。
+	 * メソッド数のsetter．同時にカバレッジに値を代入する．
 	 * @param methodCount
 	 */
 	public void setMethodCount(Integer methodCount) {

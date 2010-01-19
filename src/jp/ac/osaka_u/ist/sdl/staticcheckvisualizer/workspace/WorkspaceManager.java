@@ -33,15 +33,15 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 
 /**
- * Eclipseのワークスペース情報を取得するクラス。
+ * Eclipseのワークスペース情報を取得するクラス．
  * @author y-mutoh
  *
  */
 public class WorkspaceManager {
 
 	/**
-	 * 現在開かれているプロジェクトのソースディレクトリを取得する。
-	 * @return ソースディレクトリの配列。
+	 * 現在開かれているプロジェクトのソースディレクトリを取得する．
+	 * @return ソースディレクトリの配列．
 	 */
 	public static IResource[] getActiveProjectSrcDirs() {
 		IJavaProject javaProject = getActiveJavaProject();		
@@ -63,7 +63,7 @@ public class WorkspaceManager {
 	}
 	
 	/**
-	 * 現在開かれているプロジェクトのソースディレクトリのパスを取得する。
+	 * 現在開かれているプロジェクトのソースディレクトリのパスを取得する．
 	 * @return
 	 */
 	public static String getActiveProjectSrcDirPath() {
@@ -73,7 +73,7 @@ public class WorkspaceManager {
 	}
 	
 	/**
-	 * 現在開かれているプロジェクトのディレクトリパスを取得する。
+	 * 現在開かれているプロジェクトのディレクトリパスを取得する．
 	 * @return
 	 */
 	public static String getActiveJavaProjectPath() {
@@ -82,7 +82,7 @@ public class WorkspaceManager {
 	}
 	
 	/**
-	 * 現在開かれているJavaプロジェクトを取得する。
+	 * 現在開かれているJavaプロジェクトを取得する．
 	 * @return
 	 */
 	public static IJavaProject getActiveJavaProject() {
@@ -93,7 +93,7 @@ public class WorkspaceManager {
 	}
 	
 	/**
-	 * 現在開かれているプロジェクトを取得する。
+	 * 現在開かれているプロジェクトを取得する．
 	 * @return
 	 */
 	//TODO パッケージエクスプローラでアクティブなプロジェクトを未考慮
@@ -120,13 +120,13 @@ public class WorkspaceManager {
 	
 
 	/**
-	 * ソース中の該当記述へジャンプする。
+	 * ソース中の該当記述へジャンプする．
 	 * @param method ジャンプしたいメソッド
 	 */
 	public static void jumpSource(Method method) {
 		//アクティブなプロジェクトから検索
 		if (jumpSourceWithJavaProject(getActiveJavaProject(), method)) return;
-		//見つからなかったら、全プロジェクトから探索
+		//見つからなかったら，全プロジェクトから探索
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		for (IProject project : root.getProjects()) {
 			IJavaProject javaProject = JavaCore.create(project);
@@ -135,10 +135,10 @@ public class WorkspaceManager {
 	}
 	
 	/**
-	 * 該当JavaProjectのメソッドへジャンプする。
+	 * 該当JavaProjectのメソッドへジャンプする．
 	 * @param javaProject
 	 * @param method メソッド
-	 * @return 成功時true、失敗時false
+	 * @return 成功時true，失敗時false
 	 */
 	public static boolean jumpSourceWithJavaProject(IJavaProject javaProject, Method method) {
 		try {
@@ -177,7 +177,7 @@ public class WorkspaceManager {
 	}
 	
 //	/**
-//	 * アクティブなプロジェクトのソースディレクトリの中からフルパスが一致するIFileオブジェクトを検索する。
+//	 * アクティブなプロジェクトのソースディレクトリの中からフルパスが一致するIFileオブジェクトを検索する．
 //	 * @param file
 //	 * @return
 //	 */

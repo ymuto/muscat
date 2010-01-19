@@ -9,7 +9,7 @@ import org.w3c.dom.NodeList;
 public class AttributeList extends ArrayList<Attribute> {
 
 	/**
-	 * この属性リストが所属するメソッド。
+	 * この属性リストが所属するメソッド．
 	 */
 	private Method method;
 	
@@ -32,7 +32,7 @@ public class AttributeList extends ArrayList<Attribute> {
 	}
 	
 	/**
-	 * 属性タイトルが一致する属性を検索する。
+	 * 属性タイトルが一致する属性を検索する．
 	 * @param title 属性タイトル
 	 * @return 見つからなかったらnull
 	 */

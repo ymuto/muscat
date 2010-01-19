@@ -105,7 +105,7 @@ public class MainView extends ViewPart implements ISelectionProvider {
 	}
 
 	/**
-	 * 選択されているTargetClassListを返す。
+	 * 選択されているTargetClassListを返す．
 	 */
 	@Override
 	public ISelection getSelection() {

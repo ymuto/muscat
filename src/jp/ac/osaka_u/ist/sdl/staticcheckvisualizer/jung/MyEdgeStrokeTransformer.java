@@ -8,7 +8,7 @@ import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.jung.model.MyEdge;
 import org.apache.commons.collections15.Transformer;
 
 /**
- * エッジの形状を求めるクラス。
+ * エッジの形状を求めるクラス．
  * @author y-mutoh
  *
  * @param <E>

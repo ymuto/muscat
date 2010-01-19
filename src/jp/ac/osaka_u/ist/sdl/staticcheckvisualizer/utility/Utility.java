@@ -1,13 +1,13 @@
 package jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.utility;
 
 /**
- * ユーティリティクラス。主にデバッグ用。
+ * ユーティリティクラス．主にデバッグ用．
  * @author y-mutoh
  *
  */
 public class Utility {
 	/**
-	 * デバッグ用。
+	 * デバッグ用．
 	 * @param obj
 	 */
 	public static void debugPrintObject(Object obj) {

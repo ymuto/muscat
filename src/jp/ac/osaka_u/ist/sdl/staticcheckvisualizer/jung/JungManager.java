@@ -39,47 +39,47 @@ public class JungManager implements ItemSelectable {
 	private TargetClassList targetClasses;
 	
 	/**
-	 * グラフ。
+	 * グラフ．
 	 */
 	private Graph<MyNode, MyEdge> g;
 	
 	/**
-	 * ノード。
+	 * ノード．
 	 */
 	private MyNodeList nodes;
 	
 	/**
-	 * エッジ。
+	 * エッジ．
 	 */
 	private MyEdgeList edges;
 	
 	/**
-	 * レイアウト。(円環レイアウトアルゴリズムなど)
+	 * レイアウト．(円環レイアウトアルゴリズムなど)
 	 */
 	private Layout<MyNode, MyEdge> layout;
 	
 	/**
-	 * 可視化サーバ。
+	 * 可視化サーバ．
 	 */
 	private VisualizationViewer<MyNode, MyEdge> vv;
 	
 	/**
-	 * グラフの横幅。
+	 * グラフの横幅．
 	 */
 	private int width;
 	
 	/**
-	 * グラフの高さ。
+	 * グラフの高さ．
 	 */
 	private int height;
 	
 	/**
-	 * 現在選択されているノード。
+	 * 現在選択されているノード．
 	 */
 	private Set<MyNode> selectedNodes;
 	
 	/**
-	 * ノードの移動、選択、拡大・縮小
+	 * ノードの移動，選択，拡大・縮小
 	 */
 	private DefaultModalGraphMouse<MyNode,MyEdge> defaultModalGraphMouse;
 	
@@ -87,11 +87,11 @@ public class JungManager implements ItemSelectable {
 	protected EventListenerList listenerList = new EventListenerList();
 	
 	/**
-	 * ノード選択の変化を検知するリスナ。
+	 * ノード選択の変化を検知するリスナ．
 	 */
 	private ItemListener itemListener = new ItemListener() {
 		/**
-		 * 選択されているノードの集合を更新する。
+		 * 選択されているノードの集合を更新する．
 		 */
 		@Override
 		public void itemStateChanged(ItemEvent e) {
@@ -102,7 +102,7 @@ public class JungManager implements ItemSelectable {
 	
 	
 	/**
-	 * コンストラクタ。
+	 * コンストラクタ．
 	 */
 	public JungManager(TargetClassList targetClasses) {
 		this.targetClasses = targetClasses;
@@ -164,34 +164,34 @@ public class JungManager implements ItemSelectable {
 	}
 
 	/**
-	 * 可視化サーバを返す。
-	 * @return 可視化サーバ。これをJFrameに追加することでグラフを表示できる。
+	 * 可視化サーバを返す．
+	 * @return 可視化サーバ．これをJFrameに追加することでグラフを表示できる．
 	 */
 	public VisualizationViewer<MyNode, MyEdge> getVisualizationServer() {
 		return vv;
 	}
 	
-	//TODO 現在未使用。
+	//TODO 現在未使用．
 	/**
-	 * グラフにエッジを追加する。
-	 * @param 追加したいエッジ。
+	 * グラフにエッジを追加する．
+	 * @param 追加したいエッジ．
 	 */
 	private void addEdge(MyEdge edge) {
 		int existIndex = edges.indexOf(edge);
 		if (existIndex == -1) {
-			//存在しない場合は、新規エッジ追加
+			//存在しない場合は，新規エッジ追加
 			edges.add(edge);
 			g.addEdge(edge, edge.getCallerNode(), edge.getCalleeNode());
 		}
 		else {
-			//すでにエッジが存在する場合は、重みを増やす
+			//すでにエッジが存在する場合は，重みを増やす
 			MyEdge existEdge = edges.get(existIndex);
 			existEdge.incrementWeight();
 		}
 	}
 
 	/**
-	 * 現在選択されているノードの集合を返す。
+	 * 現在選択されているノードの集合を返す．
 	 * @return 現在選択されているノードの集合
 	 */
 	public Set<MyNode> getSelectedNodes() {

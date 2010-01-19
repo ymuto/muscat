@@ -10,7 +10,7 @@ public class SampleHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		//静的チェックを実行する。
+		//静的チェックを実行する．
 		Activator.getScv().execute();
 		return null;
 	}

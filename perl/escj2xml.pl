@@ -8,8 +8,9 @@ $DEBUG = 1;
 #出力ディレクトリをパッケージ構成と一致させるかどうか（ON=1）
 $SYNC_PACKAGE_DIRECTORY = 0;
 
-#「VC too big」をpassしたと見なすかどうか(ON=1)
-$IS_VC_TOO_BIG_PASSED = 1;
+#passしたと見なす要素を設定．対象文字列をキーとし値を1とする．
+%PASSES = ('passed' => 1
+		  ,'VC too big' => 1);
 
 #--------------------------------------------
 # メインルーチン
@@ -123,15 +124,12 @@ sub generateClassData{
 		# passed、failed、VC too bigなどの値
 		$escj_result =~ m/\[.* s .* bytes\]  (.*)/g;	#「[0.11 s 12234 bytes]  passed」という形
 		$method_result = $1;
-		if ($method_result eq "passed"){
+
+		#passしたかどうか判定
+		if ($PASSES{$method_result} == 1) {
 			$passed_count++;
 		}
-		elsif ($IS_VC_TOO_BIG_PASSED == 1) { #VC too bigをpassしたと見なす場合
-			if ($method_result eq "VC too big") {
-				$passed_count++;
-			}
-		}
-		
+			
 		# メソッド一覧データに格納
 		my $method = {
 			'name' => $method_name,
@@ -243,6 +241,9 @@ sub makeDirectory {
 #--------------------------------------------
 # デバッグ時のみコメントを出力する
 #--------------------------------------------
+#引数:
+# string 出力したいコメント
+#--------------------------------------------
 sub debugprint {
 	if ($DEBUG == 1) {
 		printcomment(@_);
@@ -251,6 +252,9 @@ sub debugprint {
 
 #--------------------------------------------
 # コメントを出力する
+#--------------------------------------------
+#引数:
+# string 出力したいコメント
 #--------------------------------------------
 sub printcomment {
 	my ($arg) = @_;

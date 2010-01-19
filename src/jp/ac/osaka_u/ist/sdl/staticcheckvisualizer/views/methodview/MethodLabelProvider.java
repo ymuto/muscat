@@ -16,7 +16,7 @@ import org.eclipse.swt.widgets.Display;
 
 
 /**
- * 同時に属性の内容に応じて文字色を設定する。
+ * 同時に属性の内容に応じて文字色を設定する．
  * @author y-mutoh
  *
  */
@@ -26,12 +26,12 @@ public class MethodLabelProvider extends LabelProvider implements ITableLabelPro
 	private ArrayList<String> attributeTitles;
 	
     /**
-     * 属性の値に応じて色分けする設定。（未使用）
+     * 属性の値に応じて色分けする設定．（未使用）
      */
 	private HashMap<String, Color> attributeColors;
 	
 	/**
-	 * コンストラクタ。
+	 * コンストラクタ．
 	 */
 	public MethodLabelProvider(Display display) {
 		this.display = display;
@@ -48,7 +48,7 @@ public class MethodLabelProvider extends LabelProvider implements ITableLabelPro
 
 	
 	/**
-	 * Methodモデルからセルに表示する文字列を生成する。
+	 * Methodモデルからセルに表示する文字列を生成する．
 	 */
 	@Override
 	public String getColumnText(Object obj, int index) {
@@ -61,7 +61,7 @@ public class MethodLabelProvider extends LabelProvider implements ITableLabelPro
 			case 2: return method.getParameterWithComma();
 		}
 		
-		//3列目以降は属性。列タイトルと属性タイトルが一致する属性の値を返す。
+		//3列目以降は属性．列タイトルと属性タイトルが一致する属性の値を返す．
 		if (attributeTitles == null) return "";
 		if (attributeTitles.size() <= 0) return "";
 		//属性タイトルを取得する
@@ -87,7 +87,7 @@ public class MethodLabelProvider extends LabelProvider implements ITableLabelPro
 
 	@Override
 	/**
-	 * セルの内容に応じて文字色を設定する。
+	 * セルの内容に応じて文字色を設定する．
 	 */
 	public Color getForeground(Object element, int columnIndex) {
 		if (columnIndex < 3) return null;

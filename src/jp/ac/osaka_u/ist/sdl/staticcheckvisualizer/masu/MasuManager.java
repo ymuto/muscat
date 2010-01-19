@@ -52,7 +52,7 @@ public class MasuManager extends MetricsTool {
 	}
 	
 	/**
-	 * MASUを利用してクラス一覧データを生成する。
+	 * MASUを利用してクラス一覧データを生成する．
 	 */
 	public  void createTargetClasses(){
 		// 初期化
@@ -95,10 +95,10 @@ public class MasuManager extends MetricsTool {
 	}
 
 	/**
-	 * 対象となる呼び出しであるかどうかを判定する。
+	 * 対象となる呼び出しであるかどうかを判定する．
 	 * 
 	 * @param info 判定対象
-	 * @return 対象となるかどうか。
+	 * @return 対象となるかどうか．
 	 */
 	private boolean isTargetInfo(CallableUnitInfo info) {
 		if (info instanceof TargetMethodInfo) return true;
@@ -129,7 +129,7 @@ public class MasuManager extends MetricsTool {
 	/**
 	 * MASUのクラス情報から呼び出し情報をセットする
 	 * 
-	 * @param classInfo　MASUのクラス情報。呼び出し情報を含む。
+	 * @param classInfo　MASUのクラス情報．呼び出し情報を含む．
 	 * @param targetClass 呼び出し情報を追加したい対象クラス
 	 * @return TargetClass
 	 */
@@ -150,20 +150,20 @@ public class MasuManager extends MetricsTool {
 	
 	
 	/**
-	 * このクラスが呼び出しているクラス名を取得する。
+	 * このクラスが呼び出しているクラス名を取得する．
 	 * 
-	 * @param callinfo 呼び出し情報。
-	 * @param isContainExternal 対象外クラスを結果に含めるかどうか。
-	 * @return このクラスが呼び出しているクラスの完全限定名のリスト。
+	 * @param callinfo 呼び出し情報．
+	 * @param isContainExternal 対象外クラスを結果に含めるかどうか．
+	 * @return このクラスが呼び出しているクラスの完全限定名のリスト．
 	 */
 	public ArrayList<String> getCalleeClassNames(CallInfo<? extends CallableUnitInfo> callinfo, boolean isContainExternal) {
 		if (callinfo == null) return null;
 		System.out.println("line " + callinfo.getFromLine());
 		ArrayList<String> targetList = new ArrayList<String>(); 
-		List<ExpressionInfo> arguments = callinfo.getArguments(); //同じ引数が複数回出現したら、別物とカウント
+		List<ExpressionInfo> arguments = callinfo.getArguments(); //同じ引数が複数回出現したら，別物とカウント
 		//メソッド呼び出しの引数に対して再帰
 		for (ExpressionInfo argument: arguments) {
-			Set<CallInfo<?>> argumentCalls = argument.getCalls(); //同じ呼び出しが複数回出現しても、1つにカウント
+			Set<CallInfo<?>> argumentCalls = argument.getCalls(); //同じ呼び出しが複数回出現しても，1つにカウント
 			for (CallInfo argumentCallInfo: argumentCalls) {
 				targetList.addAll(getCalleeClassNames(argumentCallInfo, isContainExternal)); //再帰
 			}
@@ -186,10 +186,10 @@ public class MasuManager extends MetricsTool {
 	}
 	
 	/**
-	 * このクラスが呼び出しているクラス名と呼び出し回数を取得する。
+	 * このクラスが呼び出しているクラス名と呼び出し回数を取得する．
 	 * 
-	 * @param calleeClassNames 呼び出されるクラス名のリスト。
-	 * @return このクラスが呼び出しているクラスの呼び出し情報。
+	 * @param calleeClassNames 呼び出されるクラス名のリスト．
+	 * @return このクラスが呼び出しているクラスの呼び出し情報．
 	 */
 	public CalleeList calleeClassNamesToCalleeList(ArrayList<String> calleeClassNames) {
 		if (calleeClassNames.size() <= 0) return null;
@@ -203,7 +203,7 @@ public class MasuManager extends MetricsTool {
 			String calleeClassName = calleeClassNames.get(calleeClassNames.size()-1);
 			System.out.println("呼び出されたクラス=" + calleeClassName);
 			calleeClassNames.remove(calleeClassNames.size()-1);
-			//クラス名が一致する要素数をカウントし、削除していく。末尾から。
+			//クラス名が一致する要素数をカウントし，削除していく．末尾から．
 			int count = 1;
 			for (int i=calleeClassNames.size()-1; i>=0; i--) {
 				if (!calleeClassName.equals(calleeClassNames.get(i))) continue;

@@ -11,7 +11,7 @@ import org.apache.commons.collections15.Transformer;
 public class MyVertexIconTransformer<V> implements Transformer<V,Icon>{
  
 	/**
-	 * ノードの形を円グラフにする。
+	 * ノードの形を円グラフにする．
 	 */
     public Icon transform(V v) {
         MyNode node = (MyNode)v;

@@ -10,7 +10,7 @@ import org.apache.commons.collections15.Transformer;
  
 public class MyVertexShapeTransformer implements Transformer<MyNode, Shape> {
 	/**
-	 * ノードを円形と認識させる。これによりエッジの矢印がノードにめり込まなくなる。
+	 * ノードを円形と認識させる．これによりエッジの矢印がノードにめり込まなくなる．
 	 */
     public Shape transform(MyNode v) {
         //円グラフの輪郭と同じ大きさの円

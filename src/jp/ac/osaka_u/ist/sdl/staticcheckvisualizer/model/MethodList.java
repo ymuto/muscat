@@ -9,12 +9,12 @@ import org.w3c.dom.NodeList;
 public class MethodList extends ArrayList<Method> {
 	
 	/**
-	 * 属性のタイトル一覧情報。
+	 * 属性のタイトル一覧情報．
 	 */
 	private ArrayList<String> attributeTitles;
 	
 	/**
-	 * 所属するクラス。
+	 * 所属するクラス．
 	 */
 	private TargetClass targetClass;
 	
@@ -50,7 +50,7 @@ public class MethodList extends ArrayList<Method> {
 
 	//アクセサ
 	/**
-	 * 属性タイトル一覧情報を取得する。
+	 * 属性タイトル一覧情報を取得する．
 	 */
 	public ArrayList<String> getAttributeTitles() {
 		return attributeTitles;

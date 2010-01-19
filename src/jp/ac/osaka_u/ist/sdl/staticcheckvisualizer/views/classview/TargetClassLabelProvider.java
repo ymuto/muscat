@@ -8,7 +8,7 @@ import org.eclipse.swt.graphics.Image;
 
 
 /**
- * テスト用。不要になる予定
+ * テスト用．不要になる予定
  * @author y-mutoh
  *
  */
@@ -16,7 +16,7 @@ public class TargetClassLabelProvider extends LabelProvider implements ITableLab
 
 	
 	/**
-	 * TargetClassモデルからセルに表示する文字列を生成する。
+	 * TargetClassモデルからセルに表示する文字列を生成する．
 	 */
 	@Override
 	public String getColumnText(Object obj, int index) {

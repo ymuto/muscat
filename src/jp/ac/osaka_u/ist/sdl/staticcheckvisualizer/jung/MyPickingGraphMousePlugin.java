@@ -9,13 +9,13 @@ import edu.uci.ics.jung.visualization.control.PickingGraphMousePlugin;
 public class MyPickingGraphMousePlugin<V,E> extends PickingGraphMousePlugin<V,E> {
 	
 	/**
-	 * このプラグインを登録しているJungManager。
-	 * 選択されているノードを伝えるために必要。
+	 * このプラグインを登録しているJungManager．
+	 * 選択されているノードを伝えるために必要．
 	 */
 	private JungManager jungManager;
 	
 	/**
-	 * コンストラクタ。
+	 * コンストラクタ．
 	 * @param jungManager このプラグインを登録しているJungManager
 	 */
 	public MyPickingGraphMousePlugin(JungManager jungManager) {
@@ -23,7 +23,7 @@ public class MyPickingGraphMousePlugin<V,E> extends PickingGraphMousePlugin<V,E>
 	}
 
     public void mousePressed(MouseEvent e) {
-    	//現在対象となっているvertexの登録などを行う。
+    	//現在対象となっているvertexの登録などを行う．
     	super.mousePressed(e);
     	//押された頂点の文字列表示
 		if (vertex != null) {

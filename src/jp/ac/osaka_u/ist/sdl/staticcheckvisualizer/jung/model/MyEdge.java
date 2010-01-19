@@ -3,22 +3,22 @@ package jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.jung.model;
 
 public class MyEdge {
 	/**
-	 * エッジの重み。内部用。呼び出し回数に相当する。
+	 * エッジの重み．内部用．呼び出し回数に相当する．
 	 */
 	private int weight;
 	
 	/**
-	 * エッジの太さ。表示用。
+	 * エッジの太さ．表示用．
 	 */
 	private int width;
 	
 	/**
-	 * 呼び出し元クラス。開始ノード。
+	 * 呼び出し元クラス．開始ノード．
 	 */
 	private MyNode callerNode;
 	
 	/**
-	 * 呼び出し先クラス。終了ノード。
+	 * 呼び出し先クラス．終了ノード．
 	 */
 	private MyNode calleeNode;
 	
@@ -39,8 +39,8 @@ public class MyEdge {
 	}
 	
 	/**
-	 * 開始ノード、終了ノードが等しければ同一エッジと見なす。
-	 * @param 比較対象エッジ。
+	 * 開始ノード，終了ノードが等しければ同一エッジと見なす．
+	 * @param 比較対象エッジ．
 	 * @return
 	 */
 	@Override

@@ -2,12 +2,12 @@ package jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model;
 
 public class Callee {
 	/**
-	 * 呼び出し回数。
+	 * 呼び出し回数．
 	 */
 	private int callCount;
 	
 	/**
-	 * 呼び出されたクラス。
+	 * 呼び出されたクラス．
 	 */
 	private TargetClass calleeClass;
 

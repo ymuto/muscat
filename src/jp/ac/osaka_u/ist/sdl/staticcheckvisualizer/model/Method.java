@@ -9,27 +9,27 @@ import org.w3c.dom.NodeList;
 public class Method {
 	
 	/**
-	 * このメソッドが所属するMethodList。
+	 * このメソッドが所属するMethodList．
 	 */
 	private MethodList methodList;
 	
 	/**
-	 * メソッド名。
+	 * メソッド名．
 	 */
 	private String name;
 	
 	/**
-	 * このメソッドの引数。
+	 * このメソッドの引数．
 	 */
 	private String[] parameters;
 	
 	/**
-	 * ID。（未使用）
+	 * ID．（未使用）
 	 */
 	private int id;
 	
 	/**
-	 * 属性情報。
+	 * 属性情報．
 	 */
 	private AttributeList attributes;
 	

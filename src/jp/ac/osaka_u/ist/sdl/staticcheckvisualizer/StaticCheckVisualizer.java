@@ -27,7 +27,7 @@ public class StaticCheckVisualizer {
 	private String classpath;
 	
 	/**
-	 * 静的チェックが終了したかどうか。
+	 * 静的チェックが終了したかどうか．
 	 */
 	private boolean isFinishedCheck = false;
 	
@@ -38,7 +38,7 @@ public class StaticCheckVisualizer {
 	}
 
 	/**
-	 * 選択されているTargetClassのリスト。
+	 * 選択されているTargetClassのリスト．
 	 */
 	private TargetClassList selectedTargetClasses;
 	
@@ -62,7 +62,7 @@ public class StaticCheckVisualizer {
 	};
 	
 	/**
-	 * コンストラクタ。
+	 * コンストラクタ．
 	 */
 	public StaticCheckVisualizer() {
 		targetClasses = new TargetClassList();	
@@ -79,7 +79,7 @@ public class StaticCheckVisualizer {
 	}
 	
 	/**
-	 * 静的チェックを実行する。
+	 * 静的チェックを実行する．
 	 */
 	public void execute() {
 //		//現在のプロジェクト取得
@@ -107,7 +107,7 @@ public class StaticCheckVisualizer {
 	}
 	
 	/**
-	 * 静的チェックを行う。
+	 * 静的チェックを行う．
 	 */
 	public void check() {
 		this.isFinishedCheck = false;
@@ -209,7 +209,7 @@ public class StaticCheckVisualizer {
 	}
 	
 	/**
-	 * ディレクトリ内のXMLファイルを削除する。
+	 * ディレクトリ内のXMLファイルを削除する．
 	 * @param dir 対象ディレクトリ
 	 */
 	private void cleanXmlFiles(File file) {

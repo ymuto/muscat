@@ -8,12 +8,12 @@ public class MyEdgeList extends ArrayList<MyEdge> {
 	private int maxLevel = 5;
 	
 	/**
-	 * 重みの最大値。
+	 * 重みの最大値．
 	 */
 	private int maxWeight;
 	
 	/**
-	 * 0でない重みの最小値。
+	 * 0でない重みの最小値．
 	 */
 	private int minWeight;
 	
@@ -29,7 +29,7 @@ public class MyEdgeList extends ArrayList<MyEdge> {
 	}
 	
 	/**
-	 * 最大値・最小値を更新する。
+	 * 最大値・最小値を更新する．
 	 */
 	private void updateMinMax() 
 	{
@@ -47,15 +47,15 @@ public class MyEdgeList extends ArrayList<MyEdge> {
 		System.out.println("min=" + this.minWeight);
 	}
 
-	//TODO 改良の余地あり。
+	//TODO 改良の余地あり．
 	/**
-	 * エッジをレベル分けする。
-	 * 0はレベル0とし、1以上はレベル1以上とする。
+	 * エッジをレベル分けする．
+	 * 0はレベル0とし，1以上はレベル1以上とする．
 	 * @param data レベル判定対象
 	 * @param min 0より大きい最小値
 	 * @param max 最大値
 	 * @param maxLevel 最大レベル
-	 * @return レベル。レベル0から最大レベルまでの間のいずれかの整数値。
+	 * @return レベル．レベル0から最大レベルまでの間のいずれかの整数値．
 	 */
 	private int judgeLevel(int data, int min, int max, int maxLevel) {
 		if (data <= 0) return 0;

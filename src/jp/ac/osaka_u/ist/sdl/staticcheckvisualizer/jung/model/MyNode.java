@@ -1,24 +1,24 @@
 package jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.jung.model;
 
 /**
- * グラフのノードを表すクラス。
+ * グラフのノードを表すクラス．
  * @author y-mutoh
  *
  */
 public class MyNode
 {
 	/**
-	 * 単純名。表示に用いる。
+	 * 単純名．表示に用いる．
 	 */
     private String simpleName;
     
     /**
-     * 完全限定名。内部でノードの比較に用いる。
+     * 完全限定名．内部でノードの比較に用いる．
      */
     private String fullQualifiedName;
     
     /**
-     * カバレッジ。円グラフの割合に用いる。
+     * カバレッジ．円グラフの割合に用いる．
      */
     private int coverage;
  
@@ -38,9 +38,9 @@ public class MyNode
  
     
 	/**
-	 * 完全限定名が等しければ同一ノードと見なす。
+	 * 完全限定名が等しければ同一ノードと見なす．
 	 * @param obj 比較対象ノード
-	 * @return 比較結果。同一であればtrue、異なっていればfalse。
+	 * @return 比較結果．同一であればtrue，異なっていればfalse．
 	 */
 	@Override
 	public boolean equals(Object obj) {
@@ -51,7 +51,7 @@ public class MyNode
 	}
     
 	/**
-	 * 単純名を表示に用いる。
+	 * 単純名を表示に用いる．
 	 */
 	@Override
 	public String toString()

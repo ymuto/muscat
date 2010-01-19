@@ -4,27 +4,27 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 /**
- * 属性を表すクラス。
+ * 属性を表すクラス．
  * @author y-mutoh
  *
  */
 public class Attribute {
 	/**
-	 * この属性が所属するAttributeList。
+	 * この属性が所属するAttributeList．
 	 */
 	private AttributeList attributeList;
 	
 	/**
-	 * 属性タイトル。
+	 * 属性タイトル．
 	 */
 	private String title;
 	/**
-	 * 属性の値。
+	 * 属性の値．
 	 */
 	private String value;
 	
 	/**
-	 * コンストラクタ。
+	 * コンストラクタ．
 	 */
 	public Attribute() {
 		this.title = "";

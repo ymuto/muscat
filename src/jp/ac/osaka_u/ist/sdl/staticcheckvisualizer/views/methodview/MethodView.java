@@ -163,9 +163,9 @@ public class MethodView extends ViewPart {
 	}
 	
 	/**
-	 * 属性タイトルに対応するようにテーブルのカラムを更新する。
-	 * @param table 対象となるテーブル。
-	 * @param methods メソッド情報。
+	 * 属性タイトルに対応するようにテーブルのカラムを更新する．
+	 * @param table 対象となるテーブル．
+	 * @param methods メソッド情報．
 	 */
 	public void updateColumns(Table table, MethodList methods) {
 		System.out.println("createColumns titles=" + methods.getAttributeTitles());

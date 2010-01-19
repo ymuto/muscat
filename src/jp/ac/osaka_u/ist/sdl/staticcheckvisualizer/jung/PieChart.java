@@ -10,48 +10,48 @@ import javax.swing.Icon;
  
 public class PieChart implements Icon {
     /**
-	 * 円グラフの割合。
+	 * 円グラフの割合．
 	 */
     private int percentage;
     /**
-	 * 円グラフの横幅。
+	 * 円グラフの横幅．
 	 */
     private int width;
     /**
-	 * 円グラフの高さ。
+	 * 円グラフの高さ．
 	 */
     private int height;
     /**
-	 * 円グラフの要素の塗りつぶし色。
+	 * 円グラフの要素の塗りつぶし色．
 	 */
     private Color foregroundColor = Color.GREEN;
  
     /**
-	 * 円グラフの要素以外の部分の塗りつぶし色。
+	 * 円グラフの要素以外の部分の塗りつぶし色．
 	 */
     private Color backgroundColor = Color.WHITE;
     /**
-	 * 円グラフの輪郭の色。
+	 * 円グラフの輪郭の色．
 	 */
     private Color drawColor = Color.BLACK;
  
     /**
-	 * 割合ラベルの色。
+	 * 割合ラベルの色．
 	 */
     private Color labelColor = Color.BLACK;
  
     /**
-	 * 割合ラベルを表示するかどうか。
+	 * 割合ラベルを表示するかどうか．
 	 */
     private boolean isWithLabel = true;
     
     /**
-     * 割合ラベルのフォント。
+     * 割合ラベルのフォント．
      */
     private Font labelFont;
  
     /**
-     * コンストラクタ。
+     * コンストラクタ．
      * @param percentage
      * @param width
      * @param height
@@ -72,7 +72,7 @@ public class PieChart implements Icon {
     }
  
     /**
-	 * 円グラフを描画します。
+	 * 円グラフを描画します．
 	 */
     public void paintIcon(Component c, Graphics g, int x, int y) {
         //円全体を背景色で塗りつぶす

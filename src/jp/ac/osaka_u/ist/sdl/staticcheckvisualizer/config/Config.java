@@ -6,40 +6,40 @@ import java.util.HashMap;
 import org.eclipse.swt.graphics.Color;
 
 /**
- * 設定を記述するクラス。
+ * 設定を記述するクラス．
  * @author y-mutoh
  *
  */
 public final class Config {
     //設定用定数
 	/**
-	 * ノードの横幅。
+	 * ノードの横幅．
 	 */
     public static final int NODE_WIDTH = 70;
     /**
-     * ノードの高さ。
+     * ノードの高さ．
      */
     public static final int NODE_HEIGHT = 70;
     
     /**
-     * 対象となる言語。java14はJava1.4。
+     * 対象となる言語．java14はJava1.4．
      */
     public static final String TARGET_LANGUAGE = "java14";
 
     /**
-     * 属性値の配色。
-     * keyは属性の値、valueはそれに対応する色。
+     * 属性値の配色．
+     * keyは属性の値，valueはそれに対応する色．
      */
     private HashMap<String, Color> attributeColors;
     
     //チェックに用いる値
     /**
-     * XMLを出力するディレクトリ。
+     * XMLを出力するディレクトリ．
      */
     private String outputDir;
     
     /**
-     * 実行するスクリプト。
+     * 実行するスクリプト．
      */
     private String generateCommand;
     
@@ -54,7 +54,7 @@ public final class Config {
     
 
 	/**
-	 * 属性の色分けの初期値を設定。
+	 * 属性の色分けの初期値を設定．
 	 */
 	private void setDefaultAttributeColors() {
     	attributeColors.put("passed", new Color(null,0,127,0)); //緑
@@ -66,12 +66,12 @@ public final class Config {
 	}
 	
 	/**
-	 * チェックに用いる値をセット。
+	 * チェックに用いる値をセット．
 	 */
 	private void setCheckArgs(){
 		//this.generateCommand = "perl C:\\Users\\y-mutoh\\research\\perl\\escj2xml.pl";
-		//this.generateCommand = "perl C:\\Users\\y-mutoh\\workspace\\jp.ac.osaka_u.ist.sdl.staticcheckvisualizer\\perl\\escj2xml.pl";
-		this.generateCommand = "perl C:\\Users\\y-mutoh\\workspace\\jp.ac.osaka_u.ist.sdl.staticcheckvisualizer\\perl\\dummy.pl";
+		this.generateCommand = "perl C:\\Users\\y-mutoh\\workspace\\jp.ac.osaka_u.ist.sdl.staticcheckvisualizer\\perl\\escj2xml.pl";
+		//this.generateCommand = "perl C:\\Users\\y-mutoh\\workspace\\jp.ac.osaka_u.ist.sdl.staticcheckvisualizer\\perl\\dummy.pl";
 
 		//String xml_out = "C:\\Users\\y-mutoh\\workspace\\SCVTestData\\xml";
 		//String xml_out = "C:\\Users\\y-mutoh\\workspace\\StockManagement\\xml";

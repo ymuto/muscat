@@ -6,8 +6,8 @@ import java.util.ArrayList;
 public class MyNodeList extends ArrayList<MyNode> {
 	
 	/**
-	 * 完全限定名が一致するノードを検索する。
-	 * @param fullQualifiedName 完全限定名。
+	 * 完全限定名が一致するノードを検索する．
+	 * @param fullQualifiedName 完全限定名．
 	 * @return 見つからない場合はnull
 	 */
 	public MyNode searchMyNode(String fullQualifiedName) {

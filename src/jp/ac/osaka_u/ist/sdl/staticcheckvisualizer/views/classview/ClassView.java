@@ -75,7 +75,7 @@ public class ClassView extends ViewPart {
 	}
 //	
 //	/**
-//	 * 表示するクラス情報を生成する。テストデータ。
+//	 * 表示するクラス情報を生成する．テストデータ．
 //	 * @return
 //	 */
 	private List<TargetClass> getItems() {

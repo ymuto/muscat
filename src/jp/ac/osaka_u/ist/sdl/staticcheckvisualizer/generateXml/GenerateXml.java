@@ -9,8 +9,8 @@ import java.io.*;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.Activator;
 
 /**
- * JavaソースファイルからXMLファイルを生成するクラス。
- * 内部クラスは独立したファイルになるため、1つのJavaソースファイルに対して複数のXMLファイルが生成される。
+ * JavaソースファイルからXMLファイルを生成するクラス．
+ * 内部クラスは独立したファイルになるため，1つのJavaソースファイルに対して複数のXMLファイルが生成される．
  * @author y-mutoh
  *
  */
@@ -19,21 +19,21 @@ public class GenerateXml {
 	private final int EXIT_FAILURE = 1;
 	
 	/**
-	 * 入力Javaソースファイル。
+	 * 入力Javaソースファイル．
 	 */
 	private File javaFile;
 	
 	/**
-	 * 出力XMLファイル。1つの入力Javaソースファイルに対して複数存在する。
+	 * 出力XMLファイル．1つの入力Javaソースファイルに対して複数存在する．
 	 */
 	private ArrayList<File> xmlFiles;
 	
 	/**
-	 * クラスパス。ESC/Java2の実行に用いる。
+	 * クラスパス．ESC/Java2の実行に用いる．
 	 */
 	private String classPath;
 	
-	//デバッグ用。trueのときXMLを生成しない。
+	//デバッグ用．trueのときXMLを生成しない．
 	public boolean isMakeXML=true;
 	
 	/* コンストラクタ */ 
@@ -49,7 +49,7 @@ public class GenerateXml {
 		generateXml(javafile, outputdir);
 	}
 	
-	//デバッグ用。XMLを生成するかどうか設定できる。
+	//デバッグ用．XMLを生成するかどうか設定できる．
 	public GenerateXml(File javafile, String outputdir, String classpath, boolean isMakeXML) {
 		this.isMakeXML = isMakeXML;
 		this.classPath = classpath;
@@ -59,7 +59,7 @@ public class GenerateXml {
 	/* メソッド */
 	
 	/**
-	 * XMLを生成する。
+	 * XMLを生成する．
 	 * 
 	 * @param javafile 入力となるJavaファイル
 	 * @param outputdir XMLを出力するディレクトリ
@@ -90,9 +90,9 @@ public class GenerateXml {
 	}
 	
 	/**
-	 * コマンドを実行する。	
-	 * @param command 実行するコマンド。
-	 * @return 標準出力に出力された文字列。
+	 * コマンドを実行する．	
+	 * @param command 実行するコマンド．
+	 * @return 標準出力に出力された文字列．
 	 */
 	private StringBuilder exec(String command)
 	{
@@ -133,9 +133,9 @@ public class GenerateXml {
 	}
 	
 	/**
-	 * 正規表現を用いたフィルタを返す。
-	 * @param regex 正規表現。
-	 * @return ファイル名フィルタ。
+	 * 正規表現を用いたフィルタを返す．
+	 * @param regex 正規表現．
+	 * @return ファイル名フィルタ．
 	 */
 	private static FilenameFilter getFileRegexFilter(String regex) {
 		final String regex_ = regex;
