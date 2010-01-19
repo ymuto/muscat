@@ -173,7 +173,7 @@ public class TargetClass {
 			this.fullQualifiedName =  this.packageName + "." + this.simpleName;
 		System.out.println("full=" + this.fullQualifiedName);
 	}
-
+	
 	/* 以下はアクセスメソッド */
 	public String getSimpleName() {
 		return simpleName;

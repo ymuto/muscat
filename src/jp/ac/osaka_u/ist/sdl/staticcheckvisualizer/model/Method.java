@@ -65,7 +65,7 @@ public class Method {
 		if (parameterNodeList != null) {
 			Element eParameter = (Element)parameterNodeList.item(0);
 			if (eParameter != null) {
-				setParameters(eParameter.getTextContent().split(","));
+				setParametersFromString(eParameter.getTextContent());
 			}
 		}
 		//attributes
@@ -81,6 +81,8 @@ public class Method {
 				+ attributes.toString() + "]\n";
 	}
 	
+	
+	
 	public String getName() {
 		return name;
 	}
@@ -89,7 +91,10 @@ public class Method {
 		this.name = name;
 	}
 
-
+	/**
+	 * 引数を，で連結して文字列として返す
+	 * @return
+	 */
 	public String getParameterWithComma() {
 		if (this.parameters == null) return null;
 		if (this.parameters.length <= 0) return "";
@@ -97,7 +102,7 @@ public class Method {
 		StringBuilder builder = new StringBuilder();
 		builder.append(parameters[0]);
 		for (int i=1; i<this.parameters.length; i++){
-			builder.append(",");
+			builder.append(", ");
 			builder.append(this.parameters[i]);
 		}
 		return builder.toString();
@@ -107,6 +112,14 @@ public class Method {
 		return parameters;
 	}
 
+	/**
+	 * 文字列を配列に分割してパラメータにセットする．
+	 * @param str ，区切りの文字列
+	 */
+	public void setParametersFromString(String str) {
+		 setParameters(str.split(", "));
+	}
+	
 	public void setParameters(String[] parameters) {
 		this.parameters = parameters;
 	}

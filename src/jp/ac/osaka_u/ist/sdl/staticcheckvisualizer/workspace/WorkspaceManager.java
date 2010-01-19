@@ -2,6 +2,7 @@ package jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.workspace;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model.Method;
 
@@ -19,6 +20,7 @@ import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.ITypeParameter;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
@@ -100,10 +102,6 @@ public class WorkspaceManager {
 	private static IProject getActiveProjectFromEditor() {
 		//アクティブなエディタを取得
 		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-		
-		IWorkbench workbench = PlatformUI.getWorkbench();
-		
-		
 		if (window == null) return null;
 		IWorkbenchPage page = window.getActivePage();
 		if (page == null) return null;
@@ -120,7 +118,7 @@ public class WorkspaceManager {
 	
 
 	/**
-	 * ソース中の該当記述へジャンプする．
+	 * ソース中の該当メソッド記述へジャンプする．
 	 * @param method ジャンプしたいメソッド
 	 */
 	public static void jumpSource(Method method) {
@@ -131,42 +129,58 @@ public class WorkspaceManager {
 		for (IProject project : root.getProjects()) {
 			IJavaProject javaProject = JavaCore.create(project);
 			if (jumpSourceWithJavaProject(javaProject, method)) return;
-		}	
+		}
 	}
 	
 	/**
 	 * 該当JavaProjectのメソッドへジャンプする．
-	 * @param javaProject
-	 * @param method メソッド
+	 * @param javaProject 対象プロジェクト
+	 * @param method ジャンプしたいメソッド
 	 * @return 成功時true，失敗時false
 	 */
 	public static boolean jumpSourceWithJavaProject(IJavaProject javaProject, Method method) {
 		try {
-			//該当オブジェクトを検索
+			//該当クラスを検索
 			IType type = javaProject.findType(method.getMethodList().getTargetClass().getFullQualifiedName());
 			if (type == null) {
-				System.out.println("見つかりません:");
+				System.out.println("クラスが見つかりません:");
 				return false;
 			}
 			if (!type.isClass()) return false;
-			//引数を変換
-			String signatures[] = null;
-			if (method.getParameters() != null) {
-				signatures = new String[method.getParameters().length];
-				for (int i=0; i<method.getParameters().length; i++) {
-					signatures[i] = Signature.createTypeSignature(method.getParameters()[i], false);
-					System.out.println(signatures[i]);
+
+			//該当メソッドを検索
+			IMethod imethod = null;
+			methodLoop:
+			for (IMethod im : type.getMethods()) {
+				//メソッド名を比較
+				if (!method.getName().equals(im.getElementName())) continue;
+				//引数なし
+				if (im.getParameterTypes().length <= 0 && method.getParameters() == null) {
+					imethod = im;
+					break;
+				}
+				//引数の数を比較
+				if (im.getParameterTypes().length != method.getParameters().length) continue;
+				//引数あり
+				for (int i=0; i<im.getParameterTypes().length; i++) {
+					//ソースコードの引数の型名を完全限定名に変換(String -> java.lang.String)
+					String unresolvedParameter = Signature.toString(im.getParameterTypes()[i]);
+					String fullQualifiedParameterType = getFullQualifiedTypeFromType(unresolvedParameter, im);
+					//引数型名比較
+					if (!method.getParameters()[i].equals(fullQualifiedParameterType)) break;					
+					//最終引数が一致した
+					if (i >= im.getParameterTypes().length-1 && i >= method.getParameters().length-1) {
+						//メソッド一致
+						imethod = im;
+						break methodLoop;
+					}
 				}
 			}
-			//該当メソッドを検索
-			IMethod imethod = type.getMethod(method.getName(), signatures);
-//ダメ		IMethod imethod = type.getMethod(method.getName(), new String[] {"Qjava.lang.String;"});
-
+			
 			if (imethod == null) return false;
 			//エディタを開く
-			IEditorPart editorpart = JavaUI.openInEditor(imethod);
-			
-			
+			if(JavaUI.openInEditor(imethod) == null) return false;
+				
 		} catch (Exception e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
@@ -176,35 +190,31 @@ public class WorkspaceManager {
 		
 	}
 	
-//	/**
-//	 * アクティブなプロジェクトのソースディレクトリの中からフルパスが一致するIFileオブジェクトを検索する．
-//	 * @param file
-//	 * @return
-//	 */
-//	public static IFile convertFileToIFile(File file) {
-//		//探したいファイルのディレクトリパス取得
-//		String dirpath;
-//		try {
-//			dirpath = file.getCanonicalFile().getParent();
-//		} catch (Exception e) {
-//			System.out.println("convertFileToIFile " + e);
-//			return null;
-//		}
-//		//ファイルを検索
-//		IResource[] srcdirs = getActiveProjectSrcDirs();
-//		for (IResource srcdir: srcdirs) {
-//			System.out.println(srcdir.getFullPath());
-//			if (srcdir instanceof IFolder) {
-//				IFolder ifolder = (IFolder)srcdir;
-//				System.out.println(ifolder.getFullPath() + " =? " + dirpath);
-//				if (ifolder.getFullPath().toOSString().equals(dirpath)) {
-//					System.out.println("見つかった");
-//					return ifolder.getFile(file.getName());
-//				}
-//			}
-//		}		
-//		return null;
-//	}
-	
+	/**
+	 * 引数の型名を完全限定名に変換する．
+	 * @param parameterType 引数の型名．解決されていない形．(例：Stringなど)
+	 * @param method 引数が所属するメソッド
+	 * @return
+	 */
+	private static String getFullQualifiedTypeFromType(String parameterType, IMethod method) {
+		String fullQualifiedType = parameterType; //プリミティブ形の場合に使用
+		String[][] parameterElements;
+		try {
+			parameterElements = method.getDeclaringType().resolveType(parameterType);
+			if (parameterElements != null) {
+				String parameterPackage = parameterElements[0][0];
+				String parameterName = parameterElements[0][1];
+				fullQualifiedType = parameterName;	
+				if (parameterPackage != null) {
+					fullQualifiedType = parameterPackage + "." + fullQualifiedType;
+				}
+			}
+		} catch (JavaModelException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
+
+		return fullQualifiedType;
+	}
 	
 }
