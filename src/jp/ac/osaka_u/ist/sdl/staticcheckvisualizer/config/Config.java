@@ -19,7 +19,8 @@ public final class Config {
 	//デフォルト値
 	public static final String DEFAULT_GENERATE_COMMAND = "perl C:\\Users\\y-mutoh\\workspace\\jp.ac.osaka_u.ist.sdl.staticcheckvisualizer\\perl\\escj2xml.pl";
     public static final int DEFAULT_EDGE_MAX_LEVEL = 5;
-	
+	public static final int DEFAULT_METHODVIEW_ATTRIBUTE_COLUMN_COUNT = 3;
+    
 	//設定用定数
 	/**
 	 * ノードの横幅．
@@ -56,6 +57,8 @@ public final class Config {
      * エッジの太さレベルの最大数．
      */
     private int edgeMaxLevel;
+    
+    private int methodViewAttributeColumnCount;
     
     /**
      * コンストラクタ
@@ -106,6 +109,11 @@ public final class Config {
 
 	public int getEdgeMaxLevel() {
 		return edgeMaxLevel;
+	}
+
+
+	public int getMethodViewAttributeColumnCount() {
+		return methodViewAttributeColumnCount;
 	}
 	
 	

@@ -1,6 +1,7 @@
 package jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -47,6 +48,22 @@ public class MethodList extends ArrayList<Method> {
 			}
 		}
 	}
+	
+	
+	/**
+	 * メソッドリストを併合する．
+	 * 属性タイトル一覧情報の順序は失われる．
+	 * @param methods 追加したいメソッドリスト．
+	 */
+	public void addAll(MethodList methods) {
+		super.addAll(methods);
+		//属性タイトル一覧情報を併合する．Setを介すので順番は失われる．
+		HashSet<String> set1 = new HashSet<String>(methods.attributeTitles);
+		HashSet<String> set2 = new HashSet<String>(this.attributeTitles);
+		set1.addAll(set2);
+		this.attributeTitles = new ArrayList<String>(set1);
+	}
+	
 
 	//アクセサ
 	/**

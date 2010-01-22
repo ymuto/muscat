@@ -23,8 +23,6 @@ import org.eclipse.swt.widgets.Display;
 public class MethodLabelProvider extends LabelProvider implements ITableLabelProvider,ITableColorProvider {
 	private Display display;
 	
-	private ArrayList<String> attributeTitles;
-	
     /**
      * 属性の値に応じて色分けする設定．（未使用）
      */
@@ -60,11 +58,13 @@ public class MethodLabelProvider extends LabelProvider implements ITableLabelPro
 		}
 		
 		//3列目以降は属性．列タイトルと属性タイトルが一致する属性の値を返す．
+		int attributeIndex = index - MethodView.FIX_COLUMN_COUNT;
+		ArrayList<String> attributeTitles = method.getMethodList().getAttributeTitles();
 		if (attributeTitles == null) return "";
-		if (attributeTitles.size() <= 0) return "";
+		if (attributeTitles.size() <= 0 || attributeTitles.size() <= attributeIndex) return "";
 		//属性タイトルを取得する
 		System.out.println("MethodLabelProvider titles=" + attributeTitles.toString());
-		String title = attributeTitles.get(index - 3);
+		String title = attributeTitles.get(attributeIndex);
 		//タイトルが一致する属性を検索する
 		Attribute attribute = method.getAttributes().searchAttributeFromTitle(title);
 
@@ -88,19 +88,15 @@ public class MethodLabelProvider extends LabelProvider implements ITableLabelPro
 	 * セルの内容に応じて文字色を設定する．
 	 */
 	public Color getForeground(Object element, int columnIndex) {
-		if (columnIndex < 3) return null;
+		int attributeIndex = columnIndex - MethodView.FIX_COLUMN_COUNT;
+		if (attributeIndex < 0) return null;
 		if (!(element instanceof Method)) return null;
 		Method method = (Method)element;
 		//属性の値に応じて色をつける
-		Attribute attribute = method.getAttributes().get(columnIndex - 3);
+		if (method.getAttributes().size() <= attributeIndex) return null;
+		Attribute attribute = method.getAttributes().get(attributeIndex);
 		return  attributeColors.get(attribute.getValue());
 	}
-	
-	//アクセサ
-	public void setAttributeTitles(ArrayList<String> attributeTitles) {
-		this.attributeTitles = attributeTitles;
-	}
-
-	
+		
 	
 }

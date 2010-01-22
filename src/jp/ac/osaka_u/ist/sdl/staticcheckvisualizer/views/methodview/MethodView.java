@@ -8,6 +8,7 @@ import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model.Method;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model.MethodList;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model.TargetClass;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model.TargetClassList;
+import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.utility.Utility;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.workspace.WorkspaceManager;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
@@ -31,8 +32,18 @@ import org.eclipse.ui.part.*;
 
 public class MethodView extends ViewPart {
 	
+	/**
+	 * 固定列（クラス名，メソッド名，引数）の列数
+	 */
+	public final static int FIX_COLUMN_COUNT = 3;
+	
 	//TableViewを使用する
 	private TableViewer viewer;
+	private Table table;
+	private Composite tableParent = null;
+	
+	ArrayContentProvider contentProvider;
+	MethodLabelProvider labelProvider;
 	
 	//表示形式
 	MethodLabelProvider methodLabelProvider;
@@ -44,36 +55,31 @@ public class MethodView extends ViewPart {
     private ISelectionListener nodeListener = new ISelectionListener() {
         @Override
         public void selectionChanged(IWorkbenchPart part, ISelection selection) {
+        
+        	
             if (!(selection instanceof IStructuredSelection)) return;
             IStructuredSelection structuredSelection = (IStructuredSelection)selection;
             List list = structuredSelection.toList(); //List<Object>に相当
             if (list == null) return;
-            //TODO 属性に応じてカラム更新
-            //updateColumns(viewer.getTable(), targetClass.getMethods());
-            //TODO 属性タイトルをセット
-        	ArrayList<String> titles = new ArrayList<String>();
-        	titles.add("passed/failed");
-            methodLabelProvider.setAttributeTitles(titles);
-            //表示するデータをセット          
-//          ViewMethodList viewMethodList = new ViewMethodList();
-//          for (Object obj : list) {
-//          	System.out.println("obj="+obj.getClass());
-//            	if (obj instanceof TargetClass) {
-//            		TargetClass targetClass = (TargetClass)obj;
-//            		viewMethodList.addAll(targetClass.getSimpleName(), targetClass.getFullQualifiedName(), targetClass.getMethods());
-//            	}
-//          }
-//          viewer.setInput(viewMethodList);
+         
+            //表示するメソッドリストを生成 
             MethodList methods = new MethodList();
             for (Object obj : list) {
-            	System.out.println("obj="+obj.getClass());
             	if (obj instanceof TargetClass) {
             		TargetClass targetClass = (TargetClass)obj;
             		methods.addAll(targetClass.getMethods());
             	}
           	}
+            //属性に応じてカラム更新
+            updateAttributeColumns(methods);
+            
+            //表示するデータをセット
             viewer.setInput(methods);
+            viewer.update(table, null);
+            
             System.out.println("selectionChaged完了");
+            
+
             
         }
     };
@@ -99,12 +105,12 @@ public class MethodView extends ViewPart {
 	public void createPartControl(Composite parent) {
 		//ここにビューの内容を書く
 		viewer = new TableViewer(parent, SWT.FULL_SELECTION);
+		table = viewer.getTable();	
 		
-		//テーブル取得
-		Table table = viewer.getTable();
 		//テーブル設定
-		table.setHeaderVisible(true);
-		table.setLinesVisible(true);
+		this.table.setHeaderVisible(true);
+		this.table.setLinesVisible(true);
+		
 		//列ヘッダ作成
 		//クラス名
 		TableColumn columnClassName = new TableColumn(table, SWT.NULL);
@@ -118,20 +124,22 @@ public class MethodView extends ViewPart {
 		TableColumn columnParameter = new TableColumn(table, SWT.NULL);
 		columnParameter.setText("引数");
 		columnParameter.setWidth(100);
-		//TODO passed/failed
-		TableColumn passedParameter = new TableColumn(table, SWT.NULL);
-		passedParameter.setText("passed/failed");
-		passedParameter.setWidth(100);
-	
+		//属性
+		//TODO
+		for (int i=0; i< 3/*Activator.getConfig().getMethodViewAttributeColumnCount()*/; i++) {
+			TableColumn columnAttribute = new TableColumn(table, SWT.NULL);
+			columnAttribute.setWidth(100);
+		}
+		
+		
 		//内容と表示の設定
 		viewer.setContentProvider(new ArrayContentProvider());
-		methodLabelProvider = new MethodLabelProvider();
-		viewer.setLabelProvider(methodLabelProvider);	
+		viewer.setLabelProvider(new MethodLabelProvider());	
 
 		//リスナ登録
 		this.getSite().getPage().addSelectionListener(nodeListener);
 				
-		//TODO セルをダブルクリックで該当メソッドのソースへジャンプ
+		//セルをダブルクリックで該当メソッドのソースへジャンプ
 		viewer.addDoubleClickListener(new IDoubleClickListener() {
 			@Override
 			public void doubleClick(DoubleClickEvent event) {
@@ -154,6 +162,7 @@ public class MethodView extends ViewPart {
 	public void dispose() {
 		//リスナ削除
 		this.getSite().getPage().removeSelectionListener(nodeListener);
+		super.dispose();
 	}
 		
 
@@ -164,34 +173,26 @@ public class MethodView extends ViewPart {
 	}
 	
 	/**
-	 * 属性タイトルに対応するようにテーブルのカラムを更新する．
+	 * テーブルのカラムを作成する．
 	 * @param table 対象となるテーブル．
 	 * @param methods メソッド情報．
 	 */
-	public void updateColumns(Table table, MethodList methods) {
-		System.out.println("createColumns titles=" + methods.getAttributeTitles());
-		//現在ある属性カラムをすべて削除
-		for (TableColumn column : attributeColumns) {
-			column.dispose();
-		}
-		attributeColumns.clear();
+	// TODO カラムが足りなかったら作成し，あまったら幅を0にして隠すとか．
+	public void updateAttributeColumns(MethodList methods) {	
 		//属性リストに応じてカラムを生成
-		for (String title : methods.getAttributeTitles()) {
-			TableColumn attributeColumn = new TableColumn(table, SWT.NULL);
+		int i=0;
+		for (TableColumn attributeColumn : viewer.getTable().getColumns()) {
+			i++;
+			int attributeIndex = i - 1 - this.FIX_COLUMN_COUNT;
+			if (attributeIndex < 0) continue;
+			if (methods.getAttributeTitles().size() <= attributeIndex) break;
+			String title = methods.getAttributeTitles().get(attributeIndex);
 			attributeColumn.setText(title);
-			attributeColumns.add(attributeColumn);
+			attributeColumn.setWidth(100);
 		}
+		table.update();
+		
 	}
-	
-//	private List<Method> getItems() {
-//		MethodList methodList = new MethodList();
-//		
-//		methodList.add(new Method("method1","int"));
-//		methodList.add(new Method("method2","int,int"));
-//		methodList.add(new Method("method3","int,boolean"));
-//		
-//		return methodList;
-//	}
 	
 
 
