@@ -98,5 +98,17 @@
             commandId="jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.command.begincheck">
       </handler>
    </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.preference.SCVPreferencePage"
+            id="jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.preference.page"
+            name="StaticCheckVisualizer">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+         <initializer class="jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.preference.PreferenceInitializer" />
+   </extension>
 
 </plugin>

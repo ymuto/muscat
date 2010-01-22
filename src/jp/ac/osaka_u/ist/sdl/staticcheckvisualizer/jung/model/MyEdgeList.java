@@ -2,11 +2,16 @@ package jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.jung.model;
 
 import java.util.ArrayList;
 
+import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.Activator;
+
 
 public class MyEdgeList extends ArrayList<MyEdge> {
 	
-	private int maxLevel = 5;
-	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * 重みの最大値．
 	 */
@@ -22,7 +27,8 @@ public class MyEdgeList extends ArrayList<MyEdge> {
 		updateMinMax();
 		//エッジの太さを計算
 		for (MyEdge edge : this) {
-			int width = judgeLevel(edge.getWeight(), this.minWeight, this.maxWeight, this.maxLevel);
+			if (edge == null) continue;
+			int width = judgeLevel(edge.getWeight(), this.minWeight, this.maxWeight, Activator.getConfig().getEdgeMaxLevel());
 			System.out.println(width);
 			edge.setWidth(width);
 		}

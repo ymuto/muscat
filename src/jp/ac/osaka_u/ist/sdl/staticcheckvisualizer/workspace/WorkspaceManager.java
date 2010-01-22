@@ -8,6 +8,7 @@ import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model.Method;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
@@ -71,6 +72,14 @@ public class WorkspaceManager {
 			return getUnresolvedParameters(imethod);
 		}
 		return null;
+	}
+	
+	/**
+	 * ワークスペースのディスク上のパスを返す．
+	 * @return
+	 */
+	public static String getWorkspaceDirPath() {
+		return ResourcesPlugin.getWorkspace().getRoot().getLocation().toOSString();
 	}
 	
 	/**
@@ -148,6 +157,7 @@ public class WorkspaceManager {
 		String unresolvedParameters[] = new String[imethod.getParameterTypes().length];
 		for (int i=0; i<imethod.getParameterTypes().length; i++) {
 			unresolvedParameters[i] = Signature.toString(imethod.getParameterTypes()[i]);
+			System.out.println(imethod.getElementName() + " " + unresolvedParameters[i]);
 		}
 		return unresolvedParameters;
 	}
@@ -206,8 +216,10 @@ public class WorkspaceManager {
 				//引数あり
 				for (int i=0; i<im.getParameterTypes().length; i++) {
 					//ソースコードの引数の型名を完全限定名に変換(String -> java.lang.String)
-					String unresolvedParameter = Signature.toString(im.getParameterTypes()[i]);
-					String fullQualifiedParameterType = getFullQualifiedTypeFromType(unresolvedParameter, im);
+					//String types[] = im.getParameterTypes(); //[QString;みたいな形式
+					//String unresolvedParameter = Signature.toString(im.getParameterTypes()[i]);
+					//String fullQualifiedParameterType = getFullQualifiedTypeNameFromSimpleTypeName(unresolvedParameter, im);
+					String fullQualifiedParameterType = getFullQualifiedTypeNameFromUnresolvedName(im.getParameterTypes()[i], im);
 					//引数型名比較
 					if (!method.getParameters()[i].equals(fullQualifiedParameterType)) break;					
 					//最終引数が一致した
@@ -228,11 +240,13 @@ public class WorkspaceManager {
 	
 	/**
 	 * 引数の型名を完全限定名に変換する．
-	 * @param parameterType 引数の型名．解決されていない形．(例：Stringなど)
+	 * 例 String -> java.lang.String
+	 * @param parameterType 引数の型名．解決されていない形．(例：String[]など)
 	 * @param method 引数が所属するメソッド
 	 * @return
 	 */
-	private String getFullQualifiedTypeFromType(String parameterType, IMethod method) {
+	private String getFullQualifiedTypeNameFromSimpleTypeName(String parameterType, IMethod method) {
+		//String arrayBracket = 
 		String fullQualifiedType = parameterType; //プリミティブ形の場合に使用
 		String[][] parameterElements;
 		try {
@@ -251,6 +265,28 @@ public class WorkspaceManager {
 		}
 
 		return fullQualifiedType;
+	}
+	
+	
+	
+
+	/**
+	 * 引数の未解決の型名から完全限定名を得る．
+	 * 例 [[QString; -> java.lang.String[][]
+	 * @param unresolvedName 引数の未解決の型名．
+	 * @param imethod この引数の所属するメソッド．
+	 * @return 完全限定名
+	 */
+	private String getFullQualifiedTypeNameFromUnresolvedName(String unresolvedName, IMethod imethod) {
+		//配列の処理
+		int bracketLastIndex = unresolvedName.lastIndexOf("["); //"[[QString;".lastIndexOf("[[") -> 1
+		String typeName = unresolvedName.substring(bracketLastIndex + 1); //[がない場合は-1が返されるため0となる
+		String arrayBracket = unresolvedName.substring(0, bracketLastIndex + 1);
+		//デコード
+		String resolvedName = Signature.toString(typeName);
+		String fullQualifiedType = getFullQualifiedTypeNameFromSimpleTypeName(resolvedName,imethod);
+		//完全限定名を生成
+		return fullQualifiedType + arrayBracket.replace("[", "[]");
 	}
 	
 	//アクセサ

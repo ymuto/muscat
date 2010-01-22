@@ -62,12 +62,15 @@ public class GenerateXml {
 	 * XMLを生成する．
 	 * 
 	 * @param javafile 入力となるJavaファイル
-	 * @param outputdir XMLを出力するディレクトリ
+	 * @param outdir XMLを出力するディレクトリ
 	 */
-	public void generateXml(File javafile, String outputdir)
+	public void generateXml(File javafile, String outdir)
 	{	
 		this.javaFile = javafile;
-		String generatorCommand = Activator.getConfig().getGenerateCommand() + " " + javaFile.getPath() + " " + outputdir;
+		//出力先ディレクトリは\で終わるように
+		if (!outdir.endsWith("\\")) outdir += "\\";
+		//コマンド生成
+		String generatorCommand = Activator.getConfig().getGenerateCommand() + " " + javaFile.getPath() + " " + outdir;
 		if (this.classPath != null) {
 			generatorCommand  += " -classpath " + this.classPath;
 		}

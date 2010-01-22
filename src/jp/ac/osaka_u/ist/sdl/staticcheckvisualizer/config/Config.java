@@ -3,15 +3,24 @@ package jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.config;
 
 import java.util.HashMap;
 
+import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.Activator;
+import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.preference.PreferenceKey;
+
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.swt.graphics.Color;
 
 /**
- * 設定を記述するクラス．
+ * 内部設定を記述するクラス．
  * @author y-mutoh
  *
  */
 public final class Config {
-    //設定用定数
+	
+	//デフォルト値
+	public static final String DEFAULT_GENERATE_COMMAND = "perl C:\\Users\\y-mutoh\\workspace\\jp.ac.osaka_u.ist.sdl.staticcheckvisualizer\\perl\\escj2xml.pl";
+    public static final int DEFAULT_EDGE_MAX_LEVEL = 5;
+	
+	//設定用定数
 	/**
 	 * ノードの横幅．
 	 */
@@ -44,12 +53,17 @@ public final class Config {
     private String generateCommand;
     
     /**
+     * エッジの太さレベルの最大数．
+     */
+    private int edgeMaxLevel;
+    
+    /**
      * コンストラクタ
      */
     public Config() {
     	attributeColors = new HashMap<String, Color>();
     	setDefaultAttributeColors();
-    	setCheckArgs();
+    	updateFromPreference();
     }
     
 
@@ -59,24 +73,20 @@ public final class Config {
 	private void setDefaultAttributeColors() {
     	attributeColors.put("passed", new Color(null,0,127,0)); //緑
     	attributeColors.put("failed", new Color(null,255,0,0)); //赤
-    	attributeColors.put("true", new Color(null,0,127,0));	//緑
-    	attributeColors.put("false", new Color(null,255,0,0));	//赤
-    	attributeColors.put("OK", new Color(null,0,127,0));		//緑
-    	attributeColors.put("NG", new Color(null,255,0,0));		//赤
+    	attributeColors.put("true",   new Color(null,0,127,0));	//緑
+    	attributeColors.put("false",  new Color(null,255,0,0));	//赤
+    	attributeColors.put("OK",     new Color(null,0,127,0)); //緑
+    	attributeColors.put("NG",     new Color(null,255,0,0));	//赤
 	}
 	
 	/**
-	 * チェックに用いる値をセット．
+	 * プリファレンスストアから設定を取得
 	 */
-	private void setCheckArgs(){
-		//this.generateCommand = "perl C:\\Users\\y-mutoh\\research\\perl\\escj2xml.pl";
-		//this.generateCommand = "perl C:\\Users\\y-mutoh\\workspace\\jp.ac.osaka_u.ist.sdl.staticcheckvisualizer\\perl\\escj2xml.pl";
-		this.generateCommand = "perl C:\\Users\\y-mutoh\\workspace\\jp.ac.osaka_u.ist.sdl.staticcheckvisualizer\\perl\\dummy.pl";
-
-		//String xml_out = "C:\\Users\\y-mutoh\\workspace\\SCVTestData\\xml";
-		//String xml_out = "C:\\Users\\y-mutoh\\workspace\\StockManagement\\xml";
-		//String xml_out = "C:\\Users\\y-mutoh\\runtime-Eclipseアプリケーション\\StockManagement\\xml\\";
-		this.outputDir = "C:\\Users\\y-mutoh\\runtime-Eclipseアプリケーション\\StockManagement\\xml\\";
+	public void updateFromPreference() {
+		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+		this.outputDir = store.getString(PreferenceKey.OUTPUT_DIR);
+		this.generateCommand = store.getString(PreferenceKey.GENERATE_COMMAND);
+		this.edgeMaxLevel = store.getInt(PreferenceKey.EDGE_MAX_LEVEL);
 	}
 
 
@@ -92,5 +102,12 @@ public final class Config {
 	public String getGenerateCommand() {
 		return generateCommand;
 	}
+
+
+	public int getEdgeMaxLevel() {
+		return edgeMaxLevel;
+	}
+	
+	
 	   
 }

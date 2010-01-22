@@ -10,6 +10,9 @@ import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model.TargetClass;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model.TargetClassList;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.workspace.WorkspaceManager;
 
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
@@ -26,15 +29,13 @@ import org.eclipse.ui.part.*;
 public class MainView extends ViewPart implements ISelectionProvider {
 	private StaticCheckVisualizer scv;
 	
+	private IAction refreshAction;
+	
 	//フォーム部品
 	/**
 	 * チェック開始ボタン
 	 */
 	private Button btnCheck;
-	/**
-	 * 更新ボタン
-	 */
-	private Button btnRefresh;
 
 	/**
 	 * The ID of the view as specified by the extension.
@@ -48,13 +49,24 @@ public class MainView extends ViewPart implements ISelectionProvider {
 	}
 
 	/**
-	 * This is a callback that will allow us
-	 * to create the viewer and initialize it.
+	 * 画面作成
 	 */
 	public void createPartControl(Composite parent) {
-		
 		scv = Activator.getScv();
 		
+    	//リフレッシュアクション作成
+    	ImageDescriptor icon = Activator.getImageDescriptor("icons/refresh.gif");
+		this.refreshAction = new Action("リフレッシュ", icon){
+			public void run() {
+				//画面のリフレッシュ
+				System.out.println("メインビューをリフレッシュ");
+				
+			}
+		};
+		//ツールバーに組み込む
+		this.getViewSite().getActionBars().getToolBarManager().add(this.refreshAction);
+		
+		//チェック開始ボタン
 		if (!scv.isFinishedCheck()) {
 			//静的チェックが開始されていないとき
 			//TODO 開始ボタンを設置
@@ -63,33 +75,24 @@ public class MainView extends ViewPart implements ISelectionProvider {
 			btnCheck.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					System.out.println("チェックボタンが押された");
+					System.out.println("チェック開始ボタンが押された");
 					//実行
-					Activator.getScv().execute();
-				}
-			});
-			//TODO 画面更新ボタンを設置
-			btnRefresh = new Button(parent, SWT.PUSH);
-			btnRefresh.setText("更新");
-			btnRefresh.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(SelectionEvent e) {
-					// TODO 自動生成されたメソッド・スタブ
-					System.out.println("更新ボタンが押された");
+					scv.execute();
 				}
 			});
 			return;
 		}
 		
-    	//ウィンドウ
+    	//ウィンドウにグラフを表示
 		Composite c = new Composite(parent,SWT.EMBEDDED);
 		Frame frame = SWT_AWT.new_Frame(c);
     	frame.add(scv.getJungManager().getVisualizationServer()); //グラフをセット
     		
     	//ノード選択をメソッドビューに伝える
-    	this.getSite().setSelectionProvider(this); 
-    	
+    	this.getSite().setSelectionProvider(this);	  	
 	}
+	
+	
 		
 
 	/**

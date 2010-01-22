@@ -127,6 +127,7 @@ public class JungManager implements ItemSelectable {
 			for (Callee callee: caller.getCallees()) {
 				MyNode callerNode = nodes.searchMyNode(caller.getFullQualifiedName());
 				MyNode calleeNode = nodes.searchMyNode(callee.getCalleeClass().getFullQualifiedName());
+				if (callerNode == null || calleeNode == null) continue;
 				MyEdge edge = new MyEdge(callerNode, calleeNode, callee.getCallCount());
 				edges.add(edge);
 				g.addEdge(edge, edge.getCallerNode(), edge.getCalleeNode());

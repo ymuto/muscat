@@ -86,7 +86,7 @@ public class Method {
 
 	@Override
 	public String toString() {
-		return name + "(" + parameters + ") id=" + id + ", attributes="
+		return name + "(" + this.getParameterWithComma() + ") id=" + id + ", attributes="
 				+ attributes.toString() + "]\n";
 	}
 	
