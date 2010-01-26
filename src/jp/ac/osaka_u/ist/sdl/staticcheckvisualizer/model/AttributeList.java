@@ -9,6 +9,11 @@ import org.w3c.dom.NodeList;
 public class AttributeList extends ArrayList<Attribute> {
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	/**
 	 * この属性リストが所属するメソッド．
 	 */
 	private Method method = null;

@@ -3,10 +3,8 @@ package jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.generateXml;
 import java.lang.Runtime;
 import java.lang.Process;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.io.*;
 
-import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.Activator;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.config.Config;
 
 /**

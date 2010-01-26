@@ -2,7 +2,6 @@ package jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.jung.model;
 
 import java.util.ArrayList;
 
-import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.Activator;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.config.Config;
 
 

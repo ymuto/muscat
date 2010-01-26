@@ -1,8 +1,6 @@
 package jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;

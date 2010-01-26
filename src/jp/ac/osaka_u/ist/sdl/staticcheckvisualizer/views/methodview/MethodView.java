@@ -1,7 +1,6 @@
 package jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.views.methodview;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.Activator;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model.Method;
@@ -34,6 +33,9 @@ public class MethodView extends ViewPart {
 	 */
 	public final static int FIX_COLUMN_COUNT = 3;
 	
+	/**
+	 * 初期状態で生成する属性用カラムの数
+	 */
 	private final static int DEFAULT_ATTRIBUTE_COLUMN_COUNT = 4;
 	
 	//TableViewを使用する

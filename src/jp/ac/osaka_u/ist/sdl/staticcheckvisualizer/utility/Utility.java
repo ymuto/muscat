@@ -13,6 +13,11 @@ import java.util.Set;
 public class Utility {
 	
 	/**
+	 * コンストラクタ．インスタンス化できないようにしている．
+	 */
+	private Utility() {}
+	
+	/**
 	 * 2つのListを併合したArrayListを生成する．
 	 * 順序は失われる．
 	 * @param <E>

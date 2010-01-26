@@ -6,6 +6,11 @@ import java.util.ArrayList;
 public class MyNodeList extends ArrayList<MyNode> {
 	
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 * 完全限定名が一致するノードを検索する．
 	 * @param fullQualifiedName 完全限定名．
 	 * @return 見つからない場合はnull

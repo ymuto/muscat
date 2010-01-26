@@ -2,21 +2,16 @@ package jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.views.classview;
 
 import java.util.List;
 
-import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model.Method;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model.MethodList;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model.TargetClass;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model.TargetClassList;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.ui.ISelectionListener;
-import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.internal.dialogs.ViewLabelProvider;
 import org.eclipse.ui.part.*;
 
 
