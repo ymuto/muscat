@@ -1,6 +1,7 @@
 package jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.preference;
 
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.Activator;
+import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.config.Config;
 
 import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
@@ -42,7 +43,7 @@ public class SCVPreferencePage extends FieldEditorPreferencePage implements IWor
 	public boolean performOk() {
 		super.performOk();
 		//ì‡ïîê›íËÇçXêV
-		Activator.getConfig().updateFromPreference();
+		Config.getInstance().updateFromPreference();
 		return true;
 	}
 

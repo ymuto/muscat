@@ -86,7 +86,7 @@ public class ClassView extends ViewPart {
 //		methodList1.add(new Method("method4","int"));
 //		methodList1.add(new Method("method5","int,int"));
 //		methodList1.add(new Method("method6","int,boolean"));
-//		targetClass1.setMethods(methodList1);
+		targetClass1.setMethods(methodList1);
 		targetClasses.add(targetClass1);
 //		//class2
 //		TargetClass targetClass2 = new TargetClass("Class2","package1.Class2",20);

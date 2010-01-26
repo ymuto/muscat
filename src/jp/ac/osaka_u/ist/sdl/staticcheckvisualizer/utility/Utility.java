@@ -21,14 +21,15 @@ public class Utility {
 	 * @return
 	 */
 	public static <E> List<E> margeList(List<E> list1, List<E> list2) {
+		if (list1 == null && list2 == null) return null;
+		if (list1 == null) return list2;
+		if (list2 == null) return list1;
+		//Set‚É•ÏŠ·
 		Set<E> set1 = new HashSet<E>(list1);
 		Set<E> set2 = new HashSet<E>(list2);
-		Set<E> retSet = new HashSet<E>();
-		if (set1 == null && set2 == null) return null;
-		if (set1 == null) return new ArrayList<E>(set2);
-		if (set2 == null) return new ArrayList<E>(set1);
+		//Set‚ğ•¹‡
 		set1.addAll(set2);
-		return new ArrayList<E>(retSet);
+		return new ArrayList<E>(set1);
 	}
 	
 	/**

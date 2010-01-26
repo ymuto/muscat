@@ -11,7 +11,7 @@ public class AttributeList extends ArrayList<Attribute> {
 	/**
 	 * この属性リストが所属するメソッド．
 	 */
-	private Method method;
+	private Method method = null;
 	
 	/**
 	 * XMLノードから読み込む

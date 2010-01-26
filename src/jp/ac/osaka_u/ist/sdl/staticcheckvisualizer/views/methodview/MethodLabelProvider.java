@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.Activator;
+import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.config.Config;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model.Attribute;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model.Method;
 
@@ -21,27 +22,6 @@ import org.eclipse.swt.widgets.Display;
  *
  */
 public class MethodLabelProvider extends LabelProvider implements ITableLabelProvider,ITableColorProvider {
-	private Display display;
-	
-    /**
-     * 属性の値に応じて色分けする設定．（未使用）
-     */
-	private HashMap<String, Color> attributeColors;
-	
-	/**
-	 * コンストラクタ．
-	 */
-	public MethodLabelProvider(Display display) {
-		this.display = display;
-    	attributeColors = Activator.getConfig().getAttributeColors();
-	}
-	
-	public MethodLabelProvider() {
-		this.display = null;
-    	attributeColors = Activator.getConfig().getAttributeColors();
-
-	}
-	
 	/**
 	 * Methodモデルからセルに表示する文字列を生成する．
 	 */
@@ -87,7 +67,6 @@ public class MethodLabelProvider extends LabelProvider implements ITableLabelPro
 	 * セルの内容に応じて文字色を設定する．
 	 */
 	public Color getForeground(Object element, int columnIndex) {
-		
 		int attributeIndex = columnIndex - MethodView.FIX_COLUMN_COUNT;
 		if (attributeIndex < 0) return null;
 		if (!(element instanceof Method)) return null;
@@ -100,7 +79,7 @@ public class MethodLabelProvider extends LabelProvider implements ITableLabelPro
 		//タイトルが一致する属性を検索する
 		Attribute attribute = method.getAttributes().searchAttributeFromTitle(title);
 		if (attribute == null) return null;
-		return  attributeColors.get(attribute.getValue());
+		return Config.getInstance().getAttributeColors().get(attribute.getValue());
 	}
 		
 	

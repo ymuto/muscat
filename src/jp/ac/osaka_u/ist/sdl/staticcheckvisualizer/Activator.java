@@ -17,7 +17,6 @@ public class Activator extends AbstractUIPlugin {
 	// The shared instance
 	private static Activator plugin;	
 	private static StaticCheckVisualizer scv;
-	private static Config config;
 	
 
 	/**
@@ -34,7 +33,6 @@ public class Activator extends AbstractUIPlugin {
 		super.start(context);
 		plugin = this;
 		scv = new StaticCheckVisualizer();
-		config = new Config();
 	}
 
 	/*
@@ -69,10 +67,6 @@ public class Activator extends AbstractUIPlugin {
 	//アクセサ
 	public static StaticCheckVisualizer getScv() {
 		return scv;
-	}
-
-	public static Config getConfig() {
-		return config;
 	}
 
 }

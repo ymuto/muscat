@@ -148,11 +148,21 @@ public class TargetClass {
 	public boolean equals(Object obj) {
 		if (obj == null) return false;
 		if (!(obj instanceof TargetClass)) return false;
-		//System.out.println("obj=" + obj.toString());	
 		TargetClass targetClass = (TargetClass)obj;
 		return this.getFullQualifiedName().equals(targetClass.getFullQualifiedName());
 	}
 	
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime
+				* result
+				+ ((fullQualifiedName == null) ? 0 : fullQualifiedName
+						.hashCode());
+		return result;
+	}
 	
 	@Override
 	public String toString() {
@@ -167,6 +177,9 @@ public class TargetClass {
 	}
 	
 	
+
+
+
 	/**
 	 * 完全限定名をパッケージ名とクラス名から生成する．
 	 */

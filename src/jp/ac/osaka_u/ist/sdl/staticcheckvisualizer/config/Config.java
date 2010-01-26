@@ -11,10 +11,13 @@ import org.eclipse.swt.graphics.Color;
 
 /**
  * 内部設定を記述するクラス．
+ * シングルトン．
  * @author y-mutoh
  *
  */
 public final class Config {
+	//シングルトン実現用．自分の型のインスタンス．
+	private static Config instance = new Config();
 	
 	//デフォルト値
 	public static final String DEFAULT_GENERATE_COMMAND = "perl C:\\Users\\y-mutoh\\workspace\\jp.ac.osaka_u.ist.sdl.staticcheckvisualizer\\perl\\escj2xml.pl";
@@ -63,12 +66,11 @@ public final class Config {
     /**
      * コンストラクタ
      */
-    public Config() {
+    private Config() {
     	attributeColors = new HashMap<String, Color>();
     	setDefaultAttributeColors();
     	updateFromPreference();
-    }
-    
+    }  
 
 	/**
 	 * 属性の色分けの初期値を設定．
@@ -116,6 +118,9 @@ public final class Config {
 		return methodViewAttributeColumnCount;
 	}
 	
-	
+	//シングルトン実現用．インスタンス取得
+	public static Config getInstance() {
+		return Config.instance;
+	}
 	   
 }

@@ -38,20 +38,22 @@ public class MyEdge {
 		this.weight = 0;
 	}
 	
-	/**
-	 * 開始ノード，終了ノードが等しければ同一エッジと見なす．
-	 * @param 比較対象エッジ．
-	 * @return
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (obj == null) return false;
-		if (!(obj instanceof MyEdge)) return false;
-		MyEdge edge = (MyEdge)obj;
-		if (!edge.getCallerNode().equals(this.callerNode)) return false;
-		if (!edge.getCalleeNode().equals(this.calleeNode)) return false;
-		return true;
-	}
+//	/**
+//	 * 開始ノード，終了ノードが等しければ同一エッジと見なす．
+//	 * @param 比較対象エッジ．
+//	 * @return
+//	 */
+//	@Override
+//	public boolean equals(Object obj) {
+//		if (obj == null) return false;
+//		if (!(obj instanceof MyEdge)) return false;
+//		MyEdge edge = (MyEdge)obj;
+//		if (!edge.getCallerNode().equals(this.callerNode)) return false;
+//		if (!edge.getCalleeNode().equals(this.calleeNode)) return false;
+//		return true;
+//	}
+	
+
 
 	@Override
 	public String toString() {
@@ -60,6 +62,21 @@ public class MyEdge {
 		return callerNodeName + "-(" + this.weight + ")->" + calleeNodeName;
 	}
 	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((calleeNode == null) ? 0 : calleeNode.hashCode());
+		result = prime * result
+				+ ((callerNode == null) ? 0 : callerNode.hashCode());
+		result = prime * result + weight;
+		result = prime * result + width;
+		return result;
+	}
+
+
+
 	public void incrementWeight() {
 		this.weight++;
 	}

@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.io.*;
 
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.Activator;
+import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.config.Config;
 
 /**
  * JavaソースファイルからXMLファイルを生成するクラス．
@@ -15,8 +16,8 @@ import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.Activator;
  *
  */
 public class GenerateXml {
-	private final int EXIT_SUCCESS = 0;
-	private final int EXIT_FAILURE = 1;
+	private final static int EXIT_SUCCESS = 0;
+	private final static int EXIT_FAILURE = 1;
 	
 	/**
 	 * 入力Javaソースファイル．
@@ -70,7 +71,7 @@ public class GenerateXml {
 		//出力先ディレクトリは\で終わるように
 		if (!outdir.endsWith("\\")) outdir += "\\";
 		//コマンド生成
-		String generatorCommand = Activator.getConfig().getGenerateCommand() + " " + javaFile.getPath() + " " + outdir;
+		String generatorCommand = Config.getInstance().getGenerateCommand() + " " + javaFile.getPath() + " " + outdir;
 		if (this.classPath != null) {
 			generatorCommand  += " -classpath " + this.classPath;
 		}
@@ -101,53 +102,35 @@ public class GenerateXml {
 	{
 		StringBuilder out = new StringBuilder();
 		Runtime rt = Runtime.getRuntime();
+		InputStream is;
 		Process pr;
+		BufferedReader br;
 		try {
 			//プロセス生成
 			pr = rt.exec(command);
-
 			//標準出力
-			InputStream is = pr.getInputStream();
-			BufferedReader br = new BufferedReader(new InputStreamReader(is));
+			is = pr.getInputStream();
+			br = new BufferedReader(new InputStreamReader(is));
 			String line;
 			while ((line = br.readLine()) != null)
 			{
 				out.append(line + "\n");
 				System.out.println(line);
-//				try {
-//					//終了するまで待つ
-//					pr.waitFor();
-//				}
-//				catch (IllegalThreadStateException e) { //プロセスが終了していないとき例外発生
-//					continue; //whileを続ける
-//				}
 			}
 			//終了するまで待つ
 			pr.waitFor();
 			//ステータスチェック
 			if (pr.exitValue() != EXIT_SUCCESS)
 				throw new Exception("execute command error. code:" + pr.exitValue());
+			br.close();
+			is.close();
+			
 			return out;
 			
 		} catch (Exception e) {
 			System.err.println(e);
 			return null;
 		}
-	}
-	
-	/**
-	 * 正規表現を用いたフィルタを返す．
-	 * @param regex 正規表現．
-	 * @return ファイル名フィルタ．
-	 */
-	private static FilenameFilter getFileRegexFilter(String regex) {
-		final String regex_ = regex;
-		return new FilenameFilter() {
-			public boolean accept(File file, String name) {
-				boolean ret = name.matches(regex_);
-				return ret;
-			}
-		};
 	}
 	
 	/* アクセサ */

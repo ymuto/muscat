@@ -17,7 +17,7 @@ public class MethodList extends ArrayList<Method> {
 	/**
 	 * 所属するクラス．
 	 */
-	private TargetClass targetClass;
+	private TargetClass targetClass = null;
 	
 	/**
 	 * コンストラクタ．

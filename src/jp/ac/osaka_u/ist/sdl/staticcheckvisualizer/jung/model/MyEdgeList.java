@@ -3,6 +3,7 @@ package jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.jung.model;
 import java.util.ArrayList;
 
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.Activator;
+import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.config.Config;
 
 
 public class MyEdgeList extends ArrayList<MyEdge> {
@@ -28,7 +29,7 @@ public class MyEdgeList extends ArrayList<MyEdge> {
 		//エッジの太さを計算
 		for (MyEdge edge : this) {
 			if (edge == null) continue;
-			int width = judgeLevel(edge.getWeight(), this.minWeight, this.maxWeight, Activator.getConfig().getEdgeMaxLevel());
+			int width = judgeLevel(edge.getWeight(), this.minWeight, this.maxWeight, Config.getInstance().getEdgeMaxLevel());
 			System.out.println(width);
 			edge.setWidth(width);
 		}

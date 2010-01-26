@@ -69,4 +69,10 @@ public class Attribute {
 	public void setValue(String value) {
 		this.value = value;
 	}
+
+	public AttributeList getAttributeList() {
+		return attributeList;
+	}
+	
+	
 }

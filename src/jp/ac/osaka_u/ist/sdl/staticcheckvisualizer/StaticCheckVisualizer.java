@@ -4,11 +4,11 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Set;
 import java.util.TimeZone;
 
+import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.config.Config;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.generateXml.GenerateXml;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.jung.JungManager;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.jung.model.MyNode;
@@ -124,7 +124,7 @@ public class StaticCheckVisualizer {
 			System.out.println("javafile=" + javafile.getName());
 			//XMLê∂ê¨
 			System.out.println("XMLê∂ê¨äJén...");
-			GenerateXml generator = new GenerateXml(new File(javafile.getPath()), Activator.getConfig().getOutputDir(), classpath, true);
+			GenerateXml generator = new GenerateXml(new File(javafile.getPath()), Config.getInstance().getOutputDir(), classpath, true);
 			System.out.println("XMLê∂ê¨äÆóπ!");
 
 			//XMLì«Ç›çûÇ›

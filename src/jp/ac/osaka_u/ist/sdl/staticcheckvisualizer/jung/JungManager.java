@@ -34,11 +34,6 @@ import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model.TargetClassList;
 
 public class JungManager implements ItemSelectable {
 	/**
-	 * 対象となるクラス一覧
-	 */
-	private TargetClassList targetClasses;
-	
-	/**
 	 * グラフ．
 	 */
 	private Graph<MyNode, MyEdge> g;
@@ -103,10 +98,9 @@ public class JungManager implements ItemSelectable {
 	
 	/**
 	 * コンストラクタ．
+	 * @param targetClasses 対象となるクラスリスト．
 	 */
-	public JungManager(TargetClassList targetClasses) {
-		this.targetClasses = targetClasses;
-		
+	public JungManager(TargetClassList targetClasses) {	
 		//グラフ
     	g = new DirectedSparseMultigraph<MyNode,MyEdge>();
     	
@@ -116,8 +110,7 @@ public class JungManager implements ItemSelectable {
 			MyNode node = new MyNode(c.getSimpleName(), c.getFullQualifiedName(), c.getCoverage());
 			nodes.add(node);
 			g.addVertex(node);
-		}
-		
+		}	
 		System.out.println("ノード追加完了");
 		
 	   	//エッジ追加
@@ -133,8 +126,7 @@ public class JungManager implements ItemSelectable {
 				g.addEdge(edge, edge.getCallerNode(), edge.getCalleeNode());
 			}
 		}
-		edges.update();
-		
+		edges.update();		
 		System.out.println("エッジ追加完了");
 		
 	  	//グラフ表示設定
@@ -157,11 +149,9 @@ public class JungManager implements ItemSelectable {
         vv.setGraphMouse(defaultModalGraphMouse);
         //ノード選択の変化を受け取るリスナ
         vv.getPickedVertexState().addItemListener(itemListener);
-        
     	//マウスホイールで拡大・縮小
     	//graphMouse.add(new ScalingGraphMousePlugin(new LayoutScalingControl(), 0));
     	//vv.setGraphMouse(graphMouse);
-    	
 	}
 
 	/**
@@ -179,6 +169,9 @@ public class JungManager implements ItemSelectable {
 	public Set<MyNode> getSelectedNodes() {
 		return selectedNodes;
 	}
+	
+	
+	
 
 	//TODO
 	@Override
@@ -199,5 +192,7 @@ public class JungManager implements ItemSelectable {
 		if (selectedNodes == null) return null;
 		return selectedNodes.toArray();
 	}
+	
+	
 	
 }
