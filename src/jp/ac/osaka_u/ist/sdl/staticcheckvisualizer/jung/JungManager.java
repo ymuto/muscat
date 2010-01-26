@@ -171,25 +171,6 @@ public class JungManager implements ItemSelectable {
 	public VisualizationViewer<MyNode, MyEdge> getVisualizationServer() {
 		return vv;
 	}
-	
-	//TODO 現在未使用．
-	/**
-	 * グラフにエッジを追加する．
-	 * @param 追加したいエッジ．
-	 */
-	private void addEdge(MyEdge edge) {
-		int existIndex = edges.indexOf(edge);
-		if (existIndex == -1) {
-			//存在しない場合は，新規エッジ追加
-			edges.add(edge);
-			g.addEdge(edge, edge.getCallerNode(), edge.getCalleeNode());
-		}
-		else {
-			//すでにエッジが存在する場合は，重みを増やす
-			MyEdge existEdge = edges.get(existIndex);
-			existEdge.incrementWeight();
-		}
-	}
 
 	/**
 	 * 現在選択されているノードの集合を返す．

@@ -59,7 +59,7 @@ public class MethodLabelProvider extends LabelProvider implements ITableLabelPro
 		
 		//3列目以降は属性．列タイトルと属性タイトルが一致する属性の値を返す．
 		int attributeIndex = index - MethodView.FIX_COLUMN_COUNT;
-		ArrayList<String> attributeTitles = method.getMethodList().getAttributeTitles();
+		ArrayList<String> attributeTitles = method.getMethodList().getTargetClass().getTargetClasses().getAttributeTitles();
 		if (attributeTitles == null) return "";
 		if (attributeTitles.size() <= 0 || attributeTitles.size() <= attributeIndex) return "";
 		//属性タイトルを取得する
@@ -67,7 +67,6 @@ public class MethodLabelProvider extends LabelProvider implements ITableLabelPro
 		String title = attributeTitles.get(attributeIndex);
 		//タイトルが一致する属性を検索する
 		Attribute attribute = method.getAttributes().searchAttributeFromTitle(title);
-
 		if (attribute == null) return "";
 		return attribute.getValue();
 	}
@@ -88,13 +87,19 @@ public class MethodLabelProvider extends LabelProvider implements ITableLabelPro
 	 * セルの内容に応じて文字色を設定する．
 	 */
 	public Color getForeground(Object element, int columnIndex) {
+		
 		int attributeIndex = columnIndex - MethodView.FIX_COLUMN_COUNT;
 		if (attributeIndex < 0) return null;
 		if (!(element instanceof Method)) return null;
 		Method method = (Method)element;
+		ArrayList<String> attributeTitles = method.getMethodList().getTargetClass().getTargetClasses().getAttributeTitles();
+		if (attributeTitles.size() <= attributeIndex) return null;
 		//属性の値に応じて色をつける
-		if (method.getAttributes().size() <= attributeIndex) return null;
-		Attribute attribute = method.getAttributes().get(attributeIndex);
+		//属性タイトルを取得する
+		String title = attributeTitles.get(attributeIndex);
+		//タイトルが一致する属性を検索する
+		Attribute attribute = method.getAttributes().searchAttributeFromTitle(title);
+		if (attribute == null) return null;
 		return  attributeColors.get(attribute.getValue());
 	}
 		

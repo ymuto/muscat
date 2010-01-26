@@ -108,7 +108,8 @@ public class MainView extends ViewPart implements ISelectionProvider {
 	public ISelection getSelection() {
 		System.out.println("MainView.getSelection()");
 		if (scv.getSelectedTargetClasses() == null) return null;
-		return new StructuredSelection(scv.getSelectedTargetClasses());
+		return scv.getSelectedTargetClasses();
+		//return new StructuredSelection(scv.getSelectedTargetClasses());
 	}
 
 	@Override

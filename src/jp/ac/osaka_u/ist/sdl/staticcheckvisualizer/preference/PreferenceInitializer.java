@@ -6,6 +6,11 @@ import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.workspace.WorkspaceManager;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
 
+/**
+ * プリファレンスストアを初期化する．
+ * @author y-mutoh
+ *
+ */
 public class PreferenceInitializer extends AbstractPreferenceInitializer{
 
 	@Override
@@ -16,5 +21,4 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer{
 		store.setDefault(PreferenceKey.EDGE_MAX_LEVEL, Activator.getConfig().DEFAULT_EDGE_MAX_LEVEL);
 		store.setDefault(PreferenceKey.METHODVIEW_ATTRIBUTE_COLUMN_COUNT, Activator.getConfig().DEFAULT_METHODVIEW_ATTRIBUTE_COLUMN_COUNT);
 	}
-
 }

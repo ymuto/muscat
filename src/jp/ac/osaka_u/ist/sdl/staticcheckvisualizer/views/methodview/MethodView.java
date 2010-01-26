@@ -8,16 +8,13 @@ import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model.Method;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model.MethodList;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model.TargetClass;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model.TargetClassList;
-import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.utility.Utility;
-import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.workspace.WorkspaceManager;
+
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
 
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
@@ -37,49 +34,39 @@ public class MethodView extends ViewPart {
 	 */
 	public final static int FIX_COLUMN_COUNT = 3;
 	
+	private final static int DEFAULT_ATTRIBUTE_COLUMN_COUNT = 4;
+	
 	//TableViewを使用する
 	private TableViewer viewer;
 	private Table table;
-	private Composite tableParent = null;
 	
-	ArrayContentProvider contentProvider;
-	MethodLabelProvider labelProvider;
-	
-	//表示形式
-	MethodLabelProvider methodLabelProvider;
-	
-	//属性を表示するカラム
-	private ArrayList<TableColumn> attributeColumns;
 	
 	//クラス選択を受け取るリスナ
     private ISelectionListener nodeListener = new ISelectionListener() {
         @Override
         public void selectionChanged(IWorkbenchPart part, ISelection selection) {
-        
-        	
+     	
             if (!(selection instanceof IStructuredSelection)) return;
             IStructuredSelection structuredSelection = (IStructuredSelection)selection;
-            List list = structuredSelection.toList(); //List<Object>に相当
-            if (list == null) return;
-         
+            //List list = structuredSelection.toList(); //List<Object>に相当
+            //if (list == null) return;
+            if (!(structuredSelection  instanceof TargetClassList)) return;
+            
+            TargetClassList targetClasses = (TargetClassList)structuredSelection ;
+            
             //表示するメソッドリストを生成 
             MethodList methods = new MethodList();
-            for (Object obj : list) {
-            	if (obj instanceof TargetClass) {
-            		TargetClass targetClass = (TargetClass)obj;
+            for (TargetClass targetClass : targetClasses) {
             		methods.addAll(targetClass.getMethods());
-            	}
           	}
             //属性に応じてカラム更新
-            updateAttributeColumns(methods);
+            updateAttributeColumns(targetClasses.getAttributeTitles());
             
             //表示するデータをセット
             viewer.setInput(methods);
             viewer.update(table, null);
             
             System.out.println("selectionChaged完了");
-            
-
             
         }
     };
@@ -95,7 +82,6 @@ public class MethodView extends ViewPart {
 	 * The constructor.
 	 */
 	public MethodView() {
-		attributeColumns = new ArrayList<TableColumn>();
 	}
 
 	/**
@@ -126,9 +112,8 @@ public class MethodView extends ViewPart {
 		columnParameter.setWidth(100);
 		//属性
 		//TODO
-		for (int i=0; i< 3/*Activator.getConfig().getMethodViewAttributeColumnCount()*/; i++) {
+		for (int i=0; i< DEFAULT_ATTRIBUTE_COLUMN_COUNT; i++) {
 			TableColumn columnAttribute = new TableColumn(table, SWT.NULL);
-			columnAttribute.setWidth(100);
 		}
 		
 		
@@ -173,28 +158,63 @@ public class MethodView extends ViewPart {
 	}
 	
 	/**
-	 * テーブルのカラムを作成する．
-	 * @param table 対象となるテーブル．
+	 * テーブルのカラムを更新する．
+	 * カラムが足りなかったら作成し，あまったら幅を0にして隠す．
 	 * @param methods メソッド情報．
 	 */
-	// TODO カラムが足りなかったら作成し，あまったら幅を0にして隠すとか．
-	public void updateAttributeColumns(MethodList methods) {	
-		//属性リストに応じてカラムを生成
+	public void updateAttributeColumns(ArrayList<String> attributeTitles) {		
+		//属性カラム数と属性データ数を比較
+		int attributeColumnCount = viewer.getTable().getColumnCount() - FIX_COLUMN_COUNT;
+		int diff = attributeColumnCount - attributeTitles.size();
+		
+		if (diff > 0) {	// カラムがあまっている
+			//使用しないカラムは幅0にして隠す
+			for (int i=0; i<diff; i++) {
+				int noUsedColumnIndex = viewer.getTable().getColumnCount() - 1 - i;
+				TableColumn noUsedColumn = viewer.getTable().getColumn(noUsedColumnIndex);
+				noUsedColumn.setText("");
+				noUsedColumn.setWidth(0);
+				noUsedColumn.setResizable(false);
+				noUsedColumn.setMoveable(false);
+			}
+		} else if (diff < 0) { // カラムが足りない
+			//足りないカラムを生成する
+			for (int i=diff; i <0; i++) {
+				int newColumnIndex = viewer.getTable().getColumnCount() - 1 + i;
+				TableColumn attributeColumn = new TableColumn(table, SWT.NULL, newColumnIndex);
+			}
+			viewer.getTable().update();
+		}
+				
+		//属性リストに応じてカラムタイトルを設定
 		int i=0;
 		for (TableColumn attributeColumn : viewer.getTable().getColumns()) {
 			i++;
-			int attributeIndex = i - 1 - this.FIX_COLUMN_COUNT;
-			if (attributeIndex < 0) continue;
-			if (methods.getAttributeTitles().size() <= attributeIndex) break;
-			String title = methods.getAttributeTitles().get(attributeIndex);
+			int attributeIndex = i - 1 - FIX_COLUMN_COUNT;
+			if (attributeIndex < 0) continue;			
+			//列が属性の場合
+			if (attributeTitles.size() <= attributeIndex) break;
+			String title = attributeTitles.get(attributeIndex);
 			attributeColumn.setText(title);
 			attributeColumn.setWidth(100);
+			attributeColumn.setResizable(true);
+			attributeColumn.setMoveable(true);
 		}
-		table.update();
-		
+		viewer.getTable().update();	
 	}
 	
 
+	/**
+	 * テーブルカラムのインデックスを属性インデックスに変換する．
+	 * @param columnIndex 
+	 * @return 対応する属性インデックス．存在しなければnull．
+	 */
+	public Integer columnIndexToAttributeIndex(int columnIndex, ArrayList<String> attributeTitles) {
+		int attributeIndex = columnIndex - FIX_COLUMN_COUNT;
+		if (attributeIndex < 0) return null;
+		if (attributeIndex >= attributeTitles.size()) return null;
+		return attributeIndex;
+	}
 
 
 }

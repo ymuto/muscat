@@ -12,6 +12,12 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 public class TargetClass {
+	
+	/**
+	 * このクラスが所属するTargetClassList．
+	 */
+	private TargetClassList targetClasses;
+
 	/**
 	 * このクラスの単純名．
 	 */
@@ -175,6 +181,15 @@ public class TargetClass {
 	}
 	
 	/* 以下はアクセスメソッド */
+	
+	public TargetClassList getTargetClasses() {
+		return targetClasses;
+	}
+	
+	public void setTargetClasses(TargetClassList targetClasses) {
+		this.targetClasses = targetClasses;
+	}
+
 	public String getSimpleName() {
 		return simpleName;
 	}

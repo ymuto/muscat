@@ -19,8 +19,9 @@ public class MethodList extends ArrayList<Method> {
 	 */
 	private TargetClass targetClass;
 	
-
-
+	/**
+	 * コンストラクタ．
+	 */
 	public MethodList() {
 		attributeTitles = new ArrayList<String>();
 	}
@@ -55,6 +56,7 @@ public class MethodList extends ArrayList<Method> {
 	 * 属性タイトル一覧情報の順序は失われる．
 	 * @param methods 追加したいメソッドリスト．
 	 */
+	// methodのmethodListを更新すべきだが，そうするとmethod.getMethodList().getTargetClass()が狂う
 	public void addAll(MethodList methods) {
 		super.addAll(methods);
 		//属性タイトル一覧情報を併合する．Setを介すので順番は失われる．

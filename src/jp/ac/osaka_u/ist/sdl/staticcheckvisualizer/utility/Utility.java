@@ -1,20 +1,45 @@
 package jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.utility;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 /**
  * ユーティリティクラス．主にデバッグ用．
  * @author y-mutoh
  *
  */
 public class Utility {
+	
 	/**
-	 * デバッグ用．
-	 * @param obj
+	 * 2つのListを併合したArrayListを生成する．
+	 * 順序は失われる．
+	 * @param <E>
+	 * @param list1
+	 * @param list2
+	 * @return
 	 */
-	public static void debugPrintObject(Object obj) {
-		if (obj == null) {
-			System.out.println("null");
-		} else {
-			System.out.println(obj.getClass().getName() + " " + obj.toString() + " != null");
+	public static <E> List<E> margeList(List<E> list1, List<E> list2) {
+		Set<E> set1 = new HashSet<E>(list1);
+		Set<E> set2 = new HashSet<E>(list2);
+		Set<E> retSet = new HashSet<E>();
+		if (set1 == null && set2 == null) return null;
+		if (set1 == null) return new ArrayList<E>(set2);
+		if (set2 == null) return new ArrayList<E>(set1);
+		set1.addAll(set2);
+		return new ArrayList<E>(retSet);
+	}
+	
+	/**
+	 * 重複のないように，list1へlist2を追加する．
+	 * @param <E>
+	 * @param list1
+	 * @param list2
+	 */
+	public static <E> void addAllNoOverlaps(List<E> list1, List<E> list2) {
+		for (E element : list2) {
+			if (!list1.contains(element)) list1.add(element);
 		}
 	}
 	
@@ -32,6 +57,18 @@ public class Utility {
 			builder.append(array[i]);
 		}
 		return builder.toString();
+	}
+	
+	/**
+	 * デバッグ用．
+	 * @param obj
+	 */
+	public static void debugPrintObject(Object obj) {
+		if (obj == null) {
+			System.out.println("null");
+		} else {
+			System.out.println(obj.getClass().getName() + " " + obj.toString() + " != null");
+		}
 	}
 
 }

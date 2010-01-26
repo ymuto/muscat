@@ -181,6 +181,7 @@ public class StaticCheckVisualizer {
 			TargetClass targetClass = getTargetClasses().searchClass(selectedNode.getFullQualifiedName());
 			selectedTargetClasses.add(targetClass);
 		}
+		selectedTargetClasses.update(); //属性タイトルリストの更新
 		return selectedTargetClasses;
 	}
 	
