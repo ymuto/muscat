@@ -119,23 +119,30 @@ public class StaticCheckVisualizer {
 
 		// 対象javaソースファイルからXMLを生成してクラス情報読み込み
 		Date before = new Date(); //開始時刻
-		//cleanXmlFiles(new File(Activator.getConfig().getOutputDir())); 
+		//cleanXmlFiles(new File(Activator.getConfig().getOutputDir()));
 		for (File javafile : masuManager.getJavaSourceFiles()) {
 			System.out.println("javafile=" + javafile.getName());
 			//XML生成
 			System.out.println("XML生成開始...");
 			GenerateXml generator = new GenerateXml(new File(javafile.getPath()), Config.getInstance().getOutputDir(), classpath, true);
 			System.out.println("XML生成完了!");
-
+			
+			//XML生成に失敗したクラスは無視
+			if (generator.getXmlFiles() == null) continue;
+			
 			//XML読み込み
 			for (File xmlfile: generator.getXmlFiles()) {
-				System.out.println("java=" + javafile.getName() + " xml="+xmlfile.getName());
-				TargetClass c = new TargetClass(javafile.getAbsolutePath(), xmlfile.getAbsolutePath());
-				targetClasses.add(c);
-				//MASUのクラス情報から一致するクラスの呼び出し情報を取ってきて代入
-				TargetClass masuSameTargetClass = masuManager.getTargetClasses().searchClass(c.getFullQualifiedName());
-				if (masuSameTargetClass != null) {
-					c.setCallees(masuSameTargetClass.getCallees());
+				try {
+					System.out.println("java=" + javafile.getName() + " xml="+xmlfile.getName());
+					TargetClass c = new TargetClass(javafile.getAbsolutePath(), xmlfile.getAbsolutePath());
+					targetClasses.add(c);
+					//MASUのクラス情報から一致するクラスの呼び出し情報を取ってきて代入
+					TargetClass masuSameTargetClass = masuManager.getTargetClasses().searchClass(c.getFullQualifiedName());
+					if (masuSameTargetClass != null) {
+						c.setCallees(masuSameTargetClass.getCallees());
+					}
+				} catch (Exception e) {
+					System.out.println( e.getMessage() + "\n\t" + e.getStackTrace().toString());
 				}
 			}
 		}
@@ -158,7 +165,7 @@ public class StaticCheckVisualizer {
 		
     	//TODO
     	jungManager.addItemListener(itemListener);
-    	
+
     	//チェック完了
     	this.isFinishedCheck = true;
 		
@@ -174,7 +181,7 @@ public class StaticCheckVisualizer {
 		Set<MyNode> selectedNodes = jungManager.getSelectedNodes();
 		if (selectedNodes == null) {
 			System.out.println("jungManager.selectedNodes = null");
-			return null;
+			return TargetClassList.EMPTY;
 		}
 		selectedTargetClasses.clear();
 		for (MyNode selectedNode : selectedNodes) {

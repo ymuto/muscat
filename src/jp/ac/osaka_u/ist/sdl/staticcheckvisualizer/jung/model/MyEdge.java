@@ -61,21 +61,6 @@ public class MyEdge {
 		String calleeNodeName = this.calleeNode.getSimpleName();
 		return callerNodeName + "-(" + this.weight + ")->" + calleeNodeName;
 	}
-	
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((calleeNode == null) ? 0 : calleeNode.hashCode());
-		result = prime * result
-				+ ((callerNode == null) ? 0 : callerNode.hashCode());
-		result = prime * result + weight;
-		result = prime * result + width;
-		return result;
-	}
-
-
 
 	public void incrementWeight() {
 		this.weight++;

@@ -76,7 +76,14 @@ public class GenerateXml {
 		System.out.println("command=" +generatorCommand);
 		if (isMakeXML) {
 			//スクリプトを実行
-			StringBuilder out = exec(generatorCommand);
+			StringBuilder out;
+			try {
+				out = exec(generatorCommand);
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+				this.xmlFiles = null;
+				return;
+			}
 			//出力XMLファイルをセット
 			ArrayList<File> xmlFiles = new ArrayList<File>();
 			String[] outStrs = out.toString().split("\n");
@@ -96,14 +103,14 @@ public class GenerateXml {
 	 * @param command 実行するコマンド．
 	 * @return 標準出力に出力された文字列．
 	 */
-	private StringBuilder exec(String command)
+	private StringBuilder exec(String command) throws Exception
 	{
 		StringBuilder out = new StringBuilder();
 		Runtime rt = Runtime.getRuntime();
 		InputStream is;
 		Process pr;
 		BufferedReader br;
-		try {
+//		try {
 			//プロセス生成
 			pr = rt.exec(command);
 			//標準出力
@@ -117,18 +124,21 @@ public class GenerateXml {
 			}
 			//終了するまで待つ
 			pr.waitFor();
-			//ステータスチェック
-			if (pr.exitValue() != EXIT_SUCCESS)
-				throw new Exception("execute command error. code:" + pr.exitValue());
+			
 			br.close();
 			is.close();
+			//ステータスチェック
+			if (pr.exitValue() != EXIT_SUCCESS) {
+				throw new Exception("execute command error. code:" + pr.exitValue());
+			}
+
 			
 			return out;
 			
-		} catch (Exception e) {
-			System.err.println(e);
-			return null;
-		}
+//		} catch (Exception e) {
+//			System.out.println(e.getMessage());
+//			return null;
+//		}
 	}
 	
 	/* アクセサ */

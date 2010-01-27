@@ -50,17 +50,6 @@ public class MyNode
 		return node.getFullQualifiedName().equals(this.fullQualifiedName);
 	}
     
-    @Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime
-				* result
-				+ ((fullQualifiedName == null) ? 0 : fullQualifiedName
-						.hashCode());
-		return result;
-	}
-    
 	/**
 	 * 単純名を表示に用いる．
 	 */

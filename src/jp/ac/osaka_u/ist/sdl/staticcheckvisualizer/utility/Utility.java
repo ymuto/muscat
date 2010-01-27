@@ -6,14 +6,14 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * ユーティリティクラス．主にデバッグ用．
+ * ユーティリティクラス．
  * @author y-mutoh
  *
  */
 public class Utility {
 	
 	/**
-	 * コンストラクタ．インスタンス化できないようにしている．
+	 * コンストラクタ．インスタンス化不可．
 	 */
 	private Utility() {}
 	
@@ -50,7 +50,7 @@ public class Utility {
 	}
 	
 	/**
-	 * 配列をglueで連結して文字列として返す
+	 * 配列をglueで連結して文字列として返す．
 	 * @return
 	 */
 	public static String concatArray(String[] array, String glue) {
@@ -63,6 +63,10 @@ public class Utility {
 			builder.append(array[i]);
 		}
 		return builder.toString();
+	}
+	
+	public static String concatArray(String[] array) {
+		return concatArray(array, ", ");
 	}
 	
 	/**

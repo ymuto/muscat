@@ -2,6 +2,8 @@ package jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.views.mainview;
 
 import java.awt.Frame;
 
+
+
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.Activator;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.StaticCheckVisualizer;
 
@@ -11,7 +13,6 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -53,8 +54,7 @@ public class MainView extends ViewPart implements ISelectionProvider {
 		this.refreshAction = new Action("リフレッシュ", icon){
 			public void run() {
 				//画面のリフレッシュ
-				System.out.println("メインビューをリフレッシュ");
-				
+				System.out.println("メインビューをリフレッシュ");	
 			}
 		};
 		//ツールバーに組み込む
@@ -77,10 +77,12 @@ public class MainView extends ViewPart implements ISelectionProvider {
 			return;
 		}
 		
+		
     	//ウィンドウにグラフを表示
 		Composite c = new Composite(parent,SWT.EMBEDDED);
 		Frame frame = SWT_AWT.new_Frame(c);
     	frame.add(scv.getJungManager().getVisualizationServer()); //グラフをセット
+
     		
     	//ノード選択をメソッドビューに伝える
     	this.getSite().setSelectionProvider(this);	  	

@@ -24,6 +24,7 @@ public class MyEdgeList extends ArrayList<MyEdge> {
 	
 	public void update()
 	{
+		if (this.size() <= 0) return;
 		updateMinMax();
 		//エッジの太さを計算
 		for (MyEdge edge : this) {

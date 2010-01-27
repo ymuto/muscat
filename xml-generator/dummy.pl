@@ -10,24 +10,25 @@ if ($java_filename =~ ".*AppMain.java") {
 elsif ($java_filename =~ ".*ContainerItem.java") {
 	print "$xml_dir\StockManagement.ContainerItem.xml";
 }
-elsif ($java_filename =~ ".*Customer.java") {
-	print "$xml_dir\StockManagement.Customer.xml";
-}
 elsif ($java_filename =~ ".*Item.java") {
 	print "$xml_dir\StockManagement.Item.xml";
 }
-elsif ($java_filename =~ ".*ReceiptionDesk.java") {
-	print "$xml_dir\StockManagement.ReceiptionDesk.xml";
-}
-elsif ($java_filename =~ ".*Request.java") {
-	print "$xml_dir\StockManagement.Request.xml";
-}
-elsif ($java_filename =~ ".*StockState.java") {
-	print "$xml_dir\StockManagement.StockState.xml";
-}
-elsif ($java_filename =~ ".*Storage.java") {
-	print "$xml_dir\StockManagement.Storage.xml";
-}
+#elsif ($java_filename =~ ".*Customer.java") {
+#	print "$xml_dir\StockManagement.Customer.xml";
+#}
+#elsif ($java_filename =~ ".*ReceiptionDesk.java") {
+#	print "$xml_dir\StockManagement.ReceiptionDesk.xml";
+#}
+#elsif ($java_filename =~ ".*Request.java") {
+#	print "$xml_dir\StockManagement.Request.xml";
+#}
+#elsif ($java_filename =~ ".*StockState.java") {
+#	print "$xml_dir\StockManagement.StockState.xml";
+#}
+#elsif ($java_filename =~ ".*Storage.java") {
+#	print "$xml_dir\StockManagement.Storage.xml";
+#}
+
 #SCVTestData
 elsif ($java_filename =~ "scvtestdata.main.SCVTestData.java") {
 	print "$xml_dir\scvtestdata.main.SCVTestData.xml";
@@ -46,7 +47,7 @@ elsif ($java_filename =~ "scvtestdata.model.Student.java") {
 }
 #‚»‚êˆÈŠO
 else {
-	print "no such input file";
+	print "No such input file";
 	exit(1);
 }
 

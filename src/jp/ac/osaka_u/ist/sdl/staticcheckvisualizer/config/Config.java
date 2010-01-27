@@ -20,7 +20,7 @@ public final class Config {
 	private static Config instance = new Config();
 	
 	//デフォルト値
-	public static final String DEFAULT_GENERATE_COMMAND = "perl C:\\Users\\y-mutoh\\workspace\\jp.ac.osaka_u.ist.sdl.staticcheckvisualizer\\perl\\escj2xml.pl";
+	public static final String DEFAULT_GENERATE_COMMAND = "perl C:\\Users\\y-mutoh\\workspace\\jp.ac.osaka_u.ist.sdl.staticcheckvisualizer\\xml-generator\\ESCJava2\\escj2xml.pl";
     public static final int DEFAULT_EDGE_MAX_LEVEL = 5;
 	public static final int DEFAULT_METHODVIEW_ATTRIBUTE_COLUMN_COUNT = 3;
     

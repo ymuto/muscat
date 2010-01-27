@@ -42,7 +42,8 @@ public class TargetClass {
 	private String xmlFileName;
 	
 	/**
-	 * このクラスのカバレッジ．四捨五入した値．passedCount/methodCountと定義する．
+	 * このクラスのカバレッジ．四捨五入した値．
+	 * （あれば）passedCount/methodCountと定義する．
 	 */
 	private Integer coverage;
 	
@@ -71,7 +72,7 @@ public class TargetClass {
 	 * 
 	 * @param xmlfile XMLファイルパス
 	 */
-	public TargetClass(String javafilepath, String xmlfilepath) {
+	public TargetClass(String javafilepath, String xmlfilepath) throws Exception {
 		this.xmlFileName = xmlfilepath;
 		this.javaFileName = javafilepath;
 		methods = new MethodList();
@@ -108,32 +109,37 @@ public class TargetClass {
 	 * 
 	 * @param xmlfile XMLファイルパス
 	 */
-	public void importXml(String xmlfile) {
-        try {
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            Document document = builder.parse(new File(xmlfile));
-            //ルート
-            Element root = document.getDocumentElement();
-            //packageName
-            Element ePackageName = (Element)root.getElementsByTagName("packageName").item(0);
-            setPackageName(ePackageName.getTextContent());
-            //simpleName
-            Element eSimpleName = (Element)root.getElementsByTagName("simpleName").item(0);
-            String simpleNameWithDollar = eSimpleName.getTextContent();       
-            setSimpleName(simpleNameWithDollar.replace("$", "."));            
-            //methodCount
-            Element eMethodCount = (Element)root.getElementsByTagName("methodCount").item(0);
-            setMethodCount(Integer.valueOf(eMethodCount.getTextContent()));
-            //passedCount
-            Element ePassedCount = (Element)root.getElementsByTagName("passedCount").item(0);
-            setPassedCount(Integer.valueOf(ePassedCount.getTextContent()));
-            //methods
-            Node nMethods = root.getElementsByTagName("methods").item(0);
-            this.methods.importXmlNode(this, nMethods);
-        } catch (Exception e) {
-        	System.out.println(e.toString());
-        }
+	public void importXml(String xmlfile) throws Exception
+	{
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document document = builder.parse(new File(xmlfile));
+        //ルート
+        Element root = document.getDocumentElement();
+        //packageName
+        Element ePackageName = (Element)root.getElementsByTagName("packageName").item(0);
+        setPackageName(ePackageName.getTextContent());
+        //simpleName
+        Element eSimpleName = (Element)root.getElementsByTagName("simpleName").item(0);
+        String simpleNameWithDollar = eSimpleName.getTextContent();       
+        setSimpleName(simpleNameWithDollar.replace("$", "."));            
+        //methodCount
+        Element eMethodCount = (Element)root.getElementsByTagName("methodCount").item(0);
+        if (eMethodCount != null)
+        	setMethodCount(Integer.valueOf(eMethodCount.getTextContent()));
+        //passedCount
+        Element ePassedCount = (Element)root.getElementsByTagName("passedCount").item(0);
+        if (ePassedCount != null)
+        	setPassedCount(Integer.valueOf(ePassedCount.getTextContent()));
+        //coverage(methodCount & passedCountとどちらか)
+        Element eCoverage = (Element)root.getElementsByTagName("coverage").item(0);
+        if (eCoverage != null)
+        	setCoverage(Integer.valueOf(eCoverage.getTextContent()));
+        //methods
+        Node nMethods = root.getElementsByTagName("methods").item(0);
+        if (nMethods != null)
+        	this.methods.importXmlNode(this, nMethods);
+
 
 	}
 	

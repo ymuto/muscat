@@ -10,6 +10,11 @@ import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.utility.Utility;
 
 public class TargetClassList extends ArrayList<TargetClass> implements IStructuredSelection{
 	
+	public static final TargetClassList EMPTY = new TargetClassList();
+	
+	/**
+	 * 属性タイトル．メソッド情報ビューで使用．
+	 */
 	private ArrayList<String> attributeTitles;
 	
 	public TargetClassList() {
