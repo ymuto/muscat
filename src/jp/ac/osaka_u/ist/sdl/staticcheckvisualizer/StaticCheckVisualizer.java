@@ -47,6 +47,7 @@ public class StaticCheckVisualizer {
 	 * 選択されているTargetClassのリスト．
 	 */
 	private TargetClassList selectedTargetClasses;
+
 	
 	/**
 	 * TODO JungManagerのノード選択の変化を処理
@@ -94,10 +95,21 @@ public class StaticCheckVisualizer {
 			System.out.println("ソースディレクトリが見つかりません");
 			return;
 		}
+		String classpath = srcdir;
+				
+		//TODO 終わったら消す
+		//ASPECのため ここから
+		//srcdir = "C:\\Users\\y-mutoh\\workspace\\addressbook-teacher-jml\\src\\addressbook";
+		//classpath = "";
+		//classpath = "C:\\Users\\y-mutoh\\workspace\\addressbook-teacher-jml\\src";
+		//ASPECのため ここまで
+		
 		//チェック開始
-		setClasspath(srcdir);
+		setClasspath(classpath);
 		setTargetDirectory(srcdir);
 		check();
+
+	
 	}
 	
 	/**
@@ -161,6 +173,7 @@ public class StaticCheckVisualizer {
 		System.out.println("Finish.");
 		
 		//Jungでグラフを生成
+		//TODO サイズ
 		jungManager = new JungManager(targetClasses);
 		
     	//TODO
@@ -177,6 +190,7 @@ public class StaticCheckVisualizer {
 	 * @return
 	 */
 	public TargetClassList getSelectedTargetClasses() {
+		if (jungManager == null) return TargetClassList.EMPTY;
 		//MyNodeの集合をTargetClassListに変換する
 		Set<MyNode> selectedNodes = jungManager.getSelectedNodes();
 		if (selectedNodes == null) {

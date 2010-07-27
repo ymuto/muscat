@@ -1,15 +1,30 @@
 package jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.jung;
 
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.ItemSelectable;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Set;
 
+import javax.imageio.ImageIO;
 import javax.swing.event.EventListenerList;
 
+import org.eclipse.swt.graphics.Point;
+
+import edu.uci.ics.jung.algorithms.layout.BalloonLayout;
 import edu.uci.ics.jung.algorithms.layout.CircleLayout;
+import edu.uci.ics.jung.algorithms.layout.DAGLayout;
+import edu.uci.ics.jung.algorithms.layout.FRLayout;
+import edu.uci.ics.jung.algorithms.layout.ISOMLayout;
+import edu.uci.ics.jung.algorithms.layout.KKLayout;
 import edu.uci.ics.jung.algorithms.layout.Layout;
+import edu.uci.ics.jung.algorithms.layout.SpringLayout;
+import edu.uci.ics.jung.algorithms.layout.SpringLayout2;
+import edu.uci.ics.jung.algorithms.layout.TreeLayout;
 import edu.uci.ics.jung.graph.DirectedSparseMultigraph;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
@@ -25,6 +40,8 @@ import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model.TargetClass;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model.TargetClassList;
 
 public class JungManager implements ItemSelectable {
+	
+	private TargetClassList targetClasses;
 	/**
 	 * グラフ．
 	 */
@@ -92,7 +109,18 @@ public class JungManager implements ItemSelectable {
 	 * コンストラクタ．
 	 * @param targetClasses 対象となるクラスリスト．
 	 */
-	public JungManager(TargetClassList targetClasses) {	
+	public JungManager(TargetClassList targetClasses) {
+		this.targetClasses = targetClasses;
+		//グラフ生成
+		createGraph();
+	}
+	
+	/**
+	 * クラスリストからグラフを生成する．
+	 */
+	private void createGraph() {
+		if (this.targetClasses == null) return;
+		
 		//グラフ
     	g = new DirectedSparseMultigraph<MyNode,MyEdge>();
     	
@@ -120,13 +148,25 @@ public class JungManager implements ItemSelectable {
 		}
 		edges.update();		
 		System.out.println("エッジ追加完了");
-		
+	}
+	
+	/**
+	 * グラフの表示設定を行う．
+	 */
+	public void doSetting() {
 	  	//グラフ表示設定
-    	layout = new CircleLayout<MyNode,MyEdge>(g);
-    	layout.setSize(new Dimension(400,400)); // sets the initial size of the space
+//		layout = new DAGLayout<MyNode,MyEdge>(g);
+//		layout = new SpringLayout<MyNode,MyEdge>(g);
+//		layout = new SpringLayout2<MyNode,MyEdge>(g);
+//    	layout = new CircleLayout<MyNode,MyEdge>(g);
+    	layout = new ISOMLayout<MyNode,MyEdge>(g);
+//    	layout = new FRLayout<MyNode,MyEdge>(g);
+//    	layout = new KKLayout<MyNode,MyEdge>(g);
+    	layout.setSize(new Dimension(this.width, this.height)); // sets the initial size of the space
+    	
     	vv = new VisualizationViewer<MyNode,MyEdge>(layout);
     	//表示エリアのサイズを設定
-    	vv.setPreferredSize(new Dimension(500,400)); //Sets the viewing area size
+    	vv.setPreferredSize(new Dimension(this.width, this.height)); //Sets the viewing area size
     	// ノードにクラス名を表示
     	vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller<MyNode>());
     	//ノードの形変更
@@ -144,6 +184,8 @@ public class JungManager implements ItemSelectable {
     	//マウスホイールで拡大・縮小
     	//graphMouse.add(new ScalingGraphMousePlugin(new LayoutScalingControl(), 0));
     	//vv.setGraphMouse(graphMouse);
+        
+        this.saveGraph("C:\\Users\\y-mutoh\\research\\graph1.jpg");
 	}
 
 	/**
@@ -162,7 +204,24 @@ public class JungManager implements ItemSelectable {
 		return selectedNodes;
 	}
 	
-	
+	//TODO 真っ黒な画像が保存される
+	public void saveGraph(String fileName) {
+		BufferedImage image = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_BGR);
+		//グラフを描画
+		Graphics g = image.createGraphics();
+		vv.printAll(g);
+		//vv.paint(g);
+		
+		//保存
+		try {
+			ImageIO.write(image, "jpeg", new File(fileName));
+		} catch (IOException e) {
+			System.out.println(e);
+			e.printStackTrace();
+		} finally {
+			g.dispose();
+		}
+	}
 	
 
 	//TODO
@@ -185,6 +244,31 @@ public class JungManager implements ItemSelectable {
 		return selectedNodes.toArray();
 	}
 	
+	/**
+	 * グラフ領域のサイズを設定する．
+	 * @param size
+	 */
+	public void setSize(Point size) {
+		this.width = size.x;
+		this.height = size.y;
+	}
 	
+	/**
+	 * グラフ領域のサイズを設定する．
+	 * @param size
+	 */
+	public void setSize(Dimension size) {
+		this.width = size.width;
+		this.height = size.height;
+	}
+	
+	/**
+	 * グラフ領域のサイズを設定する．
+	 * @param size
+	 */
+	public void setSize(int width, int height) {
+		this.width = width;
+		this.height = height;
+	}
 	
 }

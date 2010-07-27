@@ -1,11 +1,21 @@
 package jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.views.mainview;
 
+import java.awt.Color;
 import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
 
 
 
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.Activator;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.StaticCheckVisualizer;
+import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.config.Config;
+import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.jung.JungManager;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
@@ -15,22 +25,30 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.*;
 
 public class MainView extends ViewPart implements ISelectionProvider {
 	private StaticCheckVisualizer scv;
 	
-	private IAction refreshAction;
-	
-	//フォーム部品
 	/**
-	 * チェック開始ボタン
+	 * アクション．
 	 */
-	private Button btnCheck;
+	private IAction refreshAction;
+	private IAction executeAction;
+	private IAction exportAction;
+
+	
+	/**
+	 * グラフを表示する領域（SWT）
+	 */
+	private Composite composite;
+	
+	/**
+	 * グラフを表示する領域（AWT）
+	 */
+	private Frame frame;
+	
 
 	/**
 	 * The ID of the view as specified by the extension.
@@ -49,46 +67,58 @@ public class MainView extends ViewPart implements ISelectionProvider {
 	public void createPartControl(Composite parent) {
 		scv = Activator.getScv();
 		
+		//ツールバー作成
+		createActions();
+		
+		//ウィンドウにグラフ領域を作成	
+		composite = new Composite(parent,SWT.EMBEDDED);
+		frame = SWT_AWT.new_Frame(composite);
+		
+    	//ノード選択をメソッドビューに伝える
+    	this.getSite().setSelectionProvider(this);
+	}
+	
+	/**
+	 * ビューのグラフ領域にグラフをセット
+	 */
+	public void setGraph() {
+		JungManager jungManager = scv.getJungManager();
+		//TODO グラフサイズの計算
+		jungManager.setSize(500,500);
+		jungManager.doSetting();
+		frame.removeAll();
+    	frame.add(jungManager.getVisualizationServer()); //グラフをセット
+    	frame.pack(); 	
+    	
+	}
+		
+	/**
+	 * アクションを作成してツールバーに組み込む．
+	 */
+	private void createActions() {
+		//ツールバーのCreate Graphはplugin.xmlに記述．
     	//リフレッシュアクション作成
-    	ImageDescriptor icon = Activator.getImageDescriptor("icons/refresh.gif");
-		this.refreshAction = new Action("リフレッシュ", icon){
+    	ImageDescriptor iconRefresh = Activator.getImageDescriptor("icons/refresh.gif");
+		this.refreshAction = new Action("Refresh", iconRefresh){
 			public void run() {
-				//画面のリフレッシュ
-				System.out.println("メインビューをリフレッシュ");	
+				//グラフをセット
+				setGraph();
 			}
 		};
 		//ツールバーに組み込む
 		this.getViewSite().getActionBars().getToolBarManager().add(this.refreshAction);
-		
-		//チェック開始ボタン
-		if (!scv.isFinishedCheck()) {
-			//静的チェックが開始されていないとき
-			//TODO 開始ボタンを設置
-			btnCheck = new Button(parent, SWT.PUSH);
-			btnCheck.setText("静的チェックを開始");
-			btnCheck.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(SelectionEvent e) {
-					System.out.println("チェック開始ボタンが押された");
-					//実行
-					scv.execute();
+		//エクスポートアクション作成
+		if (Config.EXPORT_ENABLE) {
+		   	ImageDescriptor iconExport = Activator.getImageDescriptor("icons/export.gif");
+			this.exportAction = new Action("Export", iconExport){
+				public void run() {
+					export();
 				}
-			});
-			return;
+			};
+			this.getViewSite().getActionBars().getToolBarManager().add(this.exportAction);
 		}
 		
-		
-    	//ウィンドウにグラフを表示
-		Composite c = new Composite(parent,SWT.EMBEDDED);
-		Frame frame = SWT_AWT.new_Frame(c);
-    	frame.add(scv.getJungManager().getVisualizationServer()); //グラフをセット
-
-    		
-    	//ノード選択をメソッドビューに伝える
-    	this.getSite().setSelectionProvider(this);	  	
-	}
-	
-	
+	}	
 		
 
 	/**
@@ -116,14 +146,22 @@ public class MainView extends ViewPart implements ISelectionProvider {
 
 	@Override
 	public void removeSelectionChangedListener(ISelectionChangedListener arg0) {
-		// TODO 自動生成されたメソッド・スタブ
-		
+		// TODO 自動生成されたメソッド・スタブ	
 	}
 
 	@Override
 	public void setSelection(ISelection arg0) {
 		// TODO 自動生成されたメソッド・スタブ
 		System.out.println("MainView.setSelection");
+	}
+	
+	/**
+	 * グラフのエクスポートを行う．
+	 */
+	private void export() {
+		//TODO ファイル保存ダイアログ
+		scv.getJungManager().saveGraph("C:\\test.jpg");
+
 	}
 
 }

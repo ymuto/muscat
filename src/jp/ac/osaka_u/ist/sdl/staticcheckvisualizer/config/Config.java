@@ -38,6 +38,11 @@ public final class Config {
      * 対象となる言語．java14はJava1.4．
      */
     public static final String TARGET_LANGUAGE = "java14";
+    
+    /**
+     * Main viewのツールバーにexportを表示するかどうか.
+     */
+    public static final boolean EXPORT_ENABLE = true;
 
     /**
      * 属性値の配色．
@@ -45,7 +50,7 @@ public final class Config {
      */
     private HashMap<String, Color> attributeColors;
     
-    //チェックに用いる値
+    //検査の実行に用いる値
     /**
      * XMLを出力するディレクトリ．
      */

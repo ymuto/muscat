@@ -102,15 +102,15 @@ public class MethodView extends ViewPart {
 		//列ヘッダ作成
 		//クラス名
 		TableColumn columnClassName = new TableColumn(table, SWT.NULL);
-		columnClassName.setText("クラス");
+		columnClassName.setText("Class Name");
 		columnClassName.setWidth(100);
 		//メソッド名
 		TableColumn columnName = new TableColumn(table, SWT.NULL);
-		columnName.setText("メソッド名");
+		columnName.setText("Method Name");
 		columnName.setWidth(200);		
 		//引数
 		TableColumn columnParameter = new TableColumn(table, SWT.NULL);
-		columnParameter.setText("引数");
+		columnParameter.setText("Parameters");
 		columnParameter.setWidth(100);
 		//属性
 		//TODO
