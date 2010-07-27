@@ -55,7 +55,8 @@
                <command
                		commandId="jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.command.begincheck"
                		id="jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.menu.begincheck"
-               		label="[SCV]静的チェックの開始"
+               		label="[SCV]Create Graph"
+               		icon="icons/scv.gif"
                		mnemonic="S">
                </command>
          </menuContribution>
@@ -64,7 +65,8 @@
            <command
            		commandId="jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.command.begincheck"
            		id="jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.popup.begincheck"
-           		label="[SCV]静的チェックの開始"
+           		label="[SCV]Create Graph"
+           		icon="icons/scv.gif"
            		mnemonic="S">
            		<visibleWhen>
            			<with
@@ -78,6 +80,16 @@
            		</visibleWhen>
            </command>
          </menuContribution>
+         <menuContribution
+               locationURI="toolbar:jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.views.MainView">
+               <command
+               		commandId="jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.command.begincheck"
+               		id="jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.menu.begincheck"
+               		label="[SCV]Create Graph"
+               		icon="icons/scv.gif"
+               		mnemonic="S">
+               </command>
+         </menuContribution>         
    </extension>
    <extension
          point="org.eclipse.ui.commands">
@@ -86,7 +98,7 @@
          	id="jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.samplecategory">
          </category>
          <command
-         	name="[SCV]静的チェックの開始"
+         	name="[SCV]Create Graph"
          	categoryId="jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.samplecategory"
          	id="jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.command.begincheck">
          </command>
@@ -94,7 +106,7 @@
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.handlers.SampleHandler"
+            class="jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.handlers.ExecuteHandler"
             commandId="jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.command.begincheck">
       </handler>
    </extension>
