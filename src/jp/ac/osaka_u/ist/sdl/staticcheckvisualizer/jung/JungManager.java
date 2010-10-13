@@ -234,8 +234,7 @@ public class JungManager implements ItemSelectable {
 		BufferedImage image = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_BGR);
 		//ƒOƒ‰ƒt‚ð•`‰æ
 		Graphics g = image.createGraphics();
-		vv.printAll(g);
-		
+		vv.printAll(g);		
 		//•Û‘¶
 		try {
 			ImageIO.write(image, formatName, file);

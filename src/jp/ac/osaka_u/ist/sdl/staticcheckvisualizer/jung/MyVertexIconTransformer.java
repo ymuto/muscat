@@ -15,10 +15,7 @@ public class MyVertexIconTransformer<V> implements Transformer<V,Icon>{
 	 */
     public Icon transform(V v) {
         MyNode node = (MyNode)v;
-        Icon piechart = new PieChart(node.getCoverage(),Config.NODE_WIDTH, Config.NODE_HEIGHT);
-        return piechart;
-        //ImageIcon image = new ImageIcon("C:\\Users\\ymuto\\Pictures\\firefox35_v1.png");
-        //return image;
+        return new PieChart(node.getCoverage(),Config.NODE_WIDTH, Config.NODE_HEIGHT);
     }
  
 }

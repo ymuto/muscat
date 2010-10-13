@@ -50,8 +50,6 @@ public class MethodView extends ViewPart {
      	
             if (!(selection instanceof IStructuredSelection)) return;
             IStructuredSelection structuredSelection = (IStructuredSelection)selection;
-            //List list = structuredSelection.toList(); //List<Object>に相当
-            //if (list == null) return;
             if (!(structuredSelection  instanceof TargetClassList)) return;
             
             TargetClassList targetClasses = (TargetClassList)structuredSelection ;
@@ -59,7 +57,7 @@ public class MethodView extends ViewPart {
             //表示するメソッドリストを生成 
             MethodList methods = new MethodList();
             for (TargetClass targetClass : targetClasses) {
-            		methods.addAll(targetClass.getMethods());
+            	methods.addAll(targetClass.getMethods());
           	}
             //属性に応じてカラム更新
             updateAttributeColumns(targetClasses.getAttributeTitles());

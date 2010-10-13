@@ -107,9 +107,7 @@ public class StaticCheckVisualizer {
 		//チェック開始
 		setClasspath(classpath);
 		setTargetDirectory(srcdir);
-		check();
-
-	
+		check();	
 	}
 	
 	/**
@@ -228,7 +226,6 @@ public class StaticCheckVisualizer {
 	}
 	
 	//アクセサ
-
 	public TargetClassList getTargetClasses() {
 		return targetClasses;
 	}
@@ -252,7 +249,5 @@ public class StaticCheckVisualizer {
 	public boolean isFinishedCheck() {
 		return isFinishedCheck;
 	}
-
-
 	
 }
