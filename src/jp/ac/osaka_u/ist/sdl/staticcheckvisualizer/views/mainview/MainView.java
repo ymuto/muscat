@@ -1,21 +1,15 @@
 package jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.views.mainview;
 
-import java.awt.Color;
 import java.awt.Frame;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
-
+import java.util.ArrayList;
+import java.util.HashSet;
 import javax.imageio.ImageIO;
-
-
-
-
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.Activator;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.StaticCheckVisualizer;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.config.Config;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.jung.JungManager;
+import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.utility.Utility;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
@@ -26,6 +20,8 @@ import org.eclipse.jface.viewers.ISelectionProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.FileDialog;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.part.*;
 
 public class MainView extends ViewPart implements ISelectionProvider {
@@ -159,9 +155,27 @@ public class MainView extends ViewPart implements ISelectionProvider {
 	 * グラフのエクスポートを行う．
 	 */
 	private void export() {
-		//TODO ファイル保存ダイアログ
-		scv.getJungManager().saveGraph("C:\\test.jpg");
-
+		//create filter for save file dialog
+	    HashSet<String> filterExtensionsSet = new HashSet<String>();
+	    String[] formatNames = ImageIO.getWriterFormatNames();
+	    for (String formatName : formatNames) {
+	    	filterExtensionsSet.add("*." + formatName.toLowerCase());
+	    }
+	    ArrayList<String> filterExtensions = new ArrayList<String>(filterExtensionsSet);
+	    filterExtensions.add("*.*");	    
+		//show save file dialog
+		FileDialog dialog = new FileDialog(new Shell(), SWT.SAVE);
+		dialog.setFilterExtensions(filterExtensions.toArray(new String[filterExtensions.size()]));
+		String filename = dialog.open();
+		if (null == filename) return;
+		// add extension if filename has no extension
+		if (null == Utility.getExtensionFromFileName(filename) && 0 <= dialog.getFilterIndex()) {	
+			String selectedExtension = dialog.getFilterExtensions()[dialog.getFilterIndex()];
+			if (!selectedExtension.equals("*.*"))
+				filename += selectedExtension.substring("*".length());
+		}
+		//Save graph
+    	scv.getJungManager().saveGraph(new File(filename));
 	}
 
 }

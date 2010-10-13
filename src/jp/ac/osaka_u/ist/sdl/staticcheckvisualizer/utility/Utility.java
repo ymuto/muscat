@@ -70,6 +70,20 @@ public class Utility {
 	}
 	
 	/**
+	 * Get extension from given file name.
+	 * If given file name has no extension, return null.
+	 * ファイルの拡張子を取得する．
+	 * @param filename
+	 * @return extension without dot
+	 */
+	public static String getExtensionFromFileName(String filename) {
+		int indexOfDot = filename.lastIndexOf(".");
+		if (indexOfDot < 0 || filename.length()-1 <= indexOfDot) return null;
+		return filename.substring(indexOfDot+1);
+	}
+	
+	
+	/**
 	 * デバッグ用．
 	 * @param obj
 	 */

@@ -38,8 +38,11 @@ import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.jung.model.MyNodeList;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model.Callee;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model.TargetClass;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model.TargetClassList;
+import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.utility.Utility;
 
 public class JungManager implements ItemSelectable {
+	
+	private static String DEFAULT_EXPORT_FORMAT_NAME = "png";
 	
 	private TargetClassList targetClasses;
 	/**
@@ -184,8 +187,7 @@ public class JungManager implements ItemSelectable {
     	//マウスホイールで拡大・縮小
     	//graphMouse.add(new ScalingGraphMousePlugin(new LayoutScalingControl(), 0));
     	//vv.setGraphMouse(graphMouse);
-        
-        this.saveGraph("C:\\Users\\y-mutoh\\research\\graph1.jpg");
+
 	}
 
 	/**
@@ -204,17 +206,39 @@ public class JungManager implements ItemSelectable {
 		return selectedNodes;
 	}
 	
-	//TODO 真っ黒な画像が保存される
-	public void saveGraph(String fileName) {
+
+	/**
+	 * Save Graph as JPEG image
+	 * @param fileName
+	 */
+	public void saveGraph(File file) {
+		String extension = Utility.getExtensionFromFileName(file.getPath());
+		if (null != extension) {
+			//Use extension as format name if given file has valid extension
+			for (String formatName :ImageIO.getWriterFormatNames()) {
+				if (formatName.equalsIgnoreCase(extension)) {
+					saveGraph(file, formatName);
+					return;
+				}
+			}
+		}
+		//no valid extension
+		saveGraph(file, DEFAULT_EXPORT_FORMAT_NAME);
+	}
+	
+	/**
+	 * Save Graph as JPEG image
+	 * @param fileName
+	 */
+	public void saveGraph(File file, String formatName) {
 		BufferedImage image = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_BGR);
 		//グラフを描画
 		Graphics g = image.createGraphics();
 		vv.printAll(g);
-		//vv.paint(g);
 		
 		//保存
 		try {
-			ImageIO.write(image, "jpeg", new File(fileName));
+			ImageIO.write(image, formatName, file);
 		} catch (IOException e) {
 			System.out.println(e);
 			e.printStackTrace();
