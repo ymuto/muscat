@@ -13,21 +13,21 @@ elsif ($java_filename =~ ".*ContainerItem.java") {
 elsif ($java_filename =~ ".*Item.java") {
 	print "$xml_dir\StockManagement.Item.xml";
 }
-#elsif ($java_filename =~ ".*Customer.java") {
-#	print "$xml_dir\StockManagement.Customer.xml";
-#}
-#elsif ($java_filename =~ ".*ReceiptionDesk.java") {
-#	print "$xml_dir\StockManagement.ReceiptionDesk.xml";
-#}
-#elsif ($java_filename =~ ".*Request.java") {
-#	print "$xml_dir\StockManagement.Request.xml";
-#}
-#elsif ($java_filename =~ ".*StockState.java") {
-#	print "$xml_dir\StockManagement.StockState.xml";
-#}
-#elsif ($java_filename =~ ".*Storage.java") {
-#	print "$xml_dir\StockManagement.Storage.xml";
-#}
+elsif ($java_filename =~ ".*Customer.java") {
+	print "$xml_dir\StockManagement.Customer.xml";
+}
+elsif ($java_filename =~ ".*ReceiptionDesk.java") {
+	print "$xml_dir\StockManagement.ReceiptionDesk.xml";
+}
+elsif ($java_filename =~ ".*Request.java") {
+	print "$xml_dir\StockManagement.Request.xml";
+}
+elsif ($java_filename =~ ".*StockState.java") {
+	print "$xml_dir\StockManagement.StockState.xml";
+}
+elsif ($java_filename =~ ".*Storage.java") {
+	print "$xml_dir\StockManagement.Storage.xml";
+}
 
 #SCVTestData
 elsif ($java_filename =~ "scvtestdata.main.SCVTestData.java") {
@@ -45,6 +45,25 @@ elsif ($java_filename =~ "scvtestdata.model.Staff.java") {
 elsif ($java_filename =~ "scvtestdata.model.Student.java") {
 	print "$xml_dir\scvtestdata.model.Student.xml";
 }
+
+#AdressBook-teacher-jml
+elsif ($java_filename =~ "addressbook.AddressBook.java") {
+	print "$xml_dir\\addressbook.AddressBook.xml";
+}
+elsif ($java_filename =~ "addressbook.Entry.java") {
+	print "$xml_dir\\addressbook.Entry.xml";
+}
+elsif ($java_filename =~ "addressbook.MailDomainComparator.java") {
+	print "$xml_dir\\addressbook.MailDomainComparator.xml";
+}
+elsif ($java_filename =~ "addressbook.NameComparator.java") {
+	print "$xml_dir\\addressbook.NameComparator.xml";
+}
+elsif ($java_filename =~ "addressbook.TelComparator.java") {
+	print "$xml_dir\\addressbook.TelComparator.xml";
+}
+
+
 #‚»‚êˆÈŠO
 else {
 	print "No such input file";
