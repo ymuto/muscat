@@ -61,9 +61,6 @@ public class MasuManager extends MetricsTool {
 		Settings.getInstance().setVerbose(true);
 		Settings.getInstance().setTargetDirectory(targetDirectory);
 		
-		
-
-		
 		// ‘ÎÛƒtƒ@ƒCƒ‹‚Ì‰ğÍ
 		this.readTargetFiles();
 		this.analyzeTargetFiles();

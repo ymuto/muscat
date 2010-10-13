@@ -1,7 +1,5 @@
 package jp.ac.osaka_u.ist.sdl.staticcheckvisualizer;
 
-import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.config.Config;
-
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;

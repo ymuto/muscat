@@ -130,9 +130,7 @@ public class GenerateXml {
 			//ステータスチェック
 			if (pr.exitValue() != EXIT_SUCCESS) {
 				throw new Exception("execute command error. code:" + pr.exitValue());
-			}
-
-			
+			}			
 			return out;
 			
 //		} catch (Exception e) {
@@ -153,7 +151,5 @@ public class GenerateXml {
 	public ArrayList<File> getXmlFiles() {
 		return xmlFiles;
 	}
-	
-
 
 }

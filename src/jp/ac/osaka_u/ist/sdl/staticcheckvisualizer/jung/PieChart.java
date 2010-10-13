@@ -105,6 +105,4 @@ public class PieChart implements Icon {
 		this.labelFont = labelFont;
 	}
     
-    
- 
 }
