@@ -23,7 +23,7 @@ public final class Config {
 	public static final String DEFAULT_GENERATE_COMMAND = "perl C:\\Users\\y-mutoh\\workspace\\jp.ac.osaka_u.ist.sdl.staticcheckvisualizer\\xml-generator\\ESCJava2\\escj2xml.pl";
     public static final int DEFAULT_EDGE_MAX_LEVEL = 5;
 	public static final int DEFAULT_METHODVIEW_ATTRIBUTE_COLUMN_COUNT = 3;
-    
+	
 	//設定用定数
 	/**
 	 * ノードの横幅．
@@ -99,7 +99,11 @@ public final class Config {
 		this.edgeMaxLevel = store.getInt(PreferenceKey.EDGE_MAX_LEVEL);
 	}
 
-
+	//シングルトン実現用．インスタンス取得
+	public static Config getInstance() {
+		return Config.instance;
+	}
+	
 	//アクセサ
 	public HashMap<String, Color> getAttributeColors() {
 		return attributeColors;
@@ -113,19 +117,12 @@ public final class Config {
 		return generateCommand;
 	}
 
-
 	public int getEdgeMaxLevel() {
 		return edgeMaxLevel;
 	}
 
-
 	public int getMethodViewAttributeColumnCount() {
 		return methodViewAttributeColumnCount;
-	}
-	
-	//シングルトン実現用．インスタンス取得
-	public static Config getInstance() {
-		return Config.instance;
 	}
 	   
 }
