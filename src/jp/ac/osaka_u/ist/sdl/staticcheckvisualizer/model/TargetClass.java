@@ -1,6 +1,7 @@
 package jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model;
 
 import java.io.File;
+import java.io.IOException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -34,12 +35,12 @@ public class TargetClass {
 	/**
 	 * このクラスのソースファイル．フルパス．
 	 */
-	private String javaFileName;
+	private File javaFile;
 	
 	/**
 	 * このクラスのXMLファイル．フルパス．
 	 */
-	private String xmlFileName;
+	private File xmlFile;
 	
 	/**
 	 * このクラスのカバレッジ．四捨五入した値．
@@ -72,12 +73,12 @@ public class TargetClass {
 	 * 
 	 * @param xmlfile XMLファイルパス
 	 */
-	public TargetClass(String javafilepath, String xmlfilepath) throws Exception {
-		this.xmlFileName = xmlfilepath;
-		this.javaFileName = javafilepath;
+	public TargetClass(File javaFile, File xmlFile) throws Exception {
+		this.xmlFile = xmlFile;
+		this.javaFile = javaFile;
 		methods = new MethodList();
 		callees = new CalleeList();
-		importXml(xmlfilepath);
+		importXml(xmlFile);
 	}
 
 	public TargetClass() {
@@ -109,11 +110,18 @@ public class TargetClass {
 	 * 
 	 * @param xmlfile XMLファイルパス
 	 */
-	public void importXml(String xmlfile) throws Exception
+	public void importXml(File xmlfile) throws Exception
 	{
+		if (null == xmlfile) {
+			throw new IOException("XML file is null.");
+		}
+		if (!xmlfile.exists()) {
+			throw new IOException(xmlfile.getAbsolutePath() + " is not found.");
+		}
+			
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
-        Document document = builder.parse(new File(xmlfile));
+        Document document = builder.parse(xmlfile);
         //ルート
         Element root = document.getDocumentElement();
         //packageName
@@ -233,20 +241,20 @@ public class TargetClass {
 		this.setFullQualifiedName();
 	}
 
-	public String getJavaFileName() {
-		return javaFileName;
+	public File getJavaFile() {
+		return javaFile;
 	}
 
-	public void setJavaFileName(String javaFileName) {
-		this.javaFileName = javaFileName;
+	public void setJavaFile(File javaFile) {
+		this.javaFile = javaFile;
 	}
 
-	public String getXmlFileName() {
-		return xmlFileName;
+	public File getXmlFile() {
+		return xmlFile;
 	}
 
-	public void setXmlFileName(String xmlFileName) {
-		this.xmlFileName = xmlFileName;
+	public void setXmlFile(File xmlFile) {
+		this.xmlFile = xmlFile;
 	}
 
 	public Integer getCoverage() {

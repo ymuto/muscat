@@ -1,6 +1,7 @@
 package jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.config;
 
 
+import java.io.File;
 import java.util.HashMap;
 
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.Activator;
@@ -54,7 +55,7 @@ public final class Config {
     /**
      * XMLを出力するディレクトリ．
      */
-    private String outputDir;
+    private File outputDir;
     
     /**
      * 実行するスクリプト．
@@ -94,7 +95,7 @@ public final class Config {
 	 */
 	public void updateFromPreference() {
 		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-		this.outputDir = store.getString(PreferenceKey.OUTPUT_DIR);
+		this.outputDir = new File(store.getString(PreferenceKey.OUTPUT_DIR));
 		this.generateCommand = store.getString(PreferenceKey.GENERATE_COMMAND);
 		this.edgeMaxLevel = store.getInt(PreferenceKey.EDGE_MAX_LEVEL);
 	}
@@ -109,7 +110,7 @@ public final class Config {
 		return attributeColors;
 	}
 
-	public String getOutputDir() {
+	public File getOutputDir() {
 		return outputDir;
 	}
 

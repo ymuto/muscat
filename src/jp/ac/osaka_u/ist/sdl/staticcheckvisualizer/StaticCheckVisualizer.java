@@ -9,13 +9,13 @@ import java.util.Set;
 import java.util.TimeZone;
 
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.config.Config;
-import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.generateXml.GenerateXml;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.jung.JungManager;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.jung.model.MyNode;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.masu.MasuManager;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model.TargetClass;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.model.TargetClassList;
 import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.workspace.WorkspaceManager;
+import jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.xml.GenerateXml;
 
 
 public class StaticCheckVisualizer {
@@ -144,7 +144,7 @@ public class StaticCheckVisualizer {
 			for (File xmlfile: generator.getXmlFiles()) {
 				try {
 					System.out.println("java=" + javafile.getName() + " xml="+xmlfile.getName());
-					TargetClass c = new TargetClass(javafile.getAbsolutePath(), xmlfile.getAbsolutePath());
+					TargetClass c = new TargetClass(javafile, xmlfile);
 					targetClasses.add(c);
 					//MASUのクラス情報から一致するクラスの呼び出し情報を取ってきて代入
 					TargetClass masuSameTargetClass = masuManager.getTargetClasses().searchClass(c.getFullQualifiedName());
