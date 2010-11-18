@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Static Check Visualizer
-Bundle-SymbolicName: jp.ac.osaka_u.ist.sdl.staticcheckvisualizer;singleton:=true
+Bundle-Name: muscat
+Bundle-SymbolicName: jp.ac.osaka_u.ist.sdl.muscat;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.Activator
+Bundle-Activator: jp.ac.osaka_u.ist.sdl.muscat.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources;bundle-version="3.5.1",

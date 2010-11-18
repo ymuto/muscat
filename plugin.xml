@@ -5,29 +5,29 @@
    <extension
          point="org.eclipse.ui.views">
       <category
-            name="Static Check Visualizerカテゴリ"
-            id="jp.ac.osaka_u.ist.sdl.staticcheckvisualizer">
+            name="Muscat Category"
+            id="jp.ac.osaka_u.ist.sdl.muscat">
       </category>
       <view
-            name="[SCV]main"
+            name="[muscat]main"
             icon="icons/sample.gif"
-            category="jp.ac.osaka_u.ist.sdl.staticcheckvisualizer"
-            class="jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.views.mainview.MainView"
-            id="jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.views.MainView">
+            category="jp.ac.osaka_u.ist.sdl.muscat"
+            class="jp.ac.osaka_u.ist.sdl.muscat.views.mainview.MainView"
+            id="jp.ac.osaka_u.ist.sdl.muscat.views.MainView">
       </view>
       <view
-            category="jp.ac.osaka_u.ist.sdl.staticcheckvisualizer"
-            class="jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.views.methodview.MethodView"
+            category="jp.ac.osaka_u.ist.sdl.muscat"
+            class="jp.ac.osaka_u.ist.sdl.muscat.views.methodview.MethodView"
             icon="icons/sample.gif"
-            id="jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.views.methodview.MethodView"
-            name="[SCV]メソッド情報">
+            id="jp.ac.osaka_u.ist.sdl.muscat.views.methodview.MethodView"
+            name="[muscat]メソッド情報">
       </view>
       <view
-            category="jp.ac.osaka_u.ist.sdl.staticcheckvisualizer"
-            class="jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.views.classview.ClassView"
+            category="jp.ac.osaka_u.ist.sdl.muscat"
+            class="jp.ac.osaka_u.ist.sdl.muscat.views.classview.ClassView"
             icon="icons/sample.gif"
-            id="jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.views.classview.ClassView"
-            name="[SCV]クラス情報">
+            id="jp.ac.osaka_u.ist.sdl.muscat.views.classview.ClassView"
+            name="[muscat]クラス情報">
       </view>
    </extension>
    <extension
@@ -53,9 +53,9 @@
          <menuContribution
                locationURI="menu:project?after=additions">
                <command
-               		commandId="jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.command.begincheck"
-               		id="jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.menu.begincheck"
-               		label="[SCV]Create Graph"
+               		commandId="jp.ac.osaka_u.ist.sdl.muscat.command.begincheck"
+               		id="jp.ac.osaka_u.ist.sdl.muscat.menu.begincheck"
+               		label="[muscat]Create Graph"
                		icon="icons/scv.gif"
                		mnemonic="S">
                </command>
@@ -63,9 +63,9 @@
          <menuContribution
            locationURI="popup:org.eclipse.ui.popup.any?after=additions">
            <command
-           		commandId="jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.command.begincheck"
-           		id="jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.popup.begincheck"
-           		label="[SCV]Create Graph"
+           		commandId="jp.ac.osaka_u.ist.sdl.muscat.command.begincheck"
+           		id="jp.ac.osaka_u.ist.sdl.muscat.popup.begincheck"
+           		label="[muscat]Create Graph"
            		icon="icons/scv.gif"
            		mnemonic="S">
            		<visibleWhen>
@@ -81,11 +81,11 @@
            </command>
          </menuContribution>
          <menuContribution
-               locationURI="toolbar:jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.views.MainView">
+               locationURI="toolbar:jp.ac.osaka_u.ist.sdl.muscat.views.MainView">
                <command
-               		commandId="jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.command.begincheck"
-               		id="jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.menu.begincheck"
-               		label="[SCV]Create Graph"
+               		commandId="jp.ac.osaka_u.ist.sdl.muscat.command.begincheck"
+               		id="jp.ac.osaka_u.ist.sdl.muscat.menu.begincheck"
+               		label="[muscat]Create Graph"
                		icon="icons/scv.gif"
                		mnemonic="S">
                </command>
@@ -95,32 +95,32 @@
          point="org.eclipse.ui.commands">
          <category
          	name="サンプルカテゴリ"
-         	id="jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.samplecategory">
+         	id="jp.ac.osaka_u.ist.sdl.muscat.samplecategory">
          </category>
          <command
-         	name="[SCV]Create Graph"
-         	categoryId="jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.samplecategory"
-         	id="jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.command.begincheck">
+         	name="[muscat]Create Graph"
+         	categoryId="jp.ac.osaka_u.ist.sdl.muscat.samplecategory"
+         	id="jp.ac.osaka_u.ist.sdl.muscat.command.begincheck">
          </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.handlers.ExecuteHandler"
-            commandId="jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.command.begincheck">
+            class="jp.ac.osaka_u.ist.sdl.muscat.handlers.ExecuteHandler"
+            commandId="jp.ac.osaka_u.ist.sdl.muscat.command.begincheck">
       </handler>
    </extension>
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            class="jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.preference.SCVPreferencePage"
-            id="jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.preference.page"
+            class="jp.ac.osaka_u.ist.sdl.muscat.preference.SCVPreferencePage"
+            id="jp.ac.osaka_u.ist.sdl.muscat.preference.page"
             name="StaticCheckVisualizer">
       </page>
    </extension>
    <extension
          point="org.eclipse.core.runtime.preferences">
-         <initializer class="jp.ac.osaka_u.ist.sdl.staticcheckvisualizer.preference.PreferenceInitializer" />
+         <initializer class="jp.ac.osaka_u.ist.sdl.muscat.preference.PreferenceInitializer" />
    </extension>
 
 </plugin>
